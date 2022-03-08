@@ -1,0 +1,69 @@
+version: "3.7"
+
+services:
+  app:
+    container_name: doodle_app
+    ports:
+      - 3000:3001
+    build:
+      context: ./docker/nodejs
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./backend:/app/backend
+    depends_on:
+      - mysql
+    networks:
+      - default
+
+  mysql:
+    image: mysql:8.0
+    container_name: doodle_mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3308:3306
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: doodle
+      MYSQL_USER: abc
+      MYSQL_PASSWORD: p4ssword
+    networks:
+      - default
+
+  phpmyadmin:
+    container_name: doodle_pma
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=10
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=${DB_PASS_ROOT:-root}
+      - PMA_PORT=${DB_PORT:-3306}
+    depends_on:
+      - mysql
+    networks:
+      - default
+
+  nginx:
+    image: nginx:latest
+    container_name: doodle_nginx
+    restart: always
+    ports:
+      - 8181:80
+    depends_on:
+      - app
+    volumes:
+      # - ./backend:/app/backend
+      - ./docker/nginx_log:/var/log/nginx
+      - ./docker/config/app.conf:/etc/nginx/conf.d/app.conf
+    networks:
+      - default
+networks:
+  default:
+    driver: bridge
