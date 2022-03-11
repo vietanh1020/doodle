@@ -1,8 +1,14 @@
-const mysql = require('mysql2')
-module.exports = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_DATA
-})
-  
+const {Sequelize} = require('sequelize')
+
+const sequelize = new Sequelize('doodle','abc','p4ssword',{host: 'mysql', dialect:'mysql'})
+
+let connectDB = async ()=>{
+    try {
+        await sequelize.authenticate();
+        console.log('Kết nối đến DB thành công');
+      } catch (error) {
+        console.error('Lỗi kết nối DB', error);
+      }  
+} 
+
+module.exports = connectDB

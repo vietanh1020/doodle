@@ -1,2 +1,8 @@
-const authService = require('../services/auth.service')
-module.exports = {authService}
+const loginService = require('../services/login.service')
+const registerService = require('../services/register.service')
+
+module.exports = {
+    ...loginService,
+    ...registerService
+}
+

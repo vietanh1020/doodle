@@ -1,23 +1,19 @@
 import express from 'express';
 import { NextFunction, Response, Request } from "express";
-const route = require('./routes')
+const connectDB = require('./config/dbConfig')
 const app = express();
 const port = 3001
-const db = require('./config/dbConfig');
-
-
+const route = require('./routes')
 app.use(express.urlencoded({
     extended: true
   }))
 
 app.use(express.json())
 
-app.get('/',(req : Request, res : Response)=>{
-  res.status(200).json("LÊN")
-})
+connectDB()
 
 app.listen(port, () => {
-    console.log('The application is listening on port ' + port);
+    console.log('The application is listening on port 3001');
 })
 
 route(app);
