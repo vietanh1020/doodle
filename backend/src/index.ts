@@ -1,6 +1,7 @@
 import express from 'express';
 import { NextFunction, Response, Request } from "express";
 const connectDB = require('./config/dbConfig')
+import 'dotenv/config'
 const app = express();
 const port = 3001
 const route = require('./routes')

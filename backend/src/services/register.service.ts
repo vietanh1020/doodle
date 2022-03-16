@@ -1,39 +1,23 @@
-import { NextFunction, Response, Request } from "express";
 const db = require('../models')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
-
-// [GET] /register 
-function showRegister(req: Request, res: Response, next: NextFunction) {
-    res.status(200).json('Register Page')
-}
+import bcrypt from 'bcryptjs';
 
 // [POST] /register
-async function register(req: Request, res: Response, next: NextFunction) {
+class RegisterService {
+    async createUser(user: { email: string, password: string, firstName: string, lastName: string }) {
 
-    const user = req.body
+        const salt = bcrypt.genSaltSync(10);
+        const hashed = await bcrypt.hashSync(user.password, salt)
 
-    const salt = bcrypt.genSaltSync(10);
-    const hashed = await bcrypt.hashSync(req.body.password, salt)
-
-    const newUser = {
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        password: hashed,
-        createdAt: Date.now(),
-        updatedAt: Date.now()
+        const newUser = {
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            password: hashed,
+            createdAt: Date.now(),
+            updatedAt: null
+        }
+        db.Users.create(newUser)
     }
-    db.Users.create(newUser)
-        .then(res.status(200).json(newUser))
-        .catch((err: Error) => {
-            res.status(400).json('DATA ERROR')
-        })
-
 }
 
-
-module.exports = {
-    showRegister,
-    register,
-}
+module.exports = new RegisterService

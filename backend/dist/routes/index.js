@@ -1,6 +1,8 @@
 "use strict";
-const siteRouter = require('./site.route');
+const authRouter = require('./auth.route');
+const pollRouter = require('./poll.route');
 function route(app) {
-    app.use('/', siteRouter);
+    app.use('/poll', pollRouter);
+    app.use('/', authRouter);
 }
 module.exports = route;

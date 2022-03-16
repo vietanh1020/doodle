@@ -1,7 +1,9 @@
 import { NextFunction, Response, Request } from "express";
 const db = require('../models')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+
+
 
 class pollService{
     

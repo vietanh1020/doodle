@@ -4,18 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const route = require('./routes');
+const connectDB = require('./config/dbConfig');
+require("dotenv/config");
 const app = (0, express_1.default)();
 const port = 3001;
-const db = require('./config/dbConfig');
+const route = require('./routes');
 app.use(express_1.default.urlencoded({
     extended: true
 }));
 app.use(express_1.default.json());
-app.get('/', (req, res) => {
-    res.status(200).json("LÊN");
-});
+connectDB();
 app.listen(port, () => {
-    console.log('The application is listening on port ' + port);
+    console.log('The application is listening on port 3001');
 });
 route(app);

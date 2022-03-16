@@ -1,4 +1,4 @@
-const {Sequelize} = require('sequelize')
+import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize('doodle','abc','p4ssword',{host: 'mysql', dialect:'mysql'})
 
