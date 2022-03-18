@@ -17,15 +17,15 @@ const sequelize = new Sequelize(
   (process.env.DB_USER = "abc"),
   (process.env.DB_PASS = "p4ssword"),
   {
-      port: Number(process.env.DB_PORT) || 3306,
-      host: process.env.DB_HOST || "mysql",
-      dialect: "mysql",
-      pool: {
-          min: 0,
-          max: 5,
-          acquire: 30000,
-          idle: 10000,
-      },
+    port: Number(process.env.DB_PORT) || 3306,
+    host: process.env.DB_HOST || "mysql",
+    dialect: "mysql",
+    pool: {
+      min: 0,
+      max: 5,
+      acquire: 30000,
+      idle: 10000,
+    },
   }
 );
 

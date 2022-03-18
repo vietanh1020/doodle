@@ -1,19 +1,20 @@
 import { BuildOptions, DataTypes, Model, Sequelize } from "sequelize";
 
 export interface UserAttributes {
-  id: number;
   firstName: string;
   lastName: string;
-  password: string;
   email: string;
+  password: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
-export interface UserModel extends Model<UserAttributes>, UserAttributes { }
-export class User extends Model<UserModel, UserAttributes> { }
+export interface UserModel extends Model<UserAttributes>, UserAttributes {
+  id: number;
+}
+export class User extends Model<UserModel, UserAttributes> {}
 
 export type UserStatic = typeof Model & {
-  new(values?: object, options?: BuildOptions): UserModel;
+  new (values?: object, options?: BuildOptions): UserModel;
 };
 
 export function UserFactory(sequelize: Sequelize): UserStatic {
