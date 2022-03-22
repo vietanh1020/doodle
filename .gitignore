@@ -1,5 +1,5 @@
-/backend/node_modules
-/docker/db
+backend/node_modules
+docker/mysql
 *.log
 .env
-/backend/dist
+backend/dist

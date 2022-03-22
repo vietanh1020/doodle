@@ -34,6 +34,16 @@ const Vote = VoteFactory(sequelize);
 const Comment = CommentFactory(sequelize);
 const Poll = PollFactory(sequelize);
 
+
+User.hasMany(Poll);
+Poll.belongsTo(User);
+Poll.hasMany(Comment);
+Comment.belongsTo(Poll)
+Vote.belongsTo(Poll);
+Poll.hasMany(Vote)
+
+
+
 export const db: DB = {
   sequelize,
   User,

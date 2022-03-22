@@ -1,9 +1,14 @@
-const authRouter = require('./auth.route')
-const pollRouter = require('./poll.route')
+import { Express } from "express";
 
-function route(app : any) {
-    app.use('/poll', pollRouter)
-    app.use('/', authRouter)
+import AuthRouter from "./auth.route";
+import PollRouter from "./poll.route";
+import { AuthMiddleware } from "../middlewares/auth.middleware";
+
+function route(app: Express) {
+  app.use("/poll", PollRouter);
+  app.use("/", AuthRouter);
+  // app.use(notFoundHandler);
+  // app.use(errorHandler);
 }
 
-module.exports = route
+export default route;

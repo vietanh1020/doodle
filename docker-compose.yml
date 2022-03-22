@@ -6,11 +6,14 @@ services:
     ports:
       - 3000:3001
     build:
-      context: ./docker/nodejs
+      context: ./backend
       dockerfile: Dockerfile
     restart: always
     volumes:
       - ./backend:/app/backend
+      - /app/backend/node_modules
+    # environment:
+    #   - DB_HOST: mysql
     depends_on:
       - mysql
     networks:

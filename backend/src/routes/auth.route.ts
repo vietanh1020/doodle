@@ -1,13 +1,19 @@
-import express from 'express';
-const router = express.Router()
+import express from "express";
 
-const authController = require('../controllers/auth.controller')
-const authMiddleware = require('../middlewares/auth.middleware')
+import { AuthController } from "../controllers/auth.controller";
+import { AuthMiddleware } from "../middlewares/auth.middleware";
 
-router.get('/login', authController.showLogin)
-router.post('/login', authController.login)
-router.get('/register', authController.showRegister)
-router.post('/register',authMiddleware.checkDuplicateEmail, authController.register)
+const router = express.Router();
+
+// router.get("/login", AuthController.showLogin);
+router.post("/login", AuthController.login);
+router.post("/logout", AuthMiddleware.verifyToken, AuthController.logout);
+// router.get("/register", AuthController.showRegister);
+router.post(
+  "/register",
+  AuthMiddleware.checkDuplicateEmail,
+  AuthController.register
+);
 // router.post('/refresh-token',authController.requestRefreshToken)
 
-module.exports = router
+export default router;

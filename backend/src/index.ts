@@ -1,20 +1,22 @@
-import express from 'express';
-import { NextFunction, Response, Request } from "express";
-const connectDB = require('./config/dbConfig')
-import 'dotenv/config'
+import express from "express";
+import "dotenv/config";
+import connectDB from "./config/dbConfig";
+import route from "./routes";
+
 const app = express();
-const port = 3001
-const route = require('./routes')
-app.use(express.urlencoded({
-    extended: true
-  }))
+const port = 3001;
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 
-app.use(express.json())
+app.use(express.json());
 
-connectDB()
-
-app.listen(port, () => {
-    console.log('The application is listening on port 3001');
-})
+connectDB();
 
 route(app);
+
+app.listen(port, () => {
+  console.log("The application is listening on port 3001");
+});

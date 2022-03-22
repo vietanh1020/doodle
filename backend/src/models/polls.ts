@@ -1,6 +1,7 @@
 import { BuildOptions, DataTypes, Model, Sequelize } from "sequelize";
 
 export interface PollAttributes {
+  id : number;
   question: string;
   image?: string;
   description?: string;
@@ -15,7 +16,6 @@ export interface PollAttributes {
   updatedAt?: Date;
 }
 export interface PollModel extends Model<PollAttributes>, PollAttributes {
-  id: number;
 }
 export class Poll extends Model<PollModel, PollAttributes> {}
 
@@ -25,20 +25,24 @@ export type PollStatic = typeof Model & {
 
 export function PollFactory(sequelize: Sequelize): PollStatic {
   return <PollStatic>sequelize.define("Polls", {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     question: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    address : {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     image: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-
     description: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    address: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -54,7 +58,6 @@ export function PollFactory(sequelize: Sequelize): PollStatic {
       type: DataTypes.DATE,
       allowNull: false,
     },
-
     answers: {
       type: DataTypes.JSON,
       allowNull: false,
@@ -67,7 +70,6 @@ export function PollFactory(sequelize: Sequelize): PollStatic {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,

@@ -1,9 +1,26 @@
-import express from 'express';
-const router = express.Router()
+import express from "express";
 
-const pollController = require('../controllers/poll.controller')
+import { AuthMiddleware } from "../middlewares/auth.middleware";
+import { PollController } from "../controllers/poll.controller";
 
-router.post('/create-poll', pollController.createPoll )
-router.get('/', pollController.index)
+const router = express.Router();
 
-module.exports = router
+router.post(
+  "/create-poll",
+  AuthMiddleware.verifyToken,
+  PollController.createPoll
+); //,authMiddleware.verifyToken // ok
+router.post(
+  "/update-poll/:id",
+  AuthMiddleware.verifyToken,
+  AuthMiddleware.canPollEdit,
+  PollController.updatePoll
+);
+router.post(
+  "/delete-poll/:id",
+  AuthMiddleware.verifyToken,
+  PollController.deletePoll
+);
+router.get("/", AuthMiddleware.verifyToken, PollController.test);
+
+export default router;
