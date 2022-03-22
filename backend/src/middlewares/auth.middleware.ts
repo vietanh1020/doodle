@@ -35,11 +35,15 @@ export class AuthMiddleware {
     const poll_id = await db.Poll.findOne({
       where: {
         id: req.params.id,
+        userId: req.user,
       },
     });
-
+  
     if (poll_id) {
       next();
+    }
+    else {
+      res.status(400).json('Không được phép')
     }
   }
 }

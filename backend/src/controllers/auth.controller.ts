@@ -54,6 +54,11 @@ export class AuthController {
   // [POST]  // logout
   static async logout(req: Request, res: Response, next: NextFunction) {
     res.clearCookie("refreshToken");
-    res.status(200).json("Đã đăng xuất");
+    res.status(200).json({
+      status: "ok",
+      error: null,
+      message: null,
+      data: null,
+    });
   }
 }
