@@ -2,6 +2,7 @@ import express from "express";
 
 import { AuthController } from "../controllers/auth.controller";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
+import errorHandler from "../middlewares/errorHandler"
 
 const router = express.Router();
 

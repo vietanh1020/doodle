@@ -1,26 +1,28 @@
 import { RegisterService } from "../services/register.service";
 import { LoginService } from "../services/login.service";
 import { NextFunction, Response, Request } from "express";
-import { db } from "../models";
+require("express-async-errors");
 
-import { AuthMiddleware } from "../middlewares/auth.middleware";
+import { db } from "../models";
 
 export class AuthController {
   // [GET] /login
   static async showLogin(req: Request, res: Response, next: NextFunction) {
-    let a = await db.User.findAll();
-    res.status(200).json(a);
   }
 
   // [GET] /register
   static async showRegister(req: Request, res: Response, next: NextFunction) {
-    res.status(200).json("Register Page");
   }
 
   // [POST] / register
   static async register(req: Request, res: Response, next: NextFunction) {
     const user = await RegisterService.createUser(req.body);
-    res.status(200).json(user);
+    res.status(201).json({
+      status: "created ",
+      error: null,
+      message: null,
+      data: user,
+    });
   }
 
   // [POST] /login
@@ -41,7 +43,12 @@ export class AuthController {
       return res.status(200).json(result);
     }
 
-    return res.status(result.statusCode).json(result);
+    res.status(200).json({
+      status: "success",
+      error: null,
+      message: result.message,
+      data: result,
+    });
   }
 
   // [POST]  // logout

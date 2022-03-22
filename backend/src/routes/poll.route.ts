@@ -5,6 +5,9 @@ import { PollController } from "../controllers/poll.controller";
 
 const router = express.Router();
 
+// get Poll By Id
+router.get("/", AuthMiddleware.verifyToken, PollController.index);
+
 router.post(
   "/create-poll",
   AuthMiddleware.verifyToken,
@@ -21,6 +24,5 @@ router.post(
   AuthMiddleware.verifyToken,
   PollController.deletePoll
 );
-router.get("/", AuthMiddleware.verifyToken, PollController.test);
 
 export default router;

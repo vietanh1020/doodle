@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import connectDB from "./config/dbConfig";
 import route from "./routes";
+require('express-async-errors');
 
 const app = express();
 const port = 3001;

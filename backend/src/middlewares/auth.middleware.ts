@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
-import { db } from "../models";
 import { NextFunction, Response, Request } from "express";
-import { Sequelize } from "sequelize-typescript";
-import console from "console";
+require("express-async-errors");
+
+import { db } from "../models";
+
 const { JWT_ACCESS_KEY = "secret" } = process.env;
 
 export class AuthMiddleware {
@@ -12,17 +13,8 @@ export class AuthMiddleware {
     res: Response,
     next: NextFunction
   ) {
-    try {
-      const user = await db.User.findOne({ where: { email: req.body.email } });
-      if (user) {
-        return res
-          .status(400)
-          .json({ message: "Email đã tồn tại trong hệ thống" });
-      }
-      next();
-    } catch (error) {
-      console.log(error);
-    }
+    const user = await db.User.findOne({ where: { email: req.body.email } });
+    if (user) throw Error("email đã tồn tại");
   }
 
   //verify token

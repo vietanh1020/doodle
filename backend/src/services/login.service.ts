@@ -29,56 +29,52 @@ export class LoginService {
   }
 
   static async login(email: string, password: string) {
-    try {
-      const user = await db.User.findOne({ where: { email: email } });
+    const user = await db.User.findOne({ where: { email: email } });
 
-      if (!user) {
-        return { statusCode: 401, message: "Email hoặc mật khẩu không đúng" };
-      }
+    if (!user) {
+      return { message: "Email hoặc mật khẩu không đúng" };
+    }
 
-      const validPassword = await bcrypt.compare(password, user.password);
+    const validPassword = await bcrypt.compare(password, user.password);
 
-      if (!validPassword) {
-        return { statusCode: 401, message: "Email hoặc mật khẩu không đúng" };
-      }
+    if (!validPassword) {
+      return { message: "Email hoặc mật khẩu không đúng" };
+    }
 
-      if (user && validPassword) {
-        const accessToken = this.generateAccessToken(user.id);
-        const refreshToken = this.generateRefreshToken(user.id);
-        return { refreshToken, accessToken, user };
-      }
-    } catch (error) {
-      console.log(error);
+    if (user && validPassword) {
+      const accessToken = this.generateAccessToken(user.id);
+      const refreshToken = this.generateRefreshToken(user.id);
+      return { refreshToken, accessToken};
     }
   }
-
-  //requestRefreshToken
-  // requestRefreshToken(req: Request, res: Response) {
-  //     const refreshToken = req.cookies.refreshToken
-
-  //     if (!refreshToken) {
-  //         res.status(401).json("Chưa đăng nhập")
-  //     }
-
-  //     jwt.verify(refreshToken, JWT_REFRESH_KEY, (error: Error,) => {
-  //         if (error) {
-  //             console.log(error)
-  //         }
-
-  //         // create a new token
-  //         const newAccessToken = this.generateAccessToken(user)
-  //         const newRefreshToken = this.generateRefreshToken(user)
-
-  //         res.cookie("refreshToken",
-  //             newRefreshToken,
-  //             {
-  //                 httpOnly: true,
-  //                 secure: false,
-  //                 path: "/",
-  //                 sameSite: "strict"
-  //             }
-  //         )
-  //         res.status(200).json({ accesToken: newAccessToken })
-  //     })
-  // }
 }
+
+//requestRefreshToken
+// requestRefreshToken(req: Request, res: Response) {
+//     const refreshToken = req.cookies.refreshToken
+
+//     if (!refreshToken) {
+//         res.status(401).json("Chưa đăng nhập")
+//     }
+
+//     jwt.verify(refreshToken, JWT_REFRESH_KEY, (error: Error,) => {
+//         if (error) {
+//             console.log(error)
+//         }
+
+//         // create a new token
+//         const newAccessToken = this.generateAccessToken(user)
+//         const newRefreshToken = this.generateRefreshToken(user)
+
+//         res.cookie("refreshToken",
+//             newRefreshToken,
+//             {
+//                 httpOnly: true,
+//                 secure: false,
+//                 path: "/",
+//                 sameSite: "strict"
+//             }
+//         )
+//         res.status(200).json({ accesToken: newAccessToken })
+//     })
+// }

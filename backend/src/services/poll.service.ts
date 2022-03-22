@@ -17,6 +17,12 @@ export class PollService {
     };
   }
 
+  static async getPollById(_userId: number) {
+    return await db.Poll.findAll({ where: {
+      userId: _userId,
+    },})
+  }
+
   static async createPoll(req: any) {
     const poll: any = PollService.getPollData(req);
     return await db.Poll.create(poll);
