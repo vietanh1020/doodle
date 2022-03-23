@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Response, Request } from "express";
+import {HttpException} from "../exceptions/HttpException"
 require("express-async-errors");
 
 import { db } from "../models";
-
 const { JWT_ACCESS_KEY = "secret" } = process.env;
 
 export class AuthMiddleware {
@@ -24,10 +24,9 @@ export class AuthMiddleware {
       const accessToken = token.split(" ")[1];
       let payload: any = await jwt.verify(accessToken, JWT_ACCESS_KEY);
       req.user = payload.id;
-      next();
-    } else {
-      res.status(401).json({ message: "Bạn chưa đăng nhập" });
+      return next();
     }
+    throw new HttpException(400, 'chuwa co token');
   }
 
   //verify User [/poll/ (update || delete)]
@@ -38,12 +37,8 @@ export class AuthMiddleware {
         userId: req.user,
       },
     });
-  
-    if (poll_id) {
-      next();
-    }
-    else {
-      res.status(400).json('Không được phép')
-    }
+
+    if (!poll_id) throw Error("Không được phép");
+    next();
   }
 }

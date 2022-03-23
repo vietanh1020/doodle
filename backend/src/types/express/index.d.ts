@@ -3,3 +3,9 @@ declare namespace Express {
     user?: any;
   }
 }
+
+declare namespace Express {
+  interface Error {
+    status?: any
+  }
+}

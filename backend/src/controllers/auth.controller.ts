@@ -1,9 +1,8 @@
 import { RegisterService } from "../services/register.service";
 import { LoginService } from "../services/login.service";
 import { NextFunction, Response, Request } from "express";
+import {HttpException} from "../exceptions/HttpException"
 require("express-async-errors");
-
-import { db } from "../models";
 
 export class AuthController {
   // [GET] /login
@@ -18,7 +17,7 @@ export class AuthController {
   static async register(req: Request, res: Response, next: NextFunction) {
     const user = await RegisterService.createUser(req.body);
     res.status(201).json({
-      status: "created ",
+      status: "success",
       error: null,
       message: null,
       data: user,

@@ -35,8 +35,8 @@ export class PollController {
 
   static async deletePoll(req: Request, res: Response) {
     let pollData = await PollService.deletePoll(req);
-    res.status(200).json({
-      status:"deleted",
+    res.status(204).json({
+      status:"success",
       error: null,
       message: null,
       data: null,
