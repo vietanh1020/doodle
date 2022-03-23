@@ -38,7 +38,7 @@ export class AuthMiddleware {
       },
     });
 
-    if (!poll_id) throw Error("Không được phép");
+    if (!poll_id) throw new HttpException(403,"Không được phép");
     next();
   }
 }

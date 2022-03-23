@@ -1,8 +1,8 @@
-import { NextFunction, Response, Request } from "express";
+import { Request } from "express";
 import { db } from "../models";
 
 export class PollService {
-  static getPollData(req: any) {
+  static getPollData(req: Request) {
     return {
       question: req.body.question,
       image: req.body.image,
@@ -23,12 +23,12 @@ export class PollService {
     },})
   }
 
-  static async createPoll(req: any) {
+  static async createPoll(req: Request) {
     const poll: any = PollService.getPollData(req);
     return await db.Poll.create(poll);
   }
 
-  static async updatePoll(req: any) {
+  static async updatePoll(req: Request) {
     const poll: any = PollService.getPollData(req);
     return await db.Poll.update(poll, {
       where: {
@@ -37,7 +37,7 @@ export class PollService {
     });
   }
 
-  static async deletePoll(req: any){
+  static async deletePoll(req: Request){
     return await db.Poll.destroy({
       where: {
         id : req.params.id,

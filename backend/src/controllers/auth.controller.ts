@@ -17,7 +17,7 @@ export class AuthController {
   static async register(req: Request, res: Response, next: NextFunction) {
     const user = await RegisterService.createUser(req.body);
     res.status(201).json({
-      status: "success",
+      status: "201",
       error: null,
       message: null,
       data: user,
@@ -43,7 +43,7 @@ export class AuthController {
     }
 
     res.status(200).json({
-      status: "success",
+      status: 200,
       error: null,
       message: result.message,
       data: result,
@@ -54,7 +54,7 @@ export class AuthController {
   static async logout(req: Request, res: Response, next: NextFunction) {
     res.clearCookie("refreshToken");
     res.status(200).json({
-      status: "ok",
+      status: 20,
       error: null,
       message: null,
       data: null,

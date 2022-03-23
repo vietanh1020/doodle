@@ -4,23 +4,27 @@ import { AuthMiddleware } from "../middlewares/auth.middleware";
 import { PollController } from "../controllers/poll.controller";
 const router = express.Router();
 
-// get Poll By Id
+// GET POLL BY USER ID
 router.get("/", AuthMiddleware.verifyToken, PollController.index);
 
+// CREATE POLL
 router.post(
-  "/create-poll",
+  "/",
   AuthMiddleware.verifyToken,
   PollController.createPoll
-); //,authMiddleware.verifyToken // ok
+);
 
-router.post(
-  "/update-poll/:id",
+// UPDATE POLL
+router.patch(
+  "/:id",
   AuthMiddleware.verifyToken,
   AuthMiddleware.canPollEdit,
   PollController.updatePoll
 );
-router.post(
-  "/delete-poll/:id",
+
+// DELETE POLL
+router.delete(
+  "/:id",
   AuthMiddleware.verifyToken,
   AuthMiddleware.canPollEdit,
   PollController.deletePoll
