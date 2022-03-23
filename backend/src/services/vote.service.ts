@@ -9,7 +9,7 @@ export class VoteService{
       include: [
         {
           model: db.Poll,
-          where: { id: req.params.id },
+          where: { id: req.params.pollId },
         },
       ],
     });

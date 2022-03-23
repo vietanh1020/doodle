@@ -7,9 +7,9 @@ export default function errorHandler(
   next: NextFunction
 ) {
   if (err.status >= 500)
-  return res.status(500).json({
-    message: err.message,
-    status: err.status,
-  });
+    return res.status(500).json({
+      message: err.message,
+      status: err.status,
+    });
   next(err);
 }

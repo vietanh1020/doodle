@@ -3,6 +3,6 @@ import { VoteController } from "../controllers/vote.controller";
 
 const router = express.Router();
 
-router.get("/:id", VoteController.getPollById);
+router.get("/:pollId", VoteController.getPollById);
 
 export default router;

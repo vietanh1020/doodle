@@ -1,8 +1,9 @@
 import express, { Router } from "express";
+require("express-async-errors");
+
 import "dotenv/config";
 import connectDB from "./config/dbConfig";
 import route from "./routes";
-require('express-async-errors');
 
 const app = express();
 const port = 3001;

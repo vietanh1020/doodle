@@ -14,7 +14,7 @@ export class AuthMiddleware {
     next: NextFunction
   ) {
     const user = await db.User.findOne({ where: { email: req.body.email } });
-    if (user) throw Error("email đã tồn tại");
+    if (user) throw new HttpException(400, 'email đã được đăng kí');
   }
 
   //verify token
@@ -26,7 +26,7 @@ export class AuthMiddleware {
       req.user = payload.id;
       return next();
     }
-    throw new HttpException(400, 'chuwa co token');
+    else throw new HttpException(400, 'Bạn chưa đăng nhập');
   }
 
   //verify User [/poll/ (update || delete)]
