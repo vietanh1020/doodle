@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Response, Request } from "express";
-import {HttpException} from "../exceptions/HttpException"
+import { HttpException } from "../exceptions/HttpException";
 require("express-async-errors");
 
 import { db } from "../models";
@@ -14,7 +14,12 @@ export class AuthMiddleware {
     next: NextFunction
   ) {
     const user = await db.User.findOne({ where: { email: req.body.email } });
-    if (user) throw new HttpException(400, 'email đã được đăng kí');
+
+    if (user) {
+      throw new HttpException(400, "email đã được đăng kí");
+    }
+
+    next();
   }
 
   //verify token
@@ -25,8 +30,7 @@ export class AuthMiddleware {
       let payload: any = await jwt.verify(accessToken, JWT_ACCESS_KEY);
       req.user = payload.id;
       return next();
-    }
-    else throw new HttpException(400, 'Bạn chưa đăng nhập');
+    } else throw new HttpException(400, "Bạn chưa đăng nhập");
   }
 
   //verify User [/poll/ (update || delete)]
@@ -38,7 +42,9 @@ export class AuthMiddleware {
       },
     });
 
-    if (!poll_id) throw new HttpException(403,"Không được phép");
+    if (!poll_id) throw new HttpException(403, "Không được phép");
     next();
   }
 }
+
+

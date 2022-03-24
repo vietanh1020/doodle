@@ -2,7 +2,7 @@ import { Request } from "express";
 import { HttpException } from "../exceptions/HttpException";
 import { db } from "../models";
 
-export class ResultPoll {
+export class ResultService {
   static async getAnswersByPollId(req: Request) {
     let pollAnswers = db.Poll.findOne({
       attributes: ["answers"],
@@ -25,5 +25,28 @@ export class ResultPoll {
     }
 
     return listAnswer;
+  }
+
+  static resultPoll(pollAnswers : any , voteAnswers: any){
+    
+    let pollAnswersData = JSON.parse(pollAnswers.dataValues.answers);
+    let result: any = {};
+
+    for (var key in pollAnswersData) {
+      result[pollAnswersData[key]] = 0;
+    }
+
+    let answers: any = [];
+    voteAnswers.forEach((answer: any) => {
+      answers.push(JSON.parse(answer.dataValues.answer));
+    });
+
+    answers.forEach((answer: any) => {
+      for (let key in answer) {
+        result[answer[key]]++;
+      }
+    });
+    
+    return result;
   }
 }

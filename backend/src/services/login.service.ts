@@ -3,6 +3,7 @@ import { db } from "../models";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
+import { HttpException } from "../exceptions/HttpException";
 dotenv.config();
 
 const { JWT_ACCESS_KEY = "secret" } = process.env;
@@ -32,19 +33,19 @@ export class LoginService {
     const user = await db.User.findOne({ where: { email: email } });
 
     if (!user) {
-      return { message: "Email hoặc mật khẩu không đúng" };
+      throw new HttpException(401, "Email hoặc mật khẩu không đúng")
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
-      return { message: "Email hoặc mật khẩu không đúng" };
+      throw new HttpException(401, "Email hoặc mật khẩu không đúng")
     }
 
     if (user && validPassword) {
       const accessToken = this.generateAccessToken(user.id);
       const refreshToken = this.generateRefreshToken(user.id);
-      return { refreshToken, accessToken};
+      return { refreshToken, accessToken };
     }
   }
 }

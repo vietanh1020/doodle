@@ -1,17 +1,14 @@
 import { RegisterService } from "../services/register.service";
 import { LoginService } from "../services/login.service";
 import { NextFunction, Response, Request } from "express";
-import {HttpException} from "../exceptions/HttpException"
-require("express-async-errors");
+import { HttpException } from "../exceptions/HttpException";
 
 export class AuthController {
   // [GET] /login
-  static async showLogin(req: Request, res: Response, next: NextFunction) {
-  }
+  static async showLogin(req: Request, res: Response, next: NextFunction) {}
 
   // [GET] /register
-  static async showRegister(req: Request, res: Response, next: NextFunction) {
-  }
+  static async showRegister(req: Request, res: Response, next: NextFunction) {}
 
   // [POST] / register
   static async register(req: Request, res: Response, next: NextFunction) {
@@ -31,7 +28,11 @@ export class AuthController {
       req.body.password
     );
 
-    if (result.user) {
+    // if(!result){
+    //   throw new HttpException(501, "Email hoặc mật khẩu không đúng")
+    // }
+
+    if (result) {
       res.cookie("refreshToken", result.refreshToken, {
         httpOnly: true,
         secure: false,
@@ -39,15 +40,13 @@ export class AuthController {
         sameSite: "strict",
       });
 
-      return res.status(200).json(result);
+      return res.status(200).json({
+        status: 200,
+        error: null,
+        message: null,
+        data: result,
+      });
     }
-
-    res.status(200).json({
-      status: 200,
-      error: null,
-      message: result.message,
-      data: result,
-    });
   }
 
   // [POST]  // logout
