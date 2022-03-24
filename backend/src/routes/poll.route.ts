@@ -8,11 +8,7 @@ const router = express.Router();
 router.get("/", AuthMiddleware.verifyToken, PollController.index);
 
 // CREATE POLL
-router.post(
-  "/",
-  AuthMiddleware.verifyToken,
-  PollController.createPoll
-);
+router.post("/", AuthMiddleware.verifyToken, PollController.createPoll);
 
 // UPDATE POLL
 router.patch(
@@ -29,5 +25,7 @@ router.delete(
   AuthMiddleware.canPollEdit,
   PollController.deletePoll
 );
+
+// RESULT POLL
 
 export default router;

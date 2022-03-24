@@ -18,9 +18,11 @@ export class PollService {
   }
 
   static async getPollById(_userId: number) {
-    return await db.Poll.findAll({ where: {
-      userId: _userId,
-    },})
+    return await db.Poll.findAll({
+      where: {
+        userId: _userId,
+      },
+    });
   }
 
   static async createPoll(req: Request) {
@@ -37,11 +39,11 @@ export class PollService {
     });
   }
 
-  static async deletePoll(req: Request){
+  static async deletePoll(req: Request) {
     return await db.Poll.destroy({
       where: {
-        id : req.params.id,
-      }
+        id: req.params.id,
+      },
     });
   }
 }
