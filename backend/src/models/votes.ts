@@ -18,9 +18,15 @@ export type VoteStatic = typeof Model & {
 
 export function VoteFactory(sequelize: Sequelize): VoteStatic {
   return <VoteStatic>sequelize.define("Votes", {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     fullName: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null
     },
     answer: {
       type: DataTypes.JSON,

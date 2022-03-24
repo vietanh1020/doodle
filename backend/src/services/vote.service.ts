@@ -1,9 +1,10 @@
 import { Request } from "express";
 
 import { db } from "../models";
+import { Vote } from "../models/votes";
 
-export class VoteService{
-  static async getPoll(req : Request){
+export class VoteService {
+  static async getPoll(req: Request) {
     return await db.User.findOne({
       attributes: ["id", "firstName", "LastName"],
       include: [
@@ -13,5 +14,17 @@ export class VoteService{
         },
       ],
     });
+  }
+
+  static async vote(req: Request) {
+
+    const voteData : any = {
+      email: req.body.email,
+      fullName: req.body.fullName,
+      answer: req.body.answer,
+      pollId: req.params.pollId,
+    };
+
+    return await db.Vote.create(voteData)
   }
 }

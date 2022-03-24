@@ -18,4 +18,19 @@ export class VoteController {
       data: pollData,
     });
   }
+
+  static async vote(req: Request, res: Response) {
+    const data = await VoteService.vote(req);
+
+    if (!data) {
+      throw new HttpException(500, "Không thể lưu kết quả vote");
+    }
+
+    return res.status(201).json({
+      status: 201,
+      error: null,
+      message: null,
+      data: data,
+    });
+  }
 }
