@@ -1,7 +1,5 @@
 import { Request } from "express";
-
 import { db } from "../models";
-import { Vote } from "../models/votes";
 
 export class VoteService {
   static async getPoll(req: Request) {

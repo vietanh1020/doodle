@@ -1,5 +1,5 @@
 import express from "express";
-import { ResultController } from "../controllers/resultVote.controller";
+import { ResultController } from "../controllers/resultPoll.controller";
 
 const router = express.Router();
 

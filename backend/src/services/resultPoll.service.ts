@@ -15,10 +15,10 @@ export class ResultService {
     return pollAnswers;
   }
 
-  static async getAnswerByVote(req: Request){
+  static async getAnswerByVote(req: Request) {
     let listAnswer = db.Vote.findAll({
       attributes: ["answer"],
-      where: { pollId : req.params.pollId },
+      where: { pollId: req.params.pollId },
     });
     if (!listAnswer) {
       throw new HttpException(500, "Không tìm thấy Vote");
@@ -27,8 +27,18 @@ export class ResultService {
     return listAnswer;
   }
 
-  static resultPoll(pollAnswers : any , voteAnswers: any){
-    
+  static async resultPoll(req: Request) {
+    const pollAnswers: any = await ResultService.getAnswersByPollId(req);
+    const voteAnswers: any = await ResultService.getAnswerByVote(req);
+
+    if (!pollAnswers) {
+      throw new HttpException(500, "Error get data Poll");
+    }
+
+    if (!voteAnswers) {
+      throw new HttpException(500, "Error get data Vote");
+    }
+
     let pollAnswersData = JSON.parse(pollAnswers.dataValues.answers);
     let result: any = {};
 
@@ -46,7 +56,7 @@ export class ResultService {
         result[answer[key]]++;
       }
     });
-    
+
     return result;
   }
 }

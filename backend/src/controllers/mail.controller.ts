@@ -1,14 +1,9 @@
 import { Response, NextFunction, Request } from "express";
-import { PollService } from "../services/poll.service";
+import { MailService } from "../services/mail.service";
 
 export class MailController {
-  static async sendMail(req: Request, res: Response) {
-    let poll = await PollService.getPollById(req.user);
-    res.status(200).json({
-      status: "success",
-      error: null,
-      message: null,
-      data: poll,
-    });
+  static async sendtoEmail(req: Request, res: Response) {
+    let email = await MailService.sendEmail(req) ;
+    res.status(200).json(email)
   }
 }

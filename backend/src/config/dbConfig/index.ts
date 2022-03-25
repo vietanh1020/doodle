@@ -7,7 +7,7 @@ const {
   DB_HOST = "mysql",
 } = process.env;
 
-const sequelize = new Sequelize(DB_DATA, DB_USER,  DB_PASS, {
+const sequelize = new Sequelize(DB_DATA, DB_USER, DB_PASS, {
   host: DB_HOST,
   dialect: "mysql",
 });
