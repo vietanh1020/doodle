@@ -19,6 +19,17 @@ services:
     networks:
       - default
 
+  mailhog:
+    image: mailhog/mailhog
+    container_name: doodle_mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
+    networks:
+      - default
+  
   mysql:
     image: mysql:8.0
     container_name: doodle_mysql
@@ -51,6 +62,15 @@ services:
     depends_on:
       - mysql
     networks:
+      - default
+
+  redis:
+    image: redis:5-alpine
+    container_name: big-project_redis
+    volumes: 
+      - ./docker/redis:/data
+    restart: unless-stopped
+    networks: 
       - default
 
   nginx:

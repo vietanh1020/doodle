@@ -39,9 +39,11 @@ export class ResultService {
       throw new HttpException(500, "Error get data Vote");
     }
 
+    // Lấy danh sách đáp án của câu hỏi
     let pollAnswersData = JSON.parse(pollAnswers.dataValues.answers);
     let result: any = {};
 
+    // Đếm số lượng câu trả lời
     for (var key in pollAnswersData) {
       result[pollAnswersData[key]] = 0;
     }

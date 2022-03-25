@@ -28,14 +28,14 @@ export class MailService {
     const {
       MAIL_USER = "vak63.uet.vnu@gmail.com",
       MAIL_PASS = "Vietanh0510@",
-      MAIL_SERVICE = "gmail",
+      MAIL_SERVICE = "mailhog",
     } = process.env;
 
     let transporter = nodemailer.createTransport({
-      service: MAIL_SERVICE,
-      port: 587,
+      host: "mailhog",
+      port: 1025,
       secure: false,
-      requireTLS: true,
+      requireTLS: false,
       auth: {
         user: MAIL_USER,
         pass: MAIL_PASS,
@@ -44,15 +44,27 @@ export class MailService {
     });
 
     const mail: any = await MailService.getEmailByPollId(req);
+
+    const html = "Kết quả";
+
     const resultVote = await ResultService.resultPoll(req);
+
+    if (!resultVote) {
+      throw new HttpException(500, "Server không thể lấy kết quả bình chọn");
+    }
 
     const mailOptions = {
       from: MAIL_USER,
       to: mail.dataValues.email,
       subject: "Kết Quả bình chọn Doodle",
-      html: ``,
+      html: html,
     };
 
     return await transporter.sendMail(mailOptions);
   }
+
+  static async autoSendMail(){
+      
+  }
+
 }
