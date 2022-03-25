@@ -1,5 +1,6 @@
 import { Request } from "express";
 import nodemailer from "nodemailer";
+
 import { HttpException } from "../exceptions/HttpException";
 import { db } from "../models";
 import { ResultService } from "./resultPoll.service";
@@ -64,7 +65,7 @@ export class MailService {
   }
 
   static async autoSendMail(){
-      
+    
   }
 
 }

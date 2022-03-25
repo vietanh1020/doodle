@@ -28,6 +28,9 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        isEmail: true, 
+      }
     },
     firstName: {
       type: DataTypes.STRING,
