@@ -1,7 +1,7 @@
 import { Request } from "express";
 import nodemailer from "nodemailer";
 
-import { HttpException } from "../exceptions/HttpException";
+import { HttpException } from "../utils/exceptions/HttpException";
 import { db } from "../models";
 import { ResultService } from "./resultPoll.service";
 
@@ -64,8 +64,5 @@ export class MailService {
     return await transporter.sendMail(mailOptions);
   }
 
-  static async autoSendMail(){
-    
-  }
-
+  static async autoSendMail() {}
 }

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { HttpException } from "../exceptions/HttpException";
+import { HttpException } from "../utils/exceptions/HttpException";
 import { VoteService } from "../services/vote.service";
 
 export class VoteController {

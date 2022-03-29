@@ -4,7 +4,7 @@ import { body, validationResult } from "express-validator";
 import { AuthController } from "../controllers/auth.controller";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
 import { validateRequestSchema } from "../middlewares/validate";
-import { registerSchema } from "../schema/register.shema";
+import { registerSchema } from "../utils/schema/register.shema";
 
 const router = express.Router();
 

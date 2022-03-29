@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { HttpException } from "../exceptions/HttpException";
+import { HttpException } from "../utils/exceptions/HttpException";
 import { db } from "../models";
 
 export class ResultService {

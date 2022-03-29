@@ -3,18 +3,12 @@ import { validationResult } from "express-validator";
 require("express-async-errors");
 import jwt from "jsonwebtoken";
 
-import { HttpException } from "../exceptions/HttpException";
+import { HttpException } from "../utils/exceptions/HttpException";
 import { db } from "../models";
 const { JWT_ACCESS_KEY = "secret" } = process.env;
 
 export class AuthMiddleware {
-  static async checkData(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    
-
+  static async checkData(req: Request, res: Response, next: NextFunction) {
     //check Duplicate Email
     const user = await db.User.findOne({ where: { email: req.body.email } });
     if (user) {
@@ -23,7 +17,7 @@ export class AuthMiddleware {
 
     next();
   }
-  static  async validateRequestSchema(
+  static async validateRequestSchema(
     req: Request,
     res: Response,
     next: NextFunction
@@ -59,5 +53,3 @@ export class AuthMiddleware {
     next();
   }
 }
-
-

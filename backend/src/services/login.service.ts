@@ -5,7 +5,7 @@ import { body, validationResult } from "express-validator";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import { HttpException } from "../exceptions/HttpException";
+import { HttpException } from "../utils/exceptions/HttpException";
 import { db } from "../models";
 
 const { JWT_ACCESS_KEY = "secret" } = process.env;
