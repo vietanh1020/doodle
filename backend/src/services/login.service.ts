@@ -44,8 +44,8 @@ export class LoginService {
     }
 
     if (user && validPassword) {
-      const accessToken = this.generateAccessToken(user.id);
-      const refreshToken = this.generateRefreshToken(user.id);
+      const accessToken = await LoginService.generateAccessToken(user.id);
+      const refreshToken = await  LoginService.generateRefreshToken(user.id);
       return { refreshToken, accessToken };
     }
   }

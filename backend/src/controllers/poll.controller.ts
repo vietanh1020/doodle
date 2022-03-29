@@ -4,9 +4,10 @@ import { PollService } from "../services/poll.service";
 
 export class PollController {
   static async index(req: Request, res: Response){
-    let poll = await PollService.getPollById(req.user)
+    let poll = await PollService.getPollByUserId(req.user)
+   
     res.status(200).json({
-      status: "success",
+      status: 200,
       error: null,
       message: null,
       data: poll,
