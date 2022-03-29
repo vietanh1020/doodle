@@ -18,8 +18,6 @@ export class PollService {
   }
 
   static async getPollByUserId(_userId: number) {
-    console.log(_userId);
-    
     return await db.Poll.findAll({
       where: {
         userId: _userId,
