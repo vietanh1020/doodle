@@ -1,24 +1,37 @@
-import jwt from "jsonwebtoken";
 import { NextFunction, Response, Request } from "express";
-import { HttpException } from "../exceptions/HttpException";
+import { validationResult } from "express-validator";
 require("express-async-errors");
+import jwt from "jsonwebtoken";
 
+import { HttpException } from "../exceptions/HttpException";
 import { db } from "../models";
 const { JWT_ACCESS_KEY = "secret" } = process.env;
 
 export class AuthMiddleware {
-  //checkDuplicateEmail
-  static async checkDuplicateEmail(
+  static async checkData(
     req: Request,
     res: Response,
     next: NextFunction
   ) {
-    const user = await db.User.findOne({ where: { email: req.body.email } });
+    
 
+    //check Duplicate Email
+    const user = await db.User.findOne({ where: { email: req.body.email } });
     if (user) {
       throw new HttpException(400, "email đã được đăng kí");
     }
 
+    next();
+  }
+  static  async validateRequestSchema(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     next();
   }
 

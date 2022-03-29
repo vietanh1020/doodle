@@ -22,5 +22,3 @@ export class RegisterService {
     return await db.User.create(newUser);
   }
 }
-
-

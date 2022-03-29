@@ -1,7 +1,7 @@
+import { NextFunction, Response, Request } from "express";
+
 import { RegisterService } from "../services/register.service";
 import { LoginService } from "../services/login.service";
-import { NextFunction, Response, Request } from "express";
-import { HttpException } from "../exceptions/HttpException";
 
 export class AuthController {
   // [GET] /login
@@ -27,10 +27,6 @@ export class AuthController {
       req.body.email,
       req.body.password
     );
-
-    // if(!result){
-    //   throw new HttpException(501, "Email hoặc mật khẩu không đúng")
-    // }
 
     if (result) {
       res.cookie("refreshToken", result.refreshToken, {
