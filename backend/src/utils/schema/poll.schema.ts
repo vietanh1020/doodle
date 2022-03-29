@@ -7,7 +7,6 @@ const pollSchema = [
     .withMessage("Thời gian bắt đầu không được để trống"),
   body("endAt").isEmpty().withMessage("Thời gian kết thúc không được để trống"),
   body("multipleVote").isEmpty().withMessage("Lỗi cho phép chọn nhiều đáp án "),
-  body("userId").isEmpty().withMessage("Chưa đăng nhập"),
 ];
 
 export { pollSchema};
