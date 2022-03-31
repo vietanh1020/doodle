@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "start:dev": "nodemon -L --watch src --ext ts,json --exec 'ts-node ./src/index.ts'",
-    "test": "jest -L --watch",
+    "test": "jest",
     "build": "tsc --project ./"
   },
   "keywords": [],
@@ -17,6 +17,7 @@
   "dependencies": {
     "@types/nodemailer": "^6.4.4",
     "@types/supertest": "^2.0.12",
+    "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",
     "bull": "^4.8.1",
     "dotenv": "^16.0.0",

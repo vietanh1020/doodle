@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express, { Request, Response } from "express";
 require("express-async-errors");
 
 import "dotenv/config";
@@ -14,6 +14,12 @@ app.use(
 );
 
 app.use(express.json());
+
+
+app.get("/vietanh", (req: Request, res: Response)=>{
+  res.status(200).json({status : "OK"});
+})
+
 
 connectDB();
 
