@@ -16,9 +16,10 @@ describe("POST Register success ", () => {
       expect(response.data.data.email).toBe(data.email);
       expect(response.data.data.firstName).toBe(data.firstName);
       expect(response.data.data.lastName).toBe(data.lastName);
+      console.log('đăng kí thành công')
     } catch (error) {
       console.log("Email da ton tai");
-      expect(error.response.data.status).toBe(201);
+      expect(error.response.data.status).toBe(401);
     }
   });
 });

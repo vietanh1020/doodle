@@ -12,7 +12,7 @@ export class AuthMiddleware {
     //check Duplicate Email
     const user = await db.User.findOne({ where: { email: req.body.email } });
     if (user) {
-      throw new HttpException(400, "email đã được đăng kí");
+      throw new HttpException(401, "email đã được đăng kí");
     }
     next();
   }
@@ -22,10 +22,17 @@ export class AuthMiddleware {
     const token = req.headers.token as string;
     if (token) {
       const accessToken = token.split(" ")[1];
-      let payload: any = await jwt.verify(accessToken, JWT_ACCESS_KEY);
-      req.user = payload.id;
-      return next();
-    } else throw new HttpException(400, "Bạn chưa đăng nhập");
+
+      jwt.verify(accessToken, JWT_ACCESS_KEY, (err, payload: any) => {
+        if (err) {
+          throw new HttpException(401, "Token không hợp lệ");
+        }
+        req.user = payload.id;
+        return next();
+      });
+    } else {
+      throw new HttpException(401, "Bạn chưa đăng nhập");
+    }
   }
 
   //verify User [/poll/ (update || delete)]

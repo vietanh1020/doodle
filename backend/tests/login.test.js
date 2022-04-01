@@ -17,6 +17,7 @@ describe("POST Login success ", () => {
       password: "123456789",
     });
     expect(response.data.status).toBe(200);
+    console.log("Login success!")
   });  
 });
 
