@@ -16,10 +16,9 @@ describe("POST Register success ", () => {
       expect(response.data.data.email).toBe(data.email);
       expect(response.data.data.firstName).toBe(data.firstName);
       expect(response.data.data.lastName).toBe(data.lastName);
-      console.log('đăng kí thành công')
+      console.log(response.data)
     } catch (error) {
-      console.log("Email da ton tai");
-      expect(error.response.data.status).toBe(401);
+      console.log(error.response.data);
     }
   });
 });

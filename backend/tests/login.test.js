@@ -17,7 +17,7 @@ describe("POST Login success ", () => {
       password: "123456789",
     });
     expect(response.data.status).toBe(200);
-    console.log("Login success!")
+    console.log(response.data)
   });  
 });
 
@@ -28,8 +28,9 @@ describe("POST Login falure", () => {
         email: "18020172@vnu.edu.vn",
         password: "1234567289",
       })
+      console.log(response.data);
     } catch (err) {
-      expect(err.response.data.status).toBe(401)
+      console.log(err.response.data);
     }
   });
 
@@ -40,7 +41,7 @@ describe("POST Login falure", () => {
         password: "1234567289",
       })
     } catch (err) {
-      expect(err.response.data.status).toBe(401)
+      console.log(err.response.data);
     }
   });
 
