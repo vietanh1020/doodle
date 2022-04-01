@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
-import { body, validationResult } from "express-validator";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -45,7 +44,7 @@ export class LoginService {
 
     if (user && validPassword) {
       const accessToken = await LoginService.generateAccessToken(user.id);
-      const refreshToken = await  LoginService.generateRefreshToken(user.id);
+      const refreshToken = await LoginService.generateRefreshToken(user.id);
       return { refreshToken, accessToken };
     }
   }
