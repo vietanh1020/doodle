@@ -1,13 +1,13 @@
 const console = require("console");
 const axios = require("axios").default;
 
-describe("POST Create POLL ", () => {
+describe("Update POLL ", () => {
   it("success", async () => {
     try {
       const access_token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDAsImlhdCI6MTY0ODUzNDI4MCwiZXhwIjoxNjUxMTI2MjgwfQ.t9Vo7koQvXuZO930K3RH2cl3ThbFwuj91pfbKtJTAlM";
       const data = {
-        question: "thao.xt@mail.com",
+        question: "abc xyz",
         image: "Thảo",
         description: "Xã Thu",
         address: "Nghệ An",
@@ -47,7 +47,7 @@ describe("POST Create POLL ", () => {
       const access_token =
         "1eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDAsImlhdCI6MTY0ODUzNDI4MCwiZXhwIjoxNjUxMTI2MjgwfQ.t9Vo7koQvXuZO930K3RH2cl3ThbFwuj91pfbKtJTAlM";
       const data = {
-        question: "thao.xt@mail.com",
+        question: "Viet anh 1020",
         image: "Thảo",
         description: "Xã Thu",
         address: "Nghệ An",

@@ -1,11 +1,10 @@
 import { Response, NextFunction, Request } from "express";
-// import { IUserRequest } from "../middlewares/auth.middleware";
 import { PollService } from "../services/poll.service";
 
 export class PollController {
-  static async index(req: Request, res: Response){
-    let poll = await PollService.getPollByUserId(req.user)
-   
+  static async index(req: Request, res: Response) {
+    let poll = await PollService.getPollByUserId(req.user);
+
     res.status(200).json({
       status: 200,
       error: null,
@@ -37,7 +36,7 @@ export class PollController {
   static async deletePoll(req: Request, res: Response) {
     let pollData = await PollService.deletePoll(req);
     res.status(204).json({
-      status:"success",
+      status: 204,
       error: null,
       message: null,
       data: null,
