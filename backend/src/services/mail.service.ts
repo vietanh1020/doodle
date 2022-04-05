@@ -1,19 +1,18 @@
-import { Request } from "express";
-import nodemailer from "nodemailer";
-
 import { HttpException } from "../utils/exceptions/HttpException";
 import { db } from "../models";
+import { Request } from "express";
+import nodemailer from "nodemailer";
 import { ResultService } from "./resultPoll.service";
 
 export class MailService {
-  static async getEmailByPollId(req: Request) {
+  static async getEmailByPollId(_pollId: number) {
     let email = await db.User.findOne({
       attributes: ["email"],
       include: [
         {
           attributes: [],
           model: db.Poll,
-          where: { id: req.params.pollId },
+          where: { id: _pollId },
         },
       ],
     });
@@ -24,8 +23,7 @@ export class MailService {
 
     return email;
   }
-
-  static async sendEmail(req: Request) {
+  static async sendEmail(_pollId : any) {
     const {
       MAIL_USER = "vak63.uet.vnu@gmail.com",
       MAIL_PASS = "Vietanh0510@",
@@ -44,11 +42,11 @@ export class MailService {
       logger: true,
     });
 
-    const mail: any = await MailService.getEmailByPollId(req);
+    const mail: any = await MailService.getEmailByPollId(_pollId);
 
     const html = "Kết quả";
 
-    const resultVote = await ResultService.resultPoll(req);
+    const resultVote = await ResultService.resultPoll(_pollId);
 
     if (!resultVote) {
       throw new HttpException(500, "Server không thể lấy kết quả bình chọn");
@@ -62,7 +60,4 @@ export class MailService {
     };
 
     return await transporter.sendMail(mailOptions);
-  }
-
-  static async autoSendMail() {}
-}
+  }}

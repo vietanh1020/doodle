@@ -16,6 +16,7 @@ services:
     #   - DB_HOST: mysql
     depends_on:
       - mysql
+      - redis
     networks:
       - default
 
@@ -72,8 +73,19 @@ services:
     ports:
       - 6379:6379
     restart: unless-stopped
+    environment:
+      - REDIS_URL= redis:6379
     networks: 
       - default
+
+  redis-commander:
+    container_name: doodle-redis-commander
+    image: rediscommander/redis-commander
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
 
   nginx:
     image: nginx:latest

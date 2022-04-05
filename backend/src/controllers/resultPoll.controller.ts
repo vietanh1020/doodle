@@ -4,7 +4,7 @@ import { ResultService } from "../services/resultPoll.service";
 
 export class ResultController {
   static async resultPoll(req: Request, res: Response) {
-    const result = await ResultService.resultPoll(req);
+    const result = await ResultService.resultPoll(req.params.pollId);
     if (!result) {
       throw new HttpException(500, "Server không thể lấy kết quả bình chọn");
     }

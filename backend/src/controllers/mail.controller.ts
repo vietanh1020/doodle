@@ -3,7 +3,7 @@ import { MailService } from "../services/mail.service";
 
 export class MailController {
   static async sendtoEmail(req: Request, res: Response) {
-    let email = await MailService.sendEmail(req);
+    let email = await MailService.sendEmail(req.params.pollId);
     res.status(200).json(email);
   }
 }

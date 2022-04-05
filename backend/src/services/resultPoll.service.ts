@@ -3,10 +3,10 @@ import { HttpException } from "../utils/exceptions/HttpException";
 import { db } from "../models";
 
 export class ResultService {
-  static async getAnswersByPollId(req: Request) {
+  static async getAnswersByPollId(pollId: number) {
     let pollAnswers = db.Poll.findOne({
       attributes: ["answers"],
-      where: { id: req.params.pollId },
+      where: { id: pollId },
     });
     if (!pollAnswers) {
       throw new HttpException(500, "Không tìm thấy Poll");
@@ -15,10 +15,10 @@ export class ResultService {
     return pollAnswers;
   }
 
-  static async getAnswerByVote(req: Request) {
+  static async getAnswerByVote(_pollId: number) {
     let listAnswer = db.Vote.findAll({
       attributes: ["answer"],
-      where: { pollId: req.params.pollId },
+      where: { pollId: _pollId },
     });
     if (!listAnswer) {
       throw new HttpException(500, "Không tìm thấy Vote");
@@ -27,9 +27,9 @@ export class ResultService {
     return listAnswer;
   }
 
-  static async resultPoll(req: Request) {
-    const pollAnswers: any = await ResultService.getAnswersByPollId(req);
-    const voteAnswers: any = await ResultService.getAnswerByVote(req);
+  static async resultPoll(pollId: any) {
+    const pollAnswers: any = await ResultService.getAnswersByPollId(pollId);
+    const voteAnswers: any = await ResultService.getAnswerByVote(pollId);
 
     if (!pollAnswers) {
       throw new HttpException(500, "Error get data Poll");
