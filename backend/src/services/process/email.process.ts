@@ -32,11 +32,16 @@ const emailProcess = async (job: Job) => {
     throw new HttpException(500, "Server không thể lấy kết quả bình chọn");
   }
 
+  let html = "";
+  for (let key in resultVote) {
+    html = html + `${key} : ${resultVote[key]}  <br> `
+  }
+
   const mailOptions = {
     from: MAIL_USER,
     to: mail.dataValues.email,
     subject: "Kết Quả bình chọn Doodle",
-    html: "send",
+    html: html,
   };
 
   await transporter.sendMail(mailOptions);
