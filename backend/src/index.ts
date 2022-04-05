@@ -19,8 +19,13 @@ app.use(express.json());
 connectDB();
 
 app.post("/send-email/:pollId", async (req: Request, res: Response) => {
-  await sendNewEmail({ pollId: req.params.pollId });
-  res.send({ status: req.params.pollId });
+  const result =  await sendNewEmail({ pollId: req.params.pollId });
+  res.status(200).json({
+    status: 200,
+    error: null,
+    message: null,
+    data : result
+  })
 });
 
 route(app);

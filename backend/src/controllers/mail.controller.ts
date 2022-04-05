@@ -1,9 +1,8 @@
 import { Response, NextFunction, Request } from "express";
-import { MailService } from "../services/mail.service";
 
 export class MailController {
   static async sendtoEmail(req: Request, res: Response) {
-    let email = await MailService.sendEmail(req.params.pollId);
-    res.status(200).json(email);
+    // await sendNewEmail({ pollId: req.params.pollId });
+    // res.send({ status: req.params.pollId });
   }
 }

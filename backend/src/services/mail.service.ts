@@ -23,41 +23,4 @@ export class MailService {
 
     return email;
   }
-  static async sendEmail(_pollId : any) {
-    const {
-      MAIL_USER = "vak63.uet.vnu@gmail.com",
-      MAIL_PASS = "Vietanh0510@",
-      MAIL_SERVICE = "mailhog",
-    } = process.env;
-
-    let transporter = nodemailer.createTransport({
-      host: "mailhog",
-      port: 1025,
-      secure: false,
-      requireTLS: false,
-      auth: {
-        user: MAIL_USER,
-        pass: MAIL_PASS,
-      },
-      logger: true,
-    });
-
-    const mail: any = await MailService.getEmailByPollId(_pollId);
-
-    const html = "Kết quả";
-
-    const resultVote = await ResultService.resultPoll(_pollId);
-
-    if (!resultVote) {
-      throw new HttpException(500, "Server không thể lấy kết quả bình chọn");
-    }
-
-    const mailOptions = {
-      from: MAIL_USER,
-      to: mail.dataValues.email,
-      subject: "Kết Quả bình chọn Doodle",
-      html: html,
-    };
-
-    return await transporter.sendMail(mailOptions);
-  }}
+}

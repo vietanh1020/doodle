@@ -21,12 +21,10 @@ const emailProcess = async (job: Job) => {
       user: MAIL_USER,
       pass: MAIL_PASS,
     },
-    logger: true,
+    logger: false,
   });
 
   const mail: any = await MailService.getEmailByPollId(job.data.pollId);
-
-  const html = "Kết quả";
 
   const resultVote = await ResultService.resultPoll(job.data.pollId);
 
@@ -38,7 +36,7 @@ const emailProcess = async (job: Job) => {
     from: MAIL_USER,
     to: mail.dataValues.email,
     subject: "Kết Quả bình chọn Doodle",
-    html: html,
+    html: "send",
   };
 
   await transporter.sendMail(mailOptions);
