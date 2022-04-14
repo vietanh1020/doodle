@@ -59,7 +59,7 @@ export class LoginService {
     if (!isRefreshToken) {
       throw new HttpException(403, "Token hết hạn đăng nhập lại");
     }
-
+    
     // CREATE NEW TOKEN
     const newAccessToken = await LoginService.generateAccessToken(req.user);
     const newRefreshToken = await LoginService.generateRefreshToken(req.user);

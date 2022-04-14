@@ -1,35 +1,48 @@
 import express, { Request, Response } from "express";
 require("express-async-errors");
+import path from "path";
+var cors = require('cors')
 
 import "dotenv/config";
 import connectDB from "./config/dbConfig";
 import route from "./routes";
-import { sendNewEmail } from "./services/queue/email.queue";
+import { socket } from "./services/chat.service";
 
 const app = express();
 const port = 3001;
+const server = require("http").createServer(app);
+
+app.use(
+  cors({
+      credentials: true,
+      origin: "*",
+  })
+);
+
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
 
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(express.json());
 
 connectDB();
 
-app.post("/send-email/:pollId", async (req: Request, res: Response) => {
-  const result =  await sendNewEmail({ pollId: req.params.pollId });
-  res.status(200).json({
-    status: 200,
-    error: null,
-    message: null,
-    data : result
-  })
+//Chỉ ra đường dẫn chứa css, js, images...
+app.use(express.static(path.join(__dirname, "public")));
+
+// Tạo router
+app.get("/chat/:pollId", function (req, res) {
+  res.sendFile(path.join(__dirname + "/public/views/index.html"));
 });
 
 route(app);
 
-app.listen(port, () => {
+socket(app);
+
+server.listen(port, () => {
   console.log("The application is listening on port 3001");
 });
