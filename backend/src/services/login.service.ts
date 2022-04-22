@@ -31,7 +31,6 @@ export class LoginService {
 
   static async login(email: string, password: string) {
     const user = await db.User.findOne({ where: { email: email } });
-
     if (!user) {
       throw new HttpException(401, "Email hoặc mật khẩu không đúng");
     }
@@ -45,7 +44,8 @@ export class LoginService {
     if (user && validPassword) {
       const accessToken = await LoginService.generateAccessToken(user.id);
       const refreshToken = await LoginService.generateRefreshToken(user.id);
-      return { refreshToken, accessToken };
+      const newUser = {firstName: user.firstName, lastName: user.lastName}
+      return { refreshToken, accessToken, newUser};
     }
   }
 

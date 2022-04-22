@@ -13,10 +13,23 @@ export class PollController {
     });
   }
 
+  static async getOnePoll(req: Request, res: Response) {
+    let poll = await PollService.getOnePoll(req);
+
+    res.status(200).json({
+      status: 200,
+      error: null,
+      message: null,
+      data: poll,
+    });
+  }
+
+
+
   static async createPoll(req: Request, res: Response) {
     let pollData = await PollService.createPoll(req);
     res.status(201).json({
-      status: "created",
+      status: 201,
       error: null,
       message: null,
       data: pollData,

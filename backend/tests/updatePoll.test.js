@@ -18,7 +18,7 @@ describe("Update POLL ", () => {
         multipleVote: true,
       };
 
-      const response = await axios.post("http://localhost:3000/poll", {
+      const response = await axios.post("http://localhost:3001/poll", {
         headers: {
           token: `Bearer ${access_token}`
         },

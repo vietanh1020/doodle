@@ -20,6 +20,7 @@ export class AuthMiddleware {
   //verify token
   static async verifyToken(req: Request, res: Response, next: NextFunction) {
     const token = req.headers.token as string;
+
     if (token) {
       const accessToken = token.split(" ")[1];
 

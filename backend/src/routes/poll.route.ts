@@ -17,6 +17,12 @@ validateRequestSchema,
 PollMiddleWare.checkTime,
 PollController.createPoll);
 
+// GET POLL[id]
+router.get(
+  "/:id",
+  PollController.getOnePoll
+);
+
 // UPDATE POLL
 router.patch(
   "/:id",

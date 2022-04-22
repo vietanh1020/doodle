@@ -11,7 +11,7 @@ describe("POST Register success ", () => {
         lastName: "Xã Thu",
         password: "123456789",
       };
-      const response = await axios.post("http://localhost:3000/register", data);
+      const response = await axios.post("http://localhost:3001/register", data);
       expect(response.data.status).toBe(201);
       expect(response.data.data.email).toBe(data.email);
       expect(response.data.data.firstName).toBe(data.firstName);

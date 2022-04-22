@@ -10,7 +10,7 @@ describe("POST Create vote ", () => {
       };
 
       const response = await axios.post(
-        "http://localhost:3000/vote_poll/49/voted",
+        "http://localhost:3001/vote/49",
         data
       );
 

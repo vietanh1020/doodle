@@ -39,6 +39,10 @@ export class PollService {
     });
   }
 
+  static async getOnePoll(req: Request) {
+    return await db.Poll.findOne({ where: { id: req.params.id } });
+  }
+
   static async deletePoll(req: Request) {
     return await db.Poll.destroy({
       where: {

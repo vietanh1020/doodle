@@ -4,6 +4,7 @@ export interface VoteAttributes {
   fullName: string;
   answer: string;
   pollId: number;
+  email: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -28,6 +29,13 @@ export function VoteFactory(sequelize: Sequelize): VoteStatic {
       allowNull: true,
       defaultValue: null
     },
+
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: null
+    },
+
     answer: {
       type: DataTypes.JSON,
       allowNull: false,

@@ -11,7 +11,7 @@ import PollRouter from "./poll.route";
 function route(app: Express) {
   app.use("/mail",MailRouter)
   app.use("/result",ResultRouter)
-  app.use("/vote_poll", VoteRouter);
+  app.use("/vote", VoteRouter);
   app.use("/poll", PollRouter);
   app.use("/", AuthRouter);
   app.use(errorHandler);

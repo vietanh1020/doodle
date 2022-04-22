@@ -5,7 +5,7 @@ describe("POST Create POLL ", () => {
   it("success", async () => {
     try {
       const access_token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDAsImlhdCI6MTY0ODUzNDI4MCwiZXhwIjoxNjUxMTI2MjgwfQ.t9Vo7koQvXuZO930K3RH2cl3ThbFwuj91pfbKtJTAlM";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjUwMjczMjgxLCJleHAiOjE2NTI4NjUyODF9.7C0DGczYJ-cP8yTicEW-eTmlp12l0hP2A_WohsNFnOY";
       const data = {
         question: "thao.xt@mail.com",
         image: "Thảo",
@@ -18,7 +18,7 @@ describe("POST Create POLL ", () => {
         multipleVote: true,
       };
 
-      const response = await axios.post("http://localhost:3000/poll", {
+      const response = await axios.post("http://localhost:3001/poll", {
         headers: {
           token: `Bearer ${access_token}`
         },
@@ -45,7 +45,7 @@ describe("POST Create POLL ", () => {
   it("failure", async () => {
     try {
       const access_token =
-        "1eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDAsImlhdCI6MTY0ODUzNDI4MCwiZXhwIjoxNjUxMTI2MjgwfQ.t9Vo7koQvXuZO930K3RH2cl3ThbFwuj91pfbKtJTAlM";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjUwMjc2Mjc1LCJleHAiOjE2NTI4NjgyNzV9.ZTwf6cwQGTUD_qEN_GWjF2c8z6dDKJpHK7a2n0UnVgw";
       const data = {
         question: "thao.xt@mail.com",
         image: "Thảo",
@@ -58,7 +58,7 @@ describe("POST Create POLL ", () => {
         multipleVote: true,
       };
 
-      const response = await axios.post("http://localhost:3000/poll", {
+      const response = await axios.post("http://localhost:3001/poll", {
         headers: {
           token: `Bearer ${access_token}`
         },

@@ -17,6 +17,7 @@ export class VoteController {
       message: null,
       data: pollData,
     });
+    
   }
 
   static async vote(req: Request, res: Response) {
