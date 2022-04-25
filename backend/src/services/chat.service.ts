@@ -16,7 +16,7 @@ export function socket(app: any){
   
     socket.on("client-send-chat-message", function (data ) {
       // var sql = `INSERT INTO comments(fullName, content, pollId) VALUES ( '${data.fullname}','${data.content}', ${data.pollId})`;
-      // db.query(sql, function (err, results) {
+      // db.Comment.query(sql, function (err, results) {
       //   if (err) throw err;
       // });
   

@@ -4,4 +4,4 @@ docker/redis
 *.log
 .env
 backend/dist
-frontend
+frontend/node_modules

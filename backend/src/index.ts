@@ -31,14 +31,6 @@ app.use(express.json());
 
 connectDB();
 
-//Chỉ ra đường dẫn chứa css, js, images...
-app.use(express.static(path.join(__dirname, "public")));
-
-// Tạo router
-app.get("/chat/:pollId", function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/views/index.html"));
-});
-
 route(app);
 
 socket(app);
