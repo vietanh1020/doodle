@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "abc",
+    "password": "p4ssword",
+    "database": "doodle",
+    "host": "mysql",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "abc",
+    "password": "p4ssword",
+    "database": "doodle",
+    "host": "mysql",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "abc",
+    "password": "p4ssword",
+    "database": "doodle",
+    "host": "mysql",
+    "dialect": "mysql"
+  }
+}
