@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { UseLogin } from "../../hooks/auth/useLogin";
 
 const schema = yup.object().shape({
   email: yup.string().required("Vui lòng nhập email").email(),
@@ -21,16 +21,15 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  const { SERVER_URL = "http://localhost:3001" } = process.env;
-
   const onLoginSubmit = async (data: any) => {
-    try {
-      const response = await axios.post(`${SERVER_URL}/login`, data);
-      if (response) {
-        navigate("/poll", { state: response.data.data.accessToken });
-      }
-    } catch (error: any) {
-      alert(error.response.data.message);
+    const response = await UseLogin(data);
+
+    if (!response.error) {
+      localStorage.setItem("access_token", response.accessToken);
+      localStorage.setItem("user", JSON.stringify(response.newUser));
+      navigate("/poll");
+    } else {
+      alert(response.message);
     }
   };
 
@@ -64,6 +63,7 @@ export default function LoginForm() {
                 <label htmlFor="password">Mật khẩu: </label>
                 <input
                   id="password"
+                  type="password"
                   className=" form-control form-control-lg"
                   {...register("password")}
                 />
