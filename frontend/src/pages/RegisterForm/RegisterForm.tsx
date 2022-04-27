@@ -5,14 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { UseRegister } from "../../hooks/auth/useRegister";
 
 const schema = yup.object().shape({
-  email: yup.string().required("Vui lòng nhập email").email(),
-  firstName: yup.string().required("Không được để trống"),
-  lastName: yup.string().required("Không được để trống"),
+  email: yup.string()
 
-  password: yup
-    .string()
-    .required("Vui lòng nhập mật khẩu")
-    .min(8, "Mật khẩu phải có ít nhất 8 ký tự"),
+  
 });
 
 function RegisterForm() {

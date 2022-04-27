@@ -1,20 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { usePrivateRoute } from "../../hooks/auth/usePrivateRoute";
+import { useGetSlug } from "../../hooks/help/useGetSlug";
+
 import { Poll } from "../../types/poll";
 
 function PollForm() {
-  // const navigate = useNavigate();
-
-  // navigate("/login");
-
-  // const getCurentTime = () => {
-  //   var now = new Date();
-  //   now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-  //   return now.toISOString().slice(0,16);
-  // }
-
+  const id =  useGetSlug()
+  usePrivateRoute()
   const [pollData, setPollData] = useState({
     startAt: "",
     endAt: "",
@@ -26,67 +19,9 @@ function PollForm() {
     answers: [],
   } as Poll);
 
-  const handleChange = (e: any) => {
-    setPollData((prev: any) => {
-      const { id, value } = e.target;
-      return { ...prev, [id]: value };
-    });
-
-    // const questions: any[] = [];
-    // setPollData({
-    //   ...pollData,
-    //   question: questions,
-    // });
-  };
-
-  const [answers, setAnswers] = useState([0]);
-
-  const [objAns, setObjAns] = useState({});
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
-    const answersDatas = document.getElementsByName("answers");
-
-    answersDatas.forEach((answersData) => {
-      let id = answersData.getAttribute("id") as string;
-      let value = answersData.getAttribute("value");
-      console.log(value);
-
-      setObjAns({
-        [id]: value,
-      });
-      console.log(objAns);
-    });
-
-    try {
-      console.log(objAns);
-      console.log(pollData);
-      // const access_token = state;
-      // const response = await axios.post("http://localhost:3000/poll", {
-      //   headers: {
-      //     token: `Bearer ${access_token}`,
-      //   },
-      //   pollData,
-      // });
-    } catch (error: any) {
-      console.log(error.response.data);
-    }
-  };
-
-  const handleAddAnswer = (e: any) => {
-    e.preventDefault();
-    setAnswers((prev: any) => {
-      return [...prev, answers.length];
-    });
-  };
-
-  try {
-  } catch (error) {}
-
   return (
     <div className="container">
-      {/* <div className="row">
+      <div className="row">
         <form>
           <h1 style={{ textAlign: "center", padding: "8px" }}>
             Tạo cuộc bình chọn
@@ -102,8 +37,6 @@ function PollForm() {
                     type="datetime-local"
                     className="form-control"
                     id="startAt"
-                    value={pollData.startAt}
-                    onChange={handleChange}
                     name="birthdaytime"
                   />
                 </div>
@@ -118,8 +51,6 @@ function PollForm() {
                     type="datetime-local"
                     className="form-control"
                     name="endAt"
-                    value={pollData.endAt}
-                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -133,8 +64,6 @@ function PollForm() {
                 type="file"
                 className="form-control"
                 id="image"
-                value={pollData.image}
-                onChange={handleChange}
               />
             </div>
 
@@ -145,8 +74,6 @@ function PollForm() {
               <textarea
                 className="form-control"
                 id="description"
-                value={pollData.description}
-                onChange={handleChange}
                 rows={2}
               ></textarea>
             </div>
@@ -159,8 +86,6 @@ function PollForm() {
                 type="text"
                 className="form-control"
                 id="address"
-                value={pollData.address}
-                onChange={handleChange}
               />
             </div>
           </div>
@@ -174,8 +99,6 @@ function PollForm() {
                 type="text"
                 className="form-control"
                 id="question"
-                value={pollData.question}
-                onChange={handleChange}
               />
             </div>
             <label className="form-label">Đáp án </label>
@@ -184,8 +107,6 @@ function PollForm() {
                 type="checkbox"
                 className="form-check-input"
                 id="multipleVote"
-                value={pollData.multipleVote}
-                onChange={handleChange}
               />
               <label className="form-check-label" htmlFor="multipleVote">
                 Cho phép chọn nhiều đáp án
@@ -193,20 +114,20 @@ function PollForm() {
             </div>
 
             <div className="mb-3 answer-item">
-              {answers.map((answer, index) => {
+              {/* {answers.map((answer, index) => {
                 return <Answers index={`${index + 1}`} />;
-              })}
-              <button className="btn btn-secondary " onClick={handleAddAnswer}>
+              })} */}
+              <button className="btn btn-secondary ">
                 Thêm
               </button>
             </div>
           </div>
 
-          <button className="btn btn-primary" onClick={handleSubmit}>
+          <button className="btn btn-primary">
             Tạo cuộc bình chọn
           </button>
         </form>
-      </div> */}
+      </div>
     </div>
   );
 }
