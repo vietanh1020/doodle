@@ -5,9 +5,12 @@ import validator from "validator";
 import { Poll } from "../../types/poll";
 import { PollMsg } from "../../types/PollMsg";
 import { UseCreatePoll } from "../../hooks/poll/useCreatePoll";
+import { useNavigate } from "react-router-dom";
+import { NavBar } from "../../components/Navbar/NavBar";
 
-function PollForm() {
+function PollCreate() {
   usePrivateRoute();
+  const navigate = useNavigate();
   const [poll, setPoll] = useState({
     startAt: "",
     endAt: "",
@@ -111,7 +114,7 @@ function PollForm() {
     return result;
   };
 
-  const handleSubmit = async(e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     const isValid = validateAll();
     let pollData = { ...poll };
@@ -120,14 +123,17 @@ function PollForm() {
       Object.assign(objAns, { [`op${index + 1}`]: answer });
     });
     pollData.answers = JSON.stringify(objAns);
-    
-    const response = await UseCreatePoll(pollData)
-    console.log(response.id);
-    
+
+    const response = await UseCreatePoll(pollData);
+
+    if (response) {
+      navigate("/");
+    }
   };
 
   return (
     <div className="container">
+      <NavBar />
       <div className="row">
         <form>
           <h1 style={{ textAlign: "center", padding: "8px" }}>
@@ -285,4 +291,4 @@ function PollForm() {
   );
 }
 
-export default PollForm;
+export default PollCreate;

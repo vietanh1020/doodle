@@ -9,7 +9,7 @@ import { db } from "../models";
 
 const { JWT_ACCESS_KEY = "secret" } = process.env;
 const { JWT_REFRESH_KEY = "secret" } = process.env;
-const { JWT_ACCESS_EXPIRE_IN = "30d " } = process.env;
+const { JWT_ACCESS_EXPIRE_IN = "30d" } = process.env;
 const { JWT_REFRESH_EXPIRE_IN = "365d" } = process.env;
 
 export class LoginService {

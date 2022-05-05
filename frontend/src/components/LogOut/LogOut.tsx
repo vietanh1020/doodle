@@ -1,22 +1,18 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { httpClient } from "../../utils/httpClient";
 
 function LogOut() {
-  const user = localStorage.getItem("accessToken");
-  const handleLogOut = (e: any) => {
+  const navigate = useNavigate()
+
+  const handleLogOut = async(e: any) => {
     e.preventDefault();
-    const token = localStorage.getItem("accessToken");
-
-    axios.post("http://localhost:3001/poll", {
-      headers: {
-        token: `Bearer ${token}`,
-      },
-    });
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userName");
-
-    const navigate = useNavigate();
-    navigate("/login");
+    const response = await httpClient.post(`/logout`, {});
+    if (response){
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user");
+      navigate("/login");
+    }
   };
 
   return (

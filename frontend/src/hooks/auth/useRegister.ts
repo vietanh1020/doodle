@@ -7,7 +7,6 @@ export const UseRegister = async (userData: {
   lastName: string;
   password?: string;
 }) => {
-  
   const url = `${API_URL}/register`;
 
   try {

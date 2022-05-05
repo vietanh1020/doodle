@@ -2,9 +2,13 @@ import useSWR from "swr";
 import { Poll } from "../../types/poll";
 import { httpClient } from "../../utils/httpClient";
 
-export const useFetchPoll = (pollData: Poll) => {
-  return useSWR("/poll", async () => {
-    const response = await httpClient.post("/poll", pollData);
+  const {API_URL="http://localhost:3001"} = process.env
+  //GETALL [/poll]
+export const useFetchPoll =  async (url: string) => {
+  return useSWR(url, async () => {
+    const response = await httpClient.get(
+      `${url}`
+    )
     return response.data;
   });
 };

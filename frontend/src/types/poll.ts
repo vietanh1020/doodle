@@ -6,5 +6,6 @@ export type Poll = {
   address: string;
   question: string,
   multipleVote: boolean;
+  id:number;
   answers:  any ;
 }
