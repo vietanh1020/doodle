@@ -2,12 +2,11 @@ import { useNavigate } from "react-router-dom";
 import LogOut from "../LogOut/LogOut";
 
 export function NavBar() {
-  const navigate = useNavigate()
-  const handleAddPoll= () =>{
-    navigate('/poll')
-  }
-
-  
+  const navigate = useNavigate();
+  const handleAddPoll = () => {
+    navigate("/poll");
+  };
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -55,16 +54,16 @@ export function NavBar() {
         </div>
 
         <div className="d-flex align-items-center">
-         <button className="btn btn-primary" onClick={handleAddPoll}>Tạo cuộc bình chọn</button>
+          <button className="btn btn-primary" onClick={handleAddPoll}>
+            Tạo cuộc bình chọn
+          </button>
         </div>
-        
 
-        <div className="d-flex align-items-center">
-          Viêt Anh Võ   
-        </div>
-        
+        <p className="d-flex align-items-center" style={{ color: "white"}}>
+          {`${user.firstName} ${user.lastName}`}
+        </p>
 
-        <p className="user_name mr-3" style={{color: 'white'}}>Việt Anh Võ</p>
+        <p className="user_name mr-3" style={{ color: "white" }}></p>
         <div className="d-flex align-items-center">
           <img
             src={`https://scontent.fhan2-1.fna.fbcdn.net/v/t1.6435-9/72415716_744118709367885_7095120900218945536_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=8bfeb9&_nc_ohc=8r5ygk-vXXIAX_aulDI&_nc_ht=scontent.fhan2-1.fna&oh=00_AT9l6iYyS608gflPCcnPaL_w-N0w1syWXQ66byAMDBrvHQ&oe=628F9033""https://scontent.fhan2-1.fna.fbcdn.net/v/t1.6435-9/72415716_744118709367885_7095120900218945536_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=8bfeb9&_nc_ohc=8r5ygk-vXXIAX_aulDI&_nc_ht=scontent.fhan2-1.fna&oh=00_AT9l6iYyS608gflPCcnPaL_w-N0w1syWXQ66byAMDBrvHQ&oe=628F9033`}
@@ -75,7 +74,7 @@ export function NavBar() {
           />
         </div>
 
-        <LogOut/>
+        <LogOut />
       </div>
     </nav>
   );

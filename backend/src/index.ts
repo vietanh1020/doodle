@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 require("express-async-errors");
 import path from "path";
-var cors = require('cors')
+const cors = require("cors");
 
 import "dotenv/config";
 import connectDB from "./config/dbConfig";
@@ -14,8 +14,8 @@ const server = require("http").createServer(app);
 
 app.use(
   cors({
-      credentials: true,
-      origin: "*",
+    credentials: true,
+    origin: "*",
   })
 );
 

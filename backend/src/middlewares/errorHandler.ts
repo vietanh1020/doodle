@@ -6,10 +6,9 @@ export default function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  if (err.status >= 500)
-    return res.status(500).json({
-      message: err.message,
-      status: err.status,
-    });
-  next(err);
+  const statusCode = err.status || 500;
+  return res.status(statusCode).json({
+    message: err.message,
+    status: statusCode,
+  });
 }

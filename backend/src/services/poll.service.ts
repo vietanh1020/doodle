@@ -1,53 +1,32 @@
 import { Request } from "express";
 import { db } from "../models";
+import { PollModel } from "../models/polls";
 
 export class PollService {
-  static getPollData(req: Request) {
-    return {
-      question: req.body.question,
-      image: req.body.image,
-      description: req.body.description,
-      address: req.body.address,
-      map: req.body.map,
-      startAt: req.body.startAt,
-      endAt: req.body.endAt,
-      answers: req.body.answers,
-      multipleVote: req.body.multipleVote,
-      userId: req.user,
-    };
-  }
-
-  static async getPollByUserId(_userId: number) {
+  static async getPollByUserId(userId: number) {
     return await db.Poll.findAll({
-      where: {
-        userId: _userId,
-      },
+      where: { userId },
     });
   }
 
-  static async createPoll(req: Request) {
-    const poll: any = PollService.getPollData(req);
+  static async createPoll(poll): Promise<PollModel | null> {
     return await db.Poll.create(poll);
   }
 
-  static async updatePoll(req: Request) {
-    const poll: any = PollService.getPollData(req);
-    return await db.Poll.update(poll, {
-      where: {
-        id: req.params.id,
-      },
-    });
+  static async updatePoll(id, data): Promise<PollModel | null> {
+    const poll = await db.Poll.findByPk(id);
+    poll?.update(data);
+    return poll;
   }
 
-  static async getOnePoll(req: Request) {
-    return await db.Poll.findOne({ where: { id: req.params.id } });
+  static async getOnePoll(id): Promise<PollModel | null> {
+    const poll = await db.Poll.findByPk(id);
+    return poll;
   }
 
-  static async deletePoll(req: Request) {
+  static async deletePoll(id) {
     return await db.Poll.destroy({
-      where: {
-        id: req.params.id,
-      },
+      where: { id },
     });
   }
 }

@@ -11,20 +11,20 @@ const router = express.Router();
 router.get("/", AuthMiddleware.verifyToken, PollController.index);
 
 // CREATE POLL
-router.post("/", AuthMiddleware.verifyToken,
-pollSchema,
-validateRequestSchema,
-PollMiddleWare.checkTime,
-PollController.createPoll);
-
-// GET POLL[id]
-router.get(
-  "/:id",
-  PollController.getOnePoll
+router.post(
+  "/",
+  AuthMiddleware.verifyToken,
+  pollSchema,
+  validateRequestSchema,
+  PollMiddleWare.checkTime,
+  PollController.createPoll
 );
 
+// GET POLL[id]
+router.get("/:id", PollController.getOnePoll);
+
 // UPDATE POLL
-router.patch(
+router.put(
   "/:id",
   AuthMiddleware.verifyToken,
   AuthMiddleware.canPollEdit,

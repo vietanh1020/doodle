@@ -13,10 +13,6 @@ export function Card(props: {
 }) {
   const navigate = useNavigate();
 
-  const sendData = () => {
-    props.parentCallback("delete");
-  };
-
   const handleEdit = (e: any) => {
     e.preventDefault();
     navigate(`/poll/${props.id}`);
@@ -26,7 +22,7 @@ export function Card(props: {
     e.preventDefault();
     const response = await httpClient.delete(`/poll/${props.id}`);
     if (response) {
-      sendData();
+      props.parentCallback(`${props.id}`);
     }
   };
 

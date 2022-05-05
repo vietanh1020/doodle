@@ -11,7 +11,7 @@ export function HomePage() {
 
   useEffect(() => {
     httpClient.get("/poll").then((response) => {
-      setPolls(JSON.parse(response.data));
+      setPolls(response.data);
     });
   }, [countDelete]);
 
@@ -23,23 +23,25 @@ export function HomePage() {
     <div className="app">
       <NavBar />
       {polls && (
-        <div className="container mt-3 row">
-          {polls?.data?.map((poll: any, index: number) => {
-            return (
-              <div className="col-3" key={index}>
-                <Card
-                  key={index}
-                  question={poll.question}
-                  image={poll.image}
-                  id={poll.id}
-                  startAt={poll.startAt}
-                  endAt={poll.endAt}
-                  description={poll.description}
-                  parentCallback={callbackFunction}
-                />
-              </div>
-            );
-          })}
+        <div className="container mt-3">
+          <div className="row">
+            {polls?.data?.map((poll: any, index: number) => {
+              return (
+                <div className="col-12 col-lg-3" key={index}>
+                  <Card
+                    key={index}
+                    question={poll.question}
+                    image={poll.image}
+                    id={poll.id}
+                    startAt={poll.startAt}
+                    endAt={poll.endAt}
+                    description={poll.description}
+                    parentCallback={callbackFunction}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

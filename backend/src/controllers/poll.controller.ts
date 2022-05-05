@@ -1,58 +1,58 @@
 import { Response, NextFunction, Request } from "express";
+import { PollDto } from "../dto/PollDto";
+import { ResponseDto } from "../dto/ResponseDto";
 import { PollService } from "../services/poll.service";
+import { HttpException } from "../utils/exceptions/HttpException";
 
 export class PollController {
   static async index(req: Request, res: Response) {
-    let poll = await PollService.getPollByUserId(req.user);
+    let polls = await PollService.getPollByUserId(req.user);
 
-    res.status(200).json({
-      status: 200,
-      error: null,
-      message: null,
-      data: poll,
-    });
+    res.status(200).json(new ResponseDto({ data: polls }));
   }
 
   static async getOnePoll(req: Request, res: Response) {
-    let poll = await PollService.getOnePoll(req);
+    const { id } = req.params;
+    let poll = await PollService.getOnePoll(id);
 
-    res.status(200).json({
-      status: 200,
-      error: null,
-      message: null,
-      data: poll,
-    });
+    if (!poll) {
+      throw new HttpException(404, "Not Found");
+    }
+
+    res.status(200).json(new ResponseDto({ data: poll }));
   }
 
-
-
   static async createPoll(req: Request, res: Response) {
-    let pollData = await PollService.createPoll(req);
-    res.status(201).json({
-      status: 201,
-      error: null,
-      message: null,
-      data: pollData,
-    });
+    let poll = await PollService.createPoll(new PollDto(req));
+
+    res.status(201).json(new ResponseDto({ data: poll }));
   }
 
   static async updatePoll(req: Request, res: Response, next: NextFunction) {
-    let pollData = await PollService.updatePoll(req);
-    res.status(200).json({
-      status: "Updated",
-      error: null,
-      message: null,
-      data: pollData,
-    });
+    const { id } = req.params;
+
+    let poll = await PollService.getOnePoll(id);
+
+    if (!poll) {
+      throw new HttpException(404, "Not Found");
+    }
+
+    poll = await PollService.updatePoll(id, new PollDto(req));
+
+    res.status(200).json(new ResponseDto({ data: poll }));
   }
 
   static async deletePoll(req: Request, res: Response) {
-    let pollData = await PollService.deletePoll(req);
-    res.status(204).json({
-      status: 204,
-      error: null,
-      message: null,
-      data: null,
-    });
+    const { id } = req.params;
+
+    let poll = await PollService.getOnePoll(id);
+
+    if (!poll) {
+      throw new HttpException(404, "Not Found");
+    }
+
+    await PollService.deletePoll(id);
+    
+    res.status(204).json(new ResponseDto({ data: null }));
   }
 }

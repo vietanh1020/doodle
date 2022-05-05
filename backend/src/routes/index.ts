@@ -14,8 +14,8 @@ function route(app: Express) {
   app.use("/vote", VoteRouter);
   app.use("/poll", PollRouter);
   app.use("/", AuthRouter);
-  app.use(errorHandler);
   app.use(NotFoundHandler);
+  app.use(errorHandler);
 }
 
 export default route;
