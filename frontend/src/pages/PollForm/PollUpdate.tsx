@@ -307,7 +307,7 @@ function PollUpdate() {
             </div>
 
             <button className="btn btn-primary" onClick={handleSubmit}>
-              Tạo cuộc bình chọn
+              Lưu
             </button>
           </form>
         </div>

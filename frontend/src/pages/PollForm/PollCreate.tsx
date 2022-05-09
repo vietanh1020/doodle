@@ -117,19 +117,21 @@ function PollCreate() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const isValid = validateAll();
-    let pollData = { ...poll };
-    let objAns = {};
-    answers.forEach((answer: string, index: number) => {
-      Object.assign(objAns, { [`op${index + 1}`]: answer });
-    });
-    pollData.answers = JSON.stringify(objAns);
-
-    const response = await UseCreatePoll(pollData);
-
-    if (response) {
-      navigate("/");
+    if (isValid){
+      let pollData = { ...poll };
+      let objAns = {};
+      answers.forEach((answer: string, index: number) => {
+        Object.assign(objAns, { [`op${index + 1}`]: answer });
+      });
+      pollData.answers = JSON.stringify(objAns);
+  
+      const response = await UseCreatePoll(pollData);
+  
+      if (response) {
+        navigate("/");
+      }
+    };
     }
-  };
 
   return (
     <div className="container">

@@ -5,6 +5,7 @@ import { HomePage } from "./pages/Home/HomePage";
 import LoginPage from "./pages/Login/LoginPage";
 import PollCreate from "./pages/PollForm/PollCreate";
 import PollUpdate from "./pages/PollForm/PollUpdate";
+import { VotePage } from "./pages/Vote/VotePage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/poll" element={<PollCreate />} />
           <Route path="/poll/:id" element={<PollUpdate />} />
+          <Route path="/vote/:id" element={<VotePage />} />
           <Route path="/" element={<HomePage />} />
         </Routes>
       </BrowserRouter>
