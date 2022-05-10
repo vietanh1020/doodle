@@ -1,4 +1,3 @@
-import { Request } from "express";
 import { db } from "../models";
 import { PollModel } from "../models/polls";
 

@@ -5,3 +5,4 @@ docker/redis
 .env
 backend/dist
 frontend/node_modules
+backend/src/public/images

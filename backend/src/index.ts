@@ -1,12 +1,12 @@
-import express, { Request, Response } from "express";
+import express from "express";
 require("express-async-errors");
 import path from "path";
-const cors = require("cors");
-
-import "dotenv/config";
+import cors from "cors";
 import connectDB from "./config/dbConfig";
 import route from "./routes";
 import { socket } from "./services/chat.service";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const port = 3001;
@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 app.use(express.json());
 

@@ -5,6 +5,7 @@ import { PollController } from "../controllers/poll.controller";
 import { PollMiddleWare } from "../middlewares/poll.middleware";
 import { validateRequestSchema } from "../middlewares/validate";
 import { pollSchema } from "../utils/schema/poll.schema";
+import route from ".";
 const router = express.Router();
 
 // GET POLL BY USER ID
@@ -23,6 +24,8 @@ router.post(
 // GET POLL[id]
 router.get("/:id", PollController.getOnePoll);
 
+router.post("/save-image", PollController.saveImage);
+
 // UPDATE POLL
 router.put(
   "/:id",
@@ -38,7 +41,5 @@ router.delete(
   AuthMiddleware.canPollEdit,
   PollController.deletePoll
 );
-
-// RESULT POLL
 
 export default router;
