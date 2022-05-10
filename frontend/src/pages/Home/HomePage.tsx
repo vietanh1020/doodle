@@ -5,6 +5,8 @@ import { usePrivateRoute } from "../../hooks/auth/usePrivateRoute";
 import { httpClient } from "../../utils/httpClient";
 
 export function HomePage() {
+  const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
+
   usePrivateRoute();
   const [countDelete, setCountDelete] = useState("");
   const [polls, setPolls] = useState([] as any);
@@ -31,7 +33,7 @@ export function HomePage() {
                   <Card
                     key={index}
                     question={poll.question}
-                    image={poll.image}
+                    image={`${REACT_APP_API_URL}/images/${poll.image}`}
                     id={poll.id}
                     startAt={poll.startAt}
                     endAt={poll.endAt}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePrivateRoute } from "../../hooks/auth/usePrivateRoute";
 import validator from "validator";
 
@@ -7,10 +7,15 @@ import { PollMsg } from "../../types/PollMsg";
 import { UseCreatePoll } from "../../hooks/poll/useCreatePoll";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "../../components/Navbar/NavBar";
+import axios from "axios";
+import { httpClient } from "../../utils/httpClient";
 
 function PollCreate() {
   usePrivateRoute();
   const navigate = useNavigate();
+
+  const [image, setImage] = useState(null);
+
   const [poll, setPoll] = useState({
     startAt: "",
     endAt: "",
@@ -114,30 +119,46 @@ function PollCreate() {
     return result;
   };
 
+  const handleUploadImage = (e: any) => {
+    setImage(e.target.files[0]);
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const isValid = validateAll();
-    if (isValid){
+
+    if (isValid) {
+      const formData = new FormData();
+      formData.append("image", image || "");
+
+      const postImage = await axios({
+        method: "post",
+        url: "http://localhost:3001/poll/save-image",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       let pollData = { ...poll };
+      pollData.image = postImage.data;
       let objAns = {};
       answers.forEach((answer: string, index: number) => {
         Object.assign(objAns, { [`op${index + 1}`]: answer });
       });
       pollData.answers = JSON.stringify(objAns);
-  
+
       const response = await UseCreatePoll(pollData);
-  
+
       if (response) {
         navigate("/");
       }
-    };
     }
+  };
 
   return (
     <div className="container">
       <NavBar />
       <div className="row">
-        <form>
+        <form encType="multipart/form-data">
           <h1 style={{ textAlign: "center", padding: "8px" }}>
             Tạo cuộc bình chọn
           </h1>
@@ -184,8 +205,8 @@ function PollCreate() {
                 type="file"
                 className="form-control"
                 id="image"
-                onChange={handleChange}
-                value={poll.image}
+                name="image"
+                onChange={handleUploadImage}
               />
             </div>
 
