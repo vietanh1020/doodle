@@ -25,8 +25,6 @@ export class PollController {
   }
 
   static async saveImage(req: any, res: any) {
-    console.log(req.body);
-    
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
         cb(null, "./src/public/images");
@@ -41,7 +39,6 @@ export class PollController {
     });
 
     const imageFilter = function (req: any, file, cb: Function) {
-      // Accept images only
       if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
         req.fileValidationError = "Only image files are allowed!";
         return cb(new Error("Only image files are allowed!"), false);
@@ -57,13 +54,13 @@ export class PollController {
       if (req.fileValidationError) {
         return new HttpException(400, req.fileValidationError);
       } else if (!req.file) {
-        return new HttpException(400, "Please select an image to upload");
+        return res.status(200).json('');
       } else if (err instanceof multer.MulterError) {
         return new HttpException(500, "MulterError");
       } else if (err) {
         return new HttpException(500, "Server Error");
       }
-    
+
       return res.status(200).json(req.file.filename);
     });
   }
@@ -99,6 +96,6 @@ export class PollController {
 
     await PollService.deletePoll(id);
 
-    res.status(204).json(new ResponseDto({ data: null }));
+    res.status(204).json(new ResponseDto({ data: id }));
   }
 }

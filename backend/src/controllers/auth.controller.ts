@@ -2,23 +2,13 @@ import { NextFunction, Response, Request } from "express";
 
 import { RegisterService } from "../services/register.service";
 import { LoginService } from "../services/login.service";
+import { ResponseDto } from "../dto/ResponseDto";
 
 export class AuthController {
-  // [GET] /login
-  static async showLogin(req: Request, res: Response, next: NextFunction) {}
-
-  // [GET] /register
-  static async showRegister(req: Request, res: Response, next: NextFunction) {}
-
   // [POST] / register
   static async register(req: Request, res: Response, next: NextFunction) {
     const user = await RegisterService.createUser(req.body);
-    res.status(201).json({
-      status: 201,
-      error: null,
-      message: null,
-      data: user,
-    });
+    res.status(201).json(new ResponseDto({ data: user }));
   }
 
   // [POST] /login
@@ -36,23 +26,13 @@ export class AuthController {
         sameSite: "strict",
       });
 
-      return res.status(200).json({
-        status: 200,
-        error: null,
-        message: null,
-        data: result,
-      });
+      return res.status(200).json(new ResponseDto({ data: result }));
     }
   }
 
   // [POST]  // logout
   static async logout(req: Request, res: Response, next: NextFunction) {
     res.clearCookie("refreshToken");
-    res.status(200).json({
-      status: 200,
-      error: null,
-      message: null,
-      data: null,
-    });
+    res.status(200).json(new ResponseDto({ data: "Logout success" }));
   }
 }
