@@ -1,5 +1,4 @@
 import { NextFunction, Response, Request } from "express";
-import { validationResult } from "express-validator";
 require("express-async-errors");
 import jwt from "jsonwebtoken";
 
@@ -8,22 +7,23 @@ import { db } from "../models";
 const { JWT_ACCESS_KEY = "secret" } = process.env;
 
 export class AuthMiddleware {
-  static async checkData(req: Request, res: Response, next: NextFunction) {
-    //check Duplicate Email
+  static async checkDuplicateEmail(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     const user = await db.User.findOne({ where: { email: req.body.email } });
     if (user) {
-      throw new HttpException(401, "email đã được đăng kí");
+      throw new HttpException(401, "Email đã được đăng kí");
     }
     next();
   }
 
-  //verify token
   static async verifyToken(req: Request, res: Response, next: NextFunction) {
     const token = req.headers.authorization as string;
 
     if (token) {
       const accessToken = token.split(" ")[1];
-
       jwt.verify(accessToken, JWT_ACCESS_KEY, (err, payload: any) => {
         if (err) {
           throw new HttpException(401, "Token không hợp lệ");
@@ -36,7 +36,6 @@ export class AuthMiddleware {
     }
   }
 
-  //verify User [/poll/ (update || delete)]
   static async canPollEdit(req: Request, res: Response, next: NextFunction) {
     const poll_id = await db.Poll.findOne({
       where: {

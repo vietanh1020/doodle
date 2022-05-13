@@ -54,7 +54,7 @@ export class PollController {
       if (req.fileValidationError) {
         return new HttpException(400, req.fileValidationError);
       } else if (!req.file) {
-        return res.status(200).json('');
+        return res.status(200).json("");
       } else if (err instanceof multer.MulterError) {
         return new HttpException(500, "MulterError");
       } else if (err) {

@@ -6,7 +6,8 @@ export default function NotFoundHandler(
   res: Response,
   next: NextFunction
 ) {
-  return res.status(404).json({
+  const statusCode = err.status || 400;
+  return res.status(statusCode).json({
     message: err.message,
     status: err.status,
   });

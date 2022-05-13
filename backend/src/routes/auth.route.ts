@@ -15,7 +15,7 @@ router.post(
   "/register",
   registerSchema,
   validateRequestSchema,
-  AuthMiddleware.checkData,
+  AuthMiddleware.checkDuplicateEmail,
   AuthController.register
 );
 // router.post('/refresh-token',AuthController.requestRefreshToken)
