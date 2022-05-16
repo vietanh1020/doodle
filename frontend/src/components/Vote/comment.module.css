@@ -1,0 +1,22 @@
+.btn_comment{
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  height: 48px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: #fabc02
+}
+
+.btn_comment::before{
+  display: block;
+  position: absolute;
+  content: "";
+  bottom: -17px;
+  right: 8px;
+  color: #000;
+  border: 12px solid;
+  border-color: #fabc02 #fabc02 transparent transparent;
+  transform: rotate(-25deg);
+}
+

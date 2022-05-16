@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { createVote } from "../../hooks/vote/createVote";
 import { formatDate } from "../../utils/formatDate";
 import { httpClient } from "../../utils/httpClient";
-import "./Vote.css";
 import { ResultVote } from "./ResultVote";
+import { Comment } from "./Comment";
+
+import "./Vote.css";
 
 export function CreateVote(props: any) {
   const [voted, setVoted] = useState(false);
@@ -117,7 +119,7 @@ export function CreateVote(props: any) {
   };
 
   return (
-    <div className="form-group">
+    <div className="">
       <div className="header mt-3" style={{ textAlign: "center" }}>
         <h3>{poll.question}</h3>
         <p>{poll.description}</p>
@@ -131,20 +133,32 @@ export function CreateVote(props: any) {
         <strong>Địa chỉ</strong> {poll.address}
       </div>
 
-      <div className="main row mt-3">
+      <div
+        className="main mt-3"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          maxWidth: "832px",
+          margin: "0 auto",
+        }}
+      >
         <div
-          className="poll-img col"
+          className="poll-img"
           style={{ display: "flex", justifyContent: "center" }}
         >
           <img
             src="http://booking.bhdstar.vn/CDN/media/entity/get/FilmPosterGraphic/HO00002422?referenceScheme=HeadOffice&allowPlaceHolder=true&height=500"
             alt=""
-            style={{ maxWidth: "100%", borderRadius: "10px" }}
+            style={{
+              maxWidth: "100%",
+              maxHeight: "280px",
+              borderRadius: "10px",
+            }}
           />
         </div>
         <div
-          className="answer col col-sm-6 col-lg-6"
-          style={{ alignItems: "center" }}
+          className="answer"
+          style={{ alignItems: "center", marginLeft: "20px" }}
         >
           {!voted && (
             <div className="answer">
@@ -175,32 +189,34 @@ export function CreateVote(props: any) {
                 <p className="message-error">{validationMsg.answers}</p>
               )}
 
-              <div className="mt-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="fullName"
-                  onChange={handleChangeUser}
-                  value={user.fullName}
-                  placeholder="Enter full name"
-                />
-                {validationMsg && (
-                  <p className="message-error">{validationMsg.fullName}</p>
-                )}
-              </div>
+              <div className="form-input row">
+                <div className="mt-3 col">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="fullName"
+                    onChange={handleChangeUser}
+                    value={user.fullName}
+                    placeholder="Enter full name"
+                  />
+                  {validationMsg && (
+                    <p className="message-error">{validationMsg.fullName}</p>
+                  )}
+                </div>
 
-              <div className="mt-3">
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  onChange={handleChangeUser}
-                  value={user.email}
-                  placeholder="Enter email"
-                />
-                {validationMsg && (
-                  <p className="message-error">{validationMsg.email}</p>
-                )}
+                <div className="mt-3 col">
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    onChange={handleChangeUser}
+                    value={user.email}
+                    placeholder="Enter email"
+                  />
+                  {validationMsg && (
+                    <p className="message-error">{validationMsg.email}</p>
+                  )}
+                </div>
               </div>
 
               <button
@@ -213,10 +229,11 @@ export function CreateVote(props: any) {
               </button>
             </div>
           )}
-
+          
           {voted && <ResultVote id={props.id} />}
         </div>
       </div>
+      <div className="comment">{<Comment fullName={user.fullName} />}</div>
     </div>
   );
 }

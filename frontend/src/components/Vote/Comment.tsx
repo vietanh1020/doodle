@@ -6,10 +6,9 @@ import { useEffect, useState } from "react";
 const { API_URL = "http://localhost:3001" } = process.env;
 const socket = io(API_URL);
 
-export function CommentPage() {
+export function Comment(props : any) {
   const id = useGetSlug();
   const [message, setMessage] = useState("");
-  const [userName, setUserName] = useState("");
   const [comments, setComments] = useState([] as any[]);
 
   useEffect(() => {
@@ -26,7 +25,7 @@ export function CommentPage() {
 
   const handleSendMessage = (e: any) => {
     socket.emit("client-send-chat-message", {
-      fullname: userName,
+      fullname: props.fullName,
       content: message,
       pollId: id,
     });
@@ -38,10 +37,6 @@ export function CommentPage() {
     setMessage(e.target.value);
   };
 
-  const handleChangeUserName = (e: any) => {
-    setUserName(e.target.value);
-  };
-
   const handleGetMessage = () => {
     socket.on("server-chat-message", function (comment: any) {
       setComments((prev: any[]) => {
@@ -51,16 +46,7 @@ export function CommentPage() {
   };
 
   return (
-    <div className="container">
-      <input
-        type="text"
-        id="username"
-        name="username"
-        onChange={handleChangeUserName}
-        value={userName}
-        placeholder="Enter name"
-      />
-
+    <div className="comment">
       <div className="container mt-5">
         <div className="row  d-flex justify-content-center">
           <div className="col-md-8">

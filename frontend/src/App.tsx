@@ -7,7 +7,7 @@ import PollCreate from "./pages/PollForm/PollCreate";
 import PollUpdate from "./pages/PollForm/PollUpdate";
 import { VotePage } from "./pages/Vote/VotePage";
 import { PollDetail } from "./pages/PollForm/PollDetail";
-import { CommentPage } from "./pages/Comment/Comment";
+
 
 function App() {
   return (
@@ -20,7 +20,6 @@ function App() {
           <Route path="/poll-detail/:id" element={<PollDetail />} />
           <Route path="/poll/:id" element={<PollUpdate />} />
           <Route path="/vote/:id" element={<VotePage />} />
-          <Route path="/comment/:id" element={<CommentPage />} />
           <Route path="/" element={<HomePage />} />
         </Routes>
       </BrowserRouter>
