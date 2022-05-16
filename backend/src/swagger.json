@@ -1,0 +1,417 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "DOODLE API DOC",
+    "description": "Library API documentation",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "doodle.com"
+    },
+    {
+      "url": "/api/",
+      "description": "With docker-compose and nginx proxy"
+    }
+  ],
+
+  "tags": [
+    {
+      "name": "Polls",
+      "description": "API for Poll in the system"
+    }
+  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+ 
+  "paths": {
+    "/poll": {
+      "get": {
+        "tags": ["Polls"],
+        "summary": "Lấy tất cả Poll của User đã tạo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Polls"
+            }
+          },
+          "401": {
+            "description": "Chưa đăng nhập",
+            "schema": {
+              "$ref": "#/definitions/Polls"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Polls"],
+        "summary": "Tạo Poll mới",
+        "requestBody": {
+          "description": "Poll Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Poll"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/poll/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of the poll that we want to match",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Polls"],
+        "summary": "xem chi tiết cuộc bình chọn",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Poll with id",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Poll"
+            }
+          },
+          "404": {
+            "description": "Failed. Poll not found."
+          }
+        }
+      },
+      "put": {
+        "summary": "Cập nhật cuộc bình chọn",
+        "tags": ["Polls"],
+        "requestBody": {
+          "description": "Poll Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Poll"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Poll with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Poll"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          },
+          "404": {
+            "description": "Failed. Poll not found."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Xóa cuộc bình chọn",
+        "tags": ["Polls"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Delete Poll with id",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "401":{
+            "description": "Bạn phải đăng nhập ."
+          },
+          "404": {
+            "description": "Failed. Poll not found."
+          }
+        }
+      }
+    },
+    "/vote/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Vote Page",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Vote"],
+        "summary": "Get data with Vote",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Vote Page",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Vote"
+            }
+          },
+          "404": {
+            "description": "Failed. Poll not found."
+          }
+        }
+      },
+      "post": {
+        "tags": ["Vote"],
+        "summary": "Guest tham gia bình chọn",
+        "requestBody": {
+          "description": "Vote Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Poll"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+ 
+    },
+    "/result/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Comment",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Result Vote"],
+        "summary": "Kết quả bình chọn",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Vote Page",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Vote"
+            }
+          },
+          "404": {
+            "description": "Failed. Poll not found."
+          }
+        }
+      }
+    },
+    "/comment/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Comment",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Comment"],
+        "summary": "Lấy bình luận trước đó",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Comment",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Vote"
+            }
+          },
+          "404": {
+            "description": "Failed. Poll not found."
+          }
+        }
+      },
+      "post": {
+        "tags": ["Comment"],
+        "summary": "Lưu comment vào db",
+        "requestBody": {
+          "description": "Comment Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Comment"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "id": {
+      "properties": {
+        "uuid": {
+          "type": "string"
+        }
+      }
+    },
+    "Poll": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "question": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "map": {
+          "type": "string"
+        },
+        "startAt": {
+          "type": "string"
+        },
+        "endAt": {
+          "type": "string"
+        },
+        "answers": {
+          "type": "string"
+        },
+        "multipleVote": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "number"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "Polls": {
+      "type": "object",
+      "properties": {
+        "cats": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Poll"
+          }
+        }
+      }
+    }
+  }
+}
