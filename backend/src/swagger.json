@@ -1,5 +1,6 @@
 {
   "openapi": "3.0.0",
+
   "info": {
     "version": "1.0.0",
     "title": "DOODLE API DOC",
@@ -9,46 +10,89 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
+
   "servers": [
     {
       "url": "http://localhost:3001",
       "description": "doodle.com"
-    },
-    {
-      "url": "/api/",
-      "description": "With docker-compose and nginx proxy"
     }
   ],
 
-  "tags": [
-    {
-      "name": "Polls",
-      "description": "API for Poll in the system"
-    }
-  ],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
- 
   "paths": {
+    "/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Đăng nhập",
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/Login"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Đăng nhập thành công"
+          },
+          "401": {
+            "description": "Đăng nhập thất bại"
+          },
+          "400": {
+            "description": "Input không hợp lệ"
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Đăng ký",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/Register"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "Đăng kí tài khoản thành công"
+          },
+          "401": {
+            "description": "Failed. Đã tồn tại."
+          }
+        }
+      }
+    },
+
     "/poll": {
       "get": {
         "tags": ["Polls"],
-        "summary": "Lấy tất cả Poll của User đã tạo",
+        "summary": "Lấy tất cả cuộc bình chọn của User ",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Polls"
-            }
+            "description": "Success`"
           },
           "401": {
-            "description": "Chưa đăng nhập",
-            "schema": {
-              "$ref": "#/definitions/Polls"
-            }
+            "description": "Chưa đăng nhập"
           }
         }
       },
+
       "post": {
         "tags": ["Polls"],
         "summary": "Tạo Poll mới",
@@ -58,25 +102,113 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/Poll"
+                "$ref": "#/components/schema/Poll"
               }
             }
           }
         },
         "produces": ["application/json"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Chưa đăng nhập"
           },
           "400": {
-            "description": "Failed. Bad post data."
+            "description": "Input không hợp lệ"
+          },
+          "500": {
+            "description": "Lỗi Server"
           }
         }
       }
     },
+
+    "/poll/save-image": {
+      "post": {
+        "tags": ["Polls"],
+        "summary": "Lưu hình ảnh khi tạo poll",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Chưa đăng nhập"
+          },
+          "400": {
+            "description": "Input không hợp lệ"
+          },
+          "500": {
+            "description": "Lỗi Server"
+          }
+        }
+      }
+    },
+
+    "/poll/remove-image": {
+      "post": {
+        "tags": ["Polls"],
+        "summary": "Xóa ảnh cũ trên Server khi Update/delete Poll",
+        "requestBody": {
+          "content": {
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Chưa đăng nhập"
+          },
+          "400": {
+            "description": "Input không hợp lệ"
+          },
+          "500": {
+            "description": "Lỗi Server"
+          }
+        }
+      }
+    },
+
     "/poll/{id}": {
       "parameters": [
         {
@@ -95,18 +227,12 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Poll with id",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "Poll with id"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Poll"
-            }
+            "description": "OK"
           },
           "404": {
             "description": "Failed. Poll not found."
@@ -122,7 +248,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/Poll"
+                "$ref": "#/components/schema/Poll"
               }
             }
           }
@@ -132,18 +258,18 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Poll with new values of properties",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "Poll with new values of properties"
           }
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Poll"
-            }
+            "description": "OK"
           },
           "400": {
             "description": "Failed. Bad post data."
@@ -161,20 +287,19 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Delete Poll with id",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "Delete Poll with id"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "OK"
           },
-          "401":{
+          "401": {
             "description": "Bạn phải đăng nhập ."
           },
           "404": {
@@ -183,6 +308,7 @@
         }
       }
     },
+
     "/vote/{id}": {
       "parameters": [
         {
@@ -195,24 +321,18 @@
       ],
       "get": {
         "tags": ["Vote"],
-        "summary": "Get data with Vote",
+        "summary": "Lấy data để tạo View Vote",
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Vote Page",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "Vote Page"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Vote"
-            }
+            "description": "OK"
           },
           "404": {
             "description": "Failed. Poll not found."
@@ -228,7 +348,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/Poll"
+                "$ref": "#/components/schema/Vote"
               }
             }
           }
@@ -236,25 +356,22 @@
         "produces": ["application/json"],
         "responses": {
           "201": {
-            "description": "Created",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "Created"
           },
           "400": {
-            "description": "Failed. Bad post data."
+            "description": "Failed. Poll not found."
           }
         }
       }
- 
     },
+
     "/result/{id}": {
       "parameters": [
         {
           "name": "id",
           "in": "path",
           "required": true,
-          "description": "Comment",
+          "description": "Result Vote ID",
           "type": "string"
         }
       ],
@@ -266,18 +383,12 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "Vote Page",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "Result Page"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Vote"
-            }
+            "description": "OK"
           },
           "404": {
             "description": "Failed. Poll not found."
@@ -285,6 +396,7 @@
         }
       }
     },
+
     "/comment/{id}": {
       "parameters": [
         {
@@ -297,7 +409,7 @@
       ],
       "get": {
         "tags": ["Comment"],
-        "summary": "Lấy bình luận trước đó",
+        "summary": "Lấy bình luận trong DB",
         "parameters": [
           {
             "in": "path",
@@ -305,16 +417,13 @@
             "required": true,
             "description": "Comment",
             "schema": {
-              "$ref": "#/definitions/Comment"
+              "$ref": "#/components/schema/Comment"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Vote"
-            }
+            "description": "OK"
           },
           "404": {
             "description": "Failed. Poll not found."
@@ -330,7 +439,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/Comment"
+                "$ref": "#/components/schema/Comment"
               }
             }
           }
@@ -338,79 +447,183 @@
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Comment"
-            }
+            "description": "OK"
           },
-          "400": {
-            "description": "Failed. Bad post data."
+          "404": {
+            "description": "Failed. Poll not found."
+          }
+        }
+      }
+    },
+
+    "/mail/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Gửi kết quả bình chọn  qua mail",
+          "type": "string"
+        }
+      ],
+      "post": {
+        "tags": ["Send mail"],
+        "summary": "Gửi kết quả cuộc bình chọn",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Poll with id"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Failed. Poll not found."
+          }
+        }
+      }
+    },
+
+    "/logout": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Đăng xuất",
+          "type": "string"
+        }
+      ],
+      "post": {
+        "tags": ["Logout"],
+        "summary": "Đăng xuất",
+        "parameters": [{}],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Failed. Token không hợp lệ."
           }
         }
       }
     }
   },
-  "definitions": {
-    "id": {
-      "properties": {
-        "uuid": {
-          "type": "string"
-        }
-      }
-    },
-    "Poll": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "question": {
-          "type": "string"
-        },
-        "image": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "address": {
-          "type": "string"
-        },
-        "map": {
-          "type": "string"
-        },
-        "startAt": {
-          "type": "string"
-        },
-        "endAt": {
-          "type": "string"
-        },
-        "answers": {
-          "type": "string"
-        },
-        "multipleVote": {
-          "type": "boolean"
-        },
-        "userId": {
-          "type": "number"
-        },
-        "createdAt": {
-          "type": "string"
-        },
-        "updatedAt": {
-          "type": "string"
-        }
-      }
-    },
-    "Polls": {
-      "type": "object",
-      "properties": {
-        "cats": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/Poll"
+
+  "components": {
+    "schema": {
+      "Poll": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "map": {
+            "type": "string"
+          },
+          "startAt": {
+            "type": "string"
+          },
+          "endAt": {
+            "type": "string"
+          },
+          "answers": {
+            "type": "string"
+          },
+          "multipleVote": {
+            "type": "boolean"
           }
         }
+      },
+
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+
+      "Register": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+
+      "Vote": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "fullname": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          }
+        }
+      },
+
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "fullname": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../utils/formatDate";
 import { httpClient } from "../../utils/httpClient";
+import classes from "./Card.module.css";
 
 export function Card(props: {
   image: string;
@@ -28,9 +29,23 @@ export function Card(props: {
 
   return (
     <div className="card" style={{ width: "18rem" }}>
-      <img src={props.image} />
+      <div
+        className="image"
+        style={{
+          maxHeight: "180px",
+          backgroundImage: `url('${props.image}')`,
+          backgroundRepeat: "no-repeat",
+          paddingTop: "100%",
+          backgroundPosition: "center",
+          backgroundSize: "contain",
+        }}
+      >
+        {/* <img src={props.image} style={{maxWidth:'100%', maxHeight:'100%', overflow: 'hidden'}} /> */}
+      </div>
       <div className="card-body">
-        <h5 className="card-title">{props.question}</h5>
+        <h5 className={`${classes.question}  "card-title"`}>
+          {props.question}
+        </h5>
         <p>{props.description}</p>
         <p>
           <strong>Bắt đầu:</strong> {formatDate(props.startAt)}

@@ -29,16 +29,22 @@ function PollUpdate() {
   const [answers, setAnswers] = useState([""] as any);
 
   useEffect(() => {
-    httpClient.get(`/poll/${id}`).then((response) => {
-      const pollData = response.data.data;
-      const objAnswers = JSON.parse(pollData.answers || "{}");
-      let pollAnswers = [];
-      for (let key in objAnswers) {
-        pollAnswers.push(objAnswers[key]);
-      }
-      setPoll(pollData);
-      setAnswers(pollAnswers);
-    });
+    httpClient
+      .get(`/poll/${id}`)
+      .then((response) => {
+        const pollData = response.data.data;
+
+        const objAnswers = JSON.parse(pollData.answers || "{}");
+        let pollAnswers = [];
+        for (let key in objAnswers) {
+          pollAnswers.push(objAnswers[key]);
+        }
+        setPoll(pollData);
+        setAnswers(pollAnswers);
+      })
+      .catch((error) => {
+        navigate("/404-not-found");
+      });
   }, []);
 
   const handleChange = (e: any) => {
@@ -133,6 +139,7 @@ function PollUpdate() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const isValid = validateAll();
+
     if (isValid) {
       let pollData = { ...poll };
       let objAns = {};
@@ -141,13 +148,9 @@ function PollUpdate() {
       });
       pollData.answers = JSON.stringify(objAns);
 
-      console.log(pollData);
+      await updatePoll(pollData, id);
 
-      const response = await updatePoll(pollData, id);
-
-      if (response) {
-        navigate("/");
-      }
+      navigate("/login");
     }
   };
 

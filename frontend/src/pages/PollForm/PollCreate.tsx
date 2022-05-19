@@ -131,7 +131,7 @@ function PollCreate() {
       const formData = new FormData();
       formData.append("image", image || "");
 
-      const postImage = await axios({
+      const postImage = await httpClient({
         method: "post",
         url: "http://localhost:3001/poll/save-image",
         data: formData,

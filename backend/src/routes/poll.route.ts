@@ -21,10 +21,17 @@ router.post(
   PollController.createPoll
 );
 
-// GET POLL[id]
+// GET POLL[id] for Vote
+router.get("/:id", AuthMiddleware.verifyToken, PollController.getOnePoll);
+
+// GET POll[id] for USER edit
 router.get("/:id", PollController.getOnePoll);
 
-router.post("/save-image", PollController.saveImage);
+router.post(
+  "/save-image",
+  AuthMiddleware.verifyToken,
+  PollController.saveImage
+);
 
 // UPDATE POLL
 router.put(

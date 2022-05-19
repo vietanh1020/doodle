@@ -8,8 +8,12 @@ import { ResultVote } from "./ResultVote";
 import { Comment } from "./Comment";
 
 import "./Vote.css";
+import { useNavigate } from "react-router-dom";
+
+const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
 
 export function CreateVote(props: any) {
+  const navigate = useNavigate();
   const [voted, setVoted] = useState(false);
   const [user, setUser] = useState({ fullName: "", email: "" });
   const [poll, setPoll] = useState({} as any);
@@ -23,19 +27,24 @@ export function CreateVote(props: any) {
   });
 
   useEffect(() => {
-    httpClient.get(`/vote/${props.id}`).then((response) => {
-      const vote = response.data.data;
+    httpClient
+      .get(`/vote/${props.id}`)
+      .then((response) => {
+        const vote = response.data.data;
 
-      setCreateBy({ firstName: vote.firstName, lastName: vote.LastName });
-      setPoll(vote.Polls[0]);
+        setCreateBy({ firstName: vote.firstName, lastName: vote.LastName });
+        setPoll(vote.Polls[0]);
 
-      let ansArr = [];
-      const objAns = JSON.parse(vote.Polls[0].answers || "{}");
-      for (let key in objAns) {
-        ansArr.push(objAns[key]);
-      }
-      setAnswers(ansArr);
-    });
+        let ansArr = [];
+        const objAns = JSON.parse(vote.Polls[0].answers || "{}");
+        for (let key in objAns) {
+          ansArr.push(objAns[key]);
+        }
+        setAnswers(ansArr);
+      })
+      .catch((err) => {
+        navigate("/404-not-found");
+      });
   }, []);
 
   const validateAll = () => {
@@ -147,7 +156,7 @@ export function CreateVote(props: any) {
           style={{ display: "flex", justifyContent: "center" }}
         >
           <img
-            src="http://booking.bhdstar.vn/CDN/media/entity/get/FilmPosterGraphic/HO00002422?referenceScheme=HeadOffice&allowPlaceHolder=true&height=500"
+            src={`${REACT_APP_API_URL}/images/${poll.image}`}
             alt=""
             style={{
               maxWidth: "100%",
@@ -229,7 +238,7 @@ export function CreateVote(props: any) {
               </button>
             </div>
           )}
-          
+
           {voted && <ResultVote id={props.id} />}
         </div>
       </div>
