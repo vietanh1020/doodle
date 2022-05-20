@@ -19,7 +19,7 @@ export function CreateVote(props: any) {
   const [poll, setPoll] = useState({} as any);
   const [createBy, setCreateBy] = useState({ firstName: "", lastName: "" });
   const [answers, setAnswers] = useState([""]);
-  const [checked, setChecked] = useState([] as any);
+  const [checked, setChecked] = useState([] as any[]);
   const [validationMsg, setValidationMsg] = useState({
     answers: "",
     fullName: "",

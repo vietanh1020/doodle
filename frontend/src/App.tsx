@@ -8,6 +8,7 @@ import PollUpdate from "./pages/PollForm/PollUpdate";
 import { VotePage } from "./pages/Vote/VotePage";
 import { PollDetail } from "./pages/PollForm/PollDetail";
 import { NotFoundPage } from "./pages/NotFound/NotFoundPage";
+import { PrivateRoute } from "./hooks/auth/PrivateRoute";
 
 function App() {
   return (
@@ -16,11 +17,53 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterForm />} />
-          <Route path="/poll" element={<PollCreate />} />
-          <Route path="/poll-detail/:id" element={<PollDetail />} />
-          <Route path="/poll/:id" element={<PollUpdate />} />
+
+          <Route
+            path="/poll"
+            element={
+              <PrivateRoute>
+                <PollCreate />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/poll/detail/:id"
+            element={
+              <PrivateRoute>
+                <PollDetail />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/poll/:id"
+            element={
+              <PrivateRoute>
+                <PollUpdate />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <HomePage />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/home"
+            element={
+              <PrivateRoute>
+                <HomePage />
+              </PrivateRoute>
+            }
+          />
+
           <Route path="/vote/:id" element={<VotePage />} />
-          <Route path="/" element={<HomePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

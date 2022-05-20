@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { usePrivateRoute } from "../../hooks/auth/usePrivateRoute";
 import validator from "validator";
 
 import { Poll } from "../../types/poll";
@@ -11,7 +10,6 @@ import axios from "axios";
 import { httpClient } from "../../utils/httpClient";
 
 function PollCreate() {
-  usePrivateRoute();
   const navigate = useNavigate();
 
   const [image, setImage] = useState(null);
@@ -28,7 +26,7 @@ function PollCreate() {
   } as Poll);
 
   const [validationMsg, setValidationMsg] = useState([] as any);
-  const [answers, setAnswers] = useState([""] as any);
+  const [answers, setAnswers] = useState([""] as any[]);
 
   const handleChange = (e: any) => {
     const { id, value } = e.target;

@@ -18,14 +18,16 @@ export class PollService {
     return poll;
   }
 
-  static async getOnePoll(id): Promise<PollModel | null> {
-    const poll = await db.Poll.findByPk(id);
+  static async getOnePoll(id, userId): Promise<PollModel | null> {
+    const poll = await db.Poll.findOne({
+      where: { id, userId },
+    });
     return poll;
   }
 
-  static async deletePoll(id) {
+  static async deletePoll(id, userId) {
     return await db.Poll.destroy({
-      where: { id },
+      where: { id, userId },
     });
   }
 }

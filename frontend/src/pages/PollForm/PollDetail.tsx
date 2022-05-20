@@ -1,22 +1,42 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { NavBar } from "../../components/Navbar/NavBar";
 import { useGetSlug } from "../../hooks/help/useGetSlug";
+import { formatDate, formatDateDB } from "../../utils/formatDate";
 import { httpClient } from "../../utils/httpClient";
 import classes from "./pollDetail.module.css";
 
+const { API_URL = "http://localhost:3001" } = process.env;
+
 export function PollDetail() {
-  const [poll, setPoll] = useState({}  as any);
+  const [poll, setPoll] = useState({} as any);
+  const [answers, setAnswers] = useState([] as any[]);
+  const navigate = useNavigate();
+
   const id = useGetSlug();
-  const { API_URL = "http://localhost:3001" } = process.env;
+
+  const fetchData = () => {
+    httpClient
+      .get(`/poll/${id}`)
+      .then((response) => {
+        setPoll(response.data.data);
+
+        const pollData = response.data.data;
+
+        const objAnswers = JSON.parse(pollData.answers || "{}");
+        let pollAnswers = [];
+
+        for (let key in objAnswers) {
+          pollAnswers.push(objAnswers[key]);
+        }
+        setAnswers(pollAnswers);
+      })
+      .catch((err) => navigate("/404-not-found"));
+  };
 
   useEffect(() => {
-    httpClient.get(`/poll/${id}`).then((response) => {
-      setPoll(response.data.data);
-    });
+    fetchData();
   }, []);
-
-  console.log(poll);
-  
 
   return (
     <div className="page">
@@ -31,46 +51,49 @@ export function PollDetail() {
                     <img src={`${API_URL}/images/${poll.image}`} alt="" />
                   </div>
                 </div>
-                <div className="col-md-6">
-                  <h2 className=''>{poll.question}</h2>
-                  <p>
-                    {poll.description}
-                  </p>
-                  <div className={classes.product_meta}>
-                    <span className="posted_in">
+
+                <div className="col-md-6" style={{ paddingLeft: "12px" }}>
+                  <h2 className="text-center mt-3">{poll.question}</h2>
+
+                  <p>{poll.description}</p>
+
+                  <div className="row">
+                    <div className="col">
                       <strong>Bắt đầu:</strong>
-                      <p>{}</p>
-                    </span>
-                    <span className={classes.tagged_as}>
-                      <strong>Tags:</strong>
-                      <a rel="tag" href="#">
-                        mens
-                      </a>
-                      ,
-                      <a rel="tag" href="#">
-                        womens
-                      </a>
-                      .
-                    </span>
+                      <p>{formatDate(poll.startAt)}</p>
+                    </div>
+                    <div className="col">
+                      <strong>Kết thúc:</strong>
+                      <p>{formatDate(poll.endAt)}</p>
+                    </div>
                   </div>
+
                   <div className="m-bot15">
-                    <strong>Price : </strong>
-                    <span className="amount_old">$544</span>
-                    <span className="pro-price"> $300.00</span>
+                    <strong>Địa chỉ : </strong>
+                    <span className="pro-price"> {poll.address}</span>
                   </div>
-                  <div className="form-group">
-                    <label>Quantity</label>
+
+                  <div className="form-check mt-3">
                     <input
-                      type="quantiy"
-                      placeholder="1"
-                      className="form-control quantity"
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={poll.multipleVote}
                     />
+                    <label className="form-check-label">
+                      Cho phép chọn nhiều đáp án!
+                    </label>
                   </div>
-                  <p>
-                    <button className="btn btn-round btn-danger" type="button">
-                      <i className="fa fa-shopping-cart"></i> Add to Cart
-                    </button>
-                  </p>
+
+                  <div className="mt-3">
+                    {answers.map((answer: string, index: number) => {
+                      return (
+                        <div className="mt-1" key={index}>
+                          <strong>{`Đáp án ${index + 1}:    `}</strong>
+                          {answer}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </section>

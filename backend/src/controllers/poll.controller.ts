@@ -15,7 +15,7 @@ export class PollController {
 
   static async getOnePoll(req: Request, res: Response) {
     const { id } = req.params;
-    let poll = await PollService.getOnePoll(id);
+    let poll = await PollService.getOnePoll(id, req.user);
 
     if (!poll) {
       throw new HttpException(404, "Not Found");
@@ -74,7 +74,7 @@ export class PollController {
   static async updatePoll(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
 
-    let poll = await PollService.getOnePoll(id);
+    let poll = await PollService.getOnePoll(id,  req.user);
 
     if (!poll) {
       throw new HttpException(404, "Not Found");
@@ -88,13 +88,13 @@ export class PollController {
   static async deletePoll(req: Request, res: Response) {
     const { id } = req.params;
 
-    let poll = await PollService.getOnePoll(id);
+    let poll = await PollService.getOnePoll(id, req.user);
 
     if (!poll) {
       throw new HttpException(404, "Not Found");
     }
 
-    await PollService.deletePoll(id);
+    await PollService.deletePoll(id , req.user);
 
     res.status(204).json(new ResponseDto({ data: id }));
   }

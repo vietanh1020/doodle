@@ -27,7 +27,8 @@ export default function LoginForm() {
     if (!response.error) {
       localStorage.setItem("access_token", response.accessToken);
       localStorage.setItem("user", JSON.stringify(response.newUser));
-      navigate("/");
+      window.location.href = "/";
+      // navigate("/");
     } else {
       alert(response.message);
     }

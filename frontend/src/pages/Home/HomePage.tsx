@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 import { Card } from "../../components/Home/Card";
 import { NavBar } from "../../components/Navbar/NavBar";
-import { usePrivateRoute } from "../../hooks/auth/usePrivateRoute";
 import { httpClient } from "../../utils/httpClient";
 
 export function HomePage() {
+
   const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
 
-  usePrivateRoute();
   const [countDelete, setCountDelete] = useState("");
   const [polls, setPolls] = useState([] as any);
 
+  const fetchData = async () => {
+    const response = await httpClient.get("/poll");
+    setPolls(response.data);
+  };
+
   useEffect(() => {
-    httpClient.get("/poll").then((response) => {
-      setPolls(response.data);
-    });
+   
+      fetchData();
+    
   }, [countDelete]);
 
   const callbackFunction = (childData: string) => {

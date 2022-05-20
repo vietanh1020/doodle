@@ -5,7 +5,7 @@ import { httpClient } from "../../utils/httpClient";
 export function ResultVote(props: any) {
   const navigate = useNavigate();
   const color = ["00c1cd", "5581DC", "E25697", "e6dd39", "#e68739", "#d539e6"];
-  const [resultVote, setResultVote] = useState([] as any);
+  const [resultVote, setResultVote] = useState([] as any[]);
   const [totalVote, setTotalVote] = useState(0);
   useEffect(() => {
     httpClient

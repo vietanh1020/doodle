@@ -11,6 +11,7 @@ function LogOut() {
     if (response){
       localStorage.removeItem("access_token");
       localStorage.removeItem("user");
+      localStorage.removeItem("isVoted");
       navigate("/login");
     }
   };

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { usePrivateRoute } from "../../hooks/auth/usePrivateRoute";
 import validator from "validator";
 
 import { Poll } from "../../types/poll";
@@ -11,7 +10,6 @@ import { formatDateDB } from "../../utils/formatDate";
 import { updatePoll } from "../../hooks/poll/useUpdatePoll";
 
 function PollUpdate() {
-  usePrivateRoute();
   const navigate = useNavigate();
   const id = useGetSlug();
   const [poll, setPoll] = useState({
@@ -26,7 +24,7 @@ function PollUpdate() {
   } as Poll);
 
   const [validationMsg, setValidationMsg] = useState([] as any);
-  const [answers, setAnswers] = useState([""] as any);
+  const [answers, setAnswers] = useState([""] as any[]);
 
   useEffect(() => {
     httpClient
