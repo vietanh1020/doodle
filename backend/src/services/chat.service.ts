@@ -9,7 +9,6 @@ export function socket(server: any) {
   });
 
   io.on("connection", (socket) => {
-    console.log("có kêt nối _", socket.id);
     // TAO ROOM Va thong bao co nguoi join room
     socket.on("create-room", (data) => {
       socket.join(`${data.room}`);

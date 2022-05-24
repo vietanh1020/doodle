@@ -153,160 +153,166 @@ function PollCreate() {
   };
 
   return (
-    <div className="container">
+    <div className="app">
       <NavBar />
-      <div className="row">
-        <form encType="multipart/form-data">
-          <h1 style={{ textAlign: "center", padding: "8px" }}>
-            Tạo cuộc bình chọn
-          </h1>
-          <div className="mb-3 form-group">
-            <div className="row mt-4 mb-3">
-              <div className="col">
-                <div className=" mb-3">
-                  <label htmlFor="startAt" className="form-label">
-                    Bắt đầu
-                  </label>
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    onChange={handleChange}
-                    id="startAt"
-                    value={poll.startAt}
-                  />
-                  <p className="message-error">{validationMsg.startAt}</p>
-                </div>
-              </div>
-              <div className="col">
-                <div className="mb-3">
-                  <label htmlFor="endAt" className="form-label">
-                    Kết thúc
-                  </label>
-                  <input
-                    id="endAt"
-                    type="datetime-local"
-                    className="form-control"
-                    name="endAt"
-                    onChange={handleChange}
-                    value={poll.endAt}
-                  />
-                  <p className="message-error">{validationMsg.endAt}</p>
-                </div>
-              </div>
-            </div>
 
-            <div className="mb-3">
-              <label htmlFor="image" className="form-label">
-                Ảnh minh họa
-              </label>
-              <input
-                type="file"
-                className="form-control"
-                id="image"
-                name="image"
-                onChange={handleUploadImage}
-              />
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="description" className="form-label">
-                Mô tả cuộc khảo sát
-              </label>
-              <textarea
-                className="form-control"
-                id="description"
-                rows={2}
-                value={poll.description}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="address" className="form-label">
-                Địa chỉ
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="address"
-                onChange={handleChange}
-                value={poll.address}
-              />
-            </div>
-          </div>
-
-          <div className="mb-3 form-group">
-            <div className="mb-3">
-              <label htmlFor="question" className="form-label">
-                Câu hỏi
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="question"
-                onChange={handleChange}
-                value={poll.question}
-              />
-              <p className="message-error">{validationMsg.question}</p>
-            </div>
-            <label className="form-label">Đáp án </label>
-            <div className="mb-3 form-check">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="multipleVote"
-                onChange={handleCheckMultipleVote}
-              />
-              <label className="form-check-label" htmlFor="multipleVote">
-                Cho phép chọn nhiều đáp án
-              </label>
-            </div>
-
-            <div className="mb-3 answer-item">
-              {answers.map((answ: string, index: number) => {
-                return (
-                  <div className="mb-3 answer-item" key={index}>
-                    <div className="mb-3 answer-item row">
-                      <div className="col-10">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id={`${index}`}
-                          name="answers"
-                          value={answers[index]}
-                          placeholder={`Đáp án ${index + 1}`}
-                          onChange={handleChangeAnswer}
-                        />
-                      </div>
-                      <div className="col-2">
-                        <button
-                          id={`${index}`}
-                          className="btn btn-secondary "
-                          onClick={handleDeleteAnswer}
-                        >
-                          Xóa
-                        </button>
-                      </div>
-                    </div>
-                    {validationMsg && (
-                      <p className="message-error">
-                        {validationMsg.answers?.[index]}
-                      </p>
-                    )}
+      <div className="container">
+        <div className="row">
+          <form encType="multipart/form-data">
+            <h1 style={{ textAlign: "center", padding: "8px" }}>
+              Tạo cuộc bình chọn
+            </h1>
+            <div className="mb-3 form-group">
+              <div className="row mt-4 mb-3">
+                <div className="col">
+                  <div className=" mb-3">
+                    <label htmlFor="startAt" className="form-label">
+                      Bắt đầu
+                    </label>
+                    <input
+                      type="datetime-local"
+                      className="form-control"
+                      onChange={handleChange}
+                      id="startAt"
+                      value={poll.startAt}
+                    />
+                    <p className="message-error">{validationMsg.startAt}</p>
                   </div>
-                );
-              })}
+                </div>
+                <div className="col">
+                  <div className="mb-3">
+                    <label htmlFor="endAt" className="form-label">
+                      Kết thúc
+                    </label>
+                    <input
+                      id="endAt"
+                      type="datetime-local"
+                      className="form-control"
+                      name="endAt"
+                      onChange={handleChange}
+                      value={poll.endAt}
+                    />
+                    <p className="message-error">{validationMsg.endAt}</p>
+                  </div>
+                </div>
+              </div>
 
-              <button className="btn btn-secondary " onClick={handleAddAnswer}>
-                Thêm
-              </button>
+              <div className="mb-3">
+                <label htmlFor="image" className="form-label">
+                  Ảnh minh họa
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="image"
+                  name="image"
+                  onChange={handleUploadImage}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="description" className="form-label">
+                  Mô tả cuộc khảo sát
+                </label>
+                <textarea
+                  className="form-control"
+                  id="description"
+                  rows={2}
+                  value={poll.description}
+                  onChange={handleChange}
+                ></textarea>
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="address" className="form-label">
+                  Địa chỉ
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="address"
+                  onChange={handleChange}
+                  value={poll.address}
+                />
+              </div>
             </div>
-          </div>
 
-          <button className="btn btn-primary" onClick={handleSubmit}>
-            Tạo cuộc bình chọn
-          </button>
-        </form>
+            <div className="mb-3 form-group">
+              <div className="mb-3">
+                <label htmlFor="question" className="form-label">
+                  Câu hỏi
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="question"
+                  onChange={handleChange}
+                  value={poll.question}
+                />
+                <p className="message-error">{validationMsg.question}</p>
+              </div>
+              <label className="form-label">Đáp án </label>
+              <div className="mb-3 form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="multipleVote"
+                  onChange={handleCheckMultipleVote}
+                />
+                <label className="form-check-label" htmlFor="multipleVote">
+                  Cho phép chọn nhiều đáp án
+                </label>
+              </div>
+
+              <div className="mb-3 answer-item">
+                {answers.map((answ: string, index: number) => {
+                  return (
+                    <div className="mb-3 answer-item" key={index}>
+                      <div className="mb-3 answer-item row">
+                        <div className="col-10">
+                          <input
+                            type="text"
+                            className="form-control"
+                            id={`${index}`}
+                            name="answers"
+                            value={answers[index]}
+                            placeholder={`Đáp án ${index + 1}`}
+                            onChange={handleChangeAnswer}
+                          />
+                        </div>
+                        <div className="col-2">
+                          <button
+                            id={`${index}`}
+                            className="btn btn-secondary "
+                            onClick={handleDeleteAnswer}
+                          >
+                            Xóa
+                          </button>
+                        </div>
+                      </div>
+                      {validationMsg && (
+                        <p className="message-error">
+                          {validationMsg.answers?.[index]}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+
+                <button
+                  className="btn btn-secondary "
+                  onClick={handleAddAnswer}
+                >
+                  Thêm
+                </button>
+              </div>
+            </div>
+
+            <button className="btn btn-primary" onClick={handleSubmit}>
+              Tạo cuộc bình chọn
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { httpClient } from "../../utils/httpClient";
 import classes from "./pollDetail.module.css";
 
 const { API_URL = "http://localhost:3001" } = process.env;
+const { FE_URL = "http://localhost:3000" } = process.env;
 
 export function PollDetail() {
   const [poll, setPoll] = useState({} as any);
@@ -14,6 +15,27 @@ export function PollDetail() {
   const navigate = useNavigate();
 
   const id = useGetSlug();
+
+  const handleShareLink = (e: any) => {
+    e.stopPropagation();
+    // navigate(`/poll/detail/${id}`);
+  };
+
+  const handSendMail = async (e: any) => {
+    await httpClient.post(`/mail/${id}`);
+    alert("Đã gửi mail");
+  };
+
+  const handleEdit = (e: any) => {
+    e.preventDefault();
+    navigate(`/poll/${id}`);
+  };
+
+  const handleDelete = async (e: any) => {
+    e.preventDefault();
+    await httpClient.delete(`/poll/${id}`);
+    navigate("/home");
+  };
 
   const fetchData = () => {
     httpClient
@@ -57,6 +79,24 @@ export function PollDetail() {
 
                   <p>{poll.description}</p>
 
+                  <div className="input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={`${FE_URL}/vote/${id}`}
+                    />
+                    <div className="input-group-append">
+                      <div className="col" style={{ marginLeft: "20px" }}>
+                        <button
+                          className="btn btn-primary"
+                          onClick={handleShareLink}
+                        >
+                          Share invite
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="row">
                     <div className="col">
                       <strong>Bắt đầu:</strong>
@@ -93,6 +133,29 @@ export function PollDetail() {
                         </div>
                       );
                     })}
+                  </div>
+
+                  <div className="row mt-3">
+                    <div className="col">
+                      <button
+                        className="btn btn-primary"
+                        onClick={handSendMail}
+                      >
+                        Gửi kết quả bình chọn
+                      </button>
+                    </div>
+
+                    <div className="col">
+                      <button className="btn btn-link" onClick={handleEdit}>
+                        Chỉnh sửa
+                      </button>
+                    </div>
+
+                    <div className="col">
+                      <button className="btn btn-link" onClick={handleDelete}>
+                        Xóa
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

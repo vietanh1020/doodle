@@ -44,9 +44,12 @@ export class LoginService {
     if (user && validPassword) {
       const accessToken = await LoginService.generateAccessToken(user.id);
       const refreshToken = await LoginService.generateRefreshToken(user.id);
-      const newUser = {firstName: user.firstName, lastName: user.lastName}
-      return { refreshToken, accessToken, newUser};
+     
+      const newUser = { firstName: user.firstName, lastName: user.lastName };
+      return { refreshToken, accessToken, newUser };
     }
+
+    return {};
   }
 
   static async requestRefreshToken(req: Request, res: Response) {
@@ -59,7 +62,7 @@ export class LoginService {
     if (!isRefreshToken) {
       throw new HttpException(403, "Token hết hạn đăng nhập lại");
     }
-    
+
     // CREATE NEW TOKEN
     const newAccessToken = await LoginService.generateAccessToken(req.user);
     const newRefreshToken = await LoginService.generateRefreshToken(req.user);

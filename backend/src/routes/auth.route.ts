@@ -7,10 +7,9 @@ import { registerSchema } from "../utils/schema/register.shema";
 
 const router = express.Router();
 
-// router.get("/login", AuthController.showLogin);
 router.post("/login", AuthController.login);
 router.post("/logout", AuthMiddleware.verifyToken, AuthController.logout);
-// router.get("/register", AuthController.showRegister);
+
 router.post(
   "/register",
   registerSchema,

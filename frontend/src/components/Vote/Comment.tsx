@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const { API_URL = "http://localhost:3001" } = process.env;
 const socket = io(API_URL);
 
-export function Comment(props : any) {
+export function Comment(props: any) {
   const id = useGetSlug();
   const [message, setMessage] = useState("");
   const [comments, setComments] = useState([] as any[]);
@@ -16,9 +16,7 @@ export function Comment(props : any) {
     socket.emit("create-room", { room: id });
 
     // lang nghe cos nguoi join room
-    socket.on("joined", function (data: any) {
-      console.log(`da vao room chat ${data}`);
-    });
+    socket.on("joined", function (data: any) {});
 
     handleGetMessage();
   }, []);
@@ -75,11 +73,17 @@ export function Comment(props : any) {
 
             {comments.map((comment: any, index: number) => {
               return (
-                <div key={index} className="card mt-1" style={{padding:'8px'} }>
+                <div
+                  key={index}
+                  className="card mt-1"
+                  style={{ padding: "8px" }}
+                >
                   <div className="d-flex justify-content-between align-items-center">
                     <div className="user d-flex flex-row align-items-center">
                       <strong>{comment.fullname}:</strong>
-                      <span style={{marginLeft:'20px'}} >{comment.content}</span>
+                      <span style={{ marginLeft: "20px" }}>
+                        {comment.content}
+                      </span>
                     </div>
                   </div>
                 </div>

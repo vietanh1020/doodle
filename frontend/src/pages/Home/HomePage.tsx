@@ -2,28 +2,25 @@ import { useEffect, useState } from "react";
 import { Card } from "../../components/Home/Card";
 import { NavBar } from "../../components/Navbar/NavBar";
 import { httpClient } from "../../utils/httpClient";
+import { userAtom } from "../Login/LoginPage";
+import { Provider, atom, useAtom } from "jotai";
 
 export function HomePage() {
-
   const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
 
-  const [countDelete, setCountDelete] = useState("");
   const [polls, setPolls] = useState([] as any);
 
   const fetchData = async () => {
-    const response = await httpClient.get("/poll");
+    const response = await httpClient.get("http://localhost:3001/poll");
+
     setPolls(response.data);
   };
 
   useEffect(() => {
-   
-      fetchData();
-    
-  }, [countDelete]);
+    fetchData();
+  }, []);
 
-  const callbackFunction = (childData: string) => {
-    setCountDelete(childData);
-  };
+  const [user] = useAtom(userAtom);
 
   return (
     <div className="app">
@@ -33,7 +30,10 @@ export function HomePage() {
           <div className="row">
             {polls?.data?.map((poll: any, index: number) => {
               return (
-                <div className="col-12 col-lg-3" key={index}>
+                <div
+                  className="col-12	col-sm-6	col-md-4	col-lg-4	col-xl-3"
+                  key={index}
+                >
                   <Card
                     key={index}
                     question={poll.question}
@@ -42,7 +42,6 @@ export function HomePage() {
                     startAt={poll.startAt}
                     endAt={poll.endAt}
                     description={poll.description}
-                    parentCallback={callbackFunction}
                   />
                 </div>
               );

@@ -20,11 +20,11 @@ export class AuthMiddleware {
   }
 
   static async verifyToken(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization as string;
+    const token = req.cookies.access_token;
+    console.log(req.cookies.token);
 
     if (token) {
-      const accessToken = token.split(" ")[1];
-      jwt.verify(accessToken, JWT_ACCESS_KEY, (err, payload: any) => {
+      jwt.verify(token, JWT_ACCESS_KEY, (err, payload: any) => {
         if (err) {
           throw new HttpException(401, "Token không hợp lệ");
         }

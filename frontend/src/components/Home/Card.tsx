@@ -10,25 +10,19 @@ export function Card(props: {
   id: number;
   question: string;
   description: string;
-  parentCallback: Function;
 }) {
   const navigate = useNavigate();
 
-  const handleEdit = (e: any) => {
-    e.preventDefault();
-    navigate(`/poll/${props.id}`);
-  };
-
-  const handleDelete = async (e: any) => {
-    e.preventDefault();
-    const response = await httpClient.delete(`/poll/${props.id}`);
-    if (response) {
-      props.parentCallback(`${props.id}`);
-    }
+  const handleRedirectDetails = (e: any) => {
+    navigate(`/poll/detail/${props.id}`);
   };
 
   return (
-    <div className="card" style={{ width: "18rem" }}>
+    <div
+      className="card"
+      style={{ maxWidth: "100%" }}
+      onClick={handleRedirectDetails}
+    >
       <div
         className="image"
         style={{
@@ -37,7 +31,7 @@ export function Card(props: {
           backgroundRepeat: "no-repeat",
           paddingTop: "100%",
           backgroundPosition: "center",
-          backgroundSize: "contain",
+          backgroundSize: "cover",
         }}
       >
         {/* <img src={props.image} style={{maxWidth:'100%', maxHeight:'100%', overflow: 'hidden'}} /> */}
@@ -53,18 +47,6 @@ export function Card(props: {
         <p>
           <strong>Kết thúc:</strong> {formatDate(props.endAt)}
         </p>
-        <div className="row">
-          <div className="col">
-            <button className="btn btn-warning" onClick={handleEdit}>
-              Chỉnh sửa
-            </button>
-          </div>
-          <div className="col">
-            <button className="btn btn-danger" onClick={handleDelete}>
-              Xóa
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

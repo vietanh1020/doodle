@@ -1,4 +1,4 @@
-import axios from "axios";
+import { httpClient } from "../../utils/httpClient";
 const { API_URL = "http://localhost:3001" } = process.env;
 
 export const UseRegister = async (userData: {
@@ -7,10 +7,8 @@ export const UseRegister = async (userData: {
   lastName: string;
   password?: string;
 }) => {
-  const url = `${API_URL}/register`;
-
   try {
-    const response = await axios.post(url, userData);
+    const response = await httpClient.post("/register", userData);
     return response.data.data;
   } catch (error: any) {
     return { error: true, message: error.response.data.message };

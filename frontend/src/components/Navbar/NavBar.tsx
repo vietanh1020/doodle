@@ -1,80 +1,98 @@
 import { useNavigate } from "react-router-dom";
-import LogOut from "../LogOut/LogOut";
+import { httpClient } from "../../utils/httpClient";
 
 export function NavBar() {
+  const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
+
   const navigate = useNavigate();
   const handleAddPoll = () => {
     navigate("/poll");
   };
+
+  const handleRedirect = (e: any) => {
+    navigate("/home");
+  };
+
+  const handleLogOut = async (e: any) => {
+    e.preventDefault();
+    const response = await httpClient.post(`/logout`, {});
+    if (response) {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("isVoted");
+      navigate("/login");
+    }
+  };
+
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container-fluid">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+      <div className="container">
+        <a className="navbar-brand" href="#">
+          <h1 onClick={handleRedirect}>DOODLE</h1>
+        </a>
         <button
           className="navbar-toggler"
           type="button"
-          data-mdb-toggle="collapse"
-          data-mdb-target="#navbarSupportedContent"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <i className="fas fa-bars"></i>
+          <span className="navbar-toggler-icon"></span>
         </button>
-
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <a className="navbar-brand mt-2 mt-lg-0" href="#">
-            <img
-              src="https://itviec.com/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBOEMzSVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--96f5b80c484203b62424d15864e1bc6c84af129f/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RW5KbGMybDZaVjkwYjE5bWFYUmJCMmtCcWpBPSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--623b1a923c4c6ecbacda77c459f93960558db010/LogoCompany.png"
-              height="30"
-              width="30"
-              z-index="1"
-              alt="Zinza Logo"
-              loading="lazy"
-            />
-          </a>
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Dashboard
+              <a
+                className="nav-link active"
+                aria-current="page"
+                href="#"
+                onClick={handleAddPoll}
+              >
+                Create +
               </a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Team
+
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Võ Việt Anh
               </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Projects
-              </a>
+              <ul
+                className="dropdown-menu dropdown-menu-end"
+                aria-labelledby="navbarDropdown"
+              >
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Cài đặt
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Đóng góp
+                  </a>
+                </li>
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <a className="dropdown-item" onClick={handleLogOut} href="#">
+                    Đăng xuất
+                  </a>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>
-
-        <div className="d-flex align-items-center">
-          <button className="btn btn-primary" onClick={handleAddPoll}>
-            Tạo cuộc bình chọn
-          </button>
-        </div>
-
-        <p className="d-flex align-items-center" style={{ color: "white"}}>
-          {`${user.firstName} ${user.lastName}`}
-        </p>
-
-        <p className="user_name mr-3" style={{ color: "white" }}></p>
-        <div className="d-flex align-items-center">
-          <img
-            src={`https://scontent.fhan2-1.fna.fbcdn.net/v/t1.6435-9/72415716_744118709367885_7095120900218945536_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=8bfeb9&_nc_ohc=8r5ygk-vXXIAX_aulDI&_nc_ht=scontent.fhan2-1.fna&oh=00_AT9l6iYyS608gflPCcnPaL_w-N0w1syWXQ66byAMDBrvHQ&oe=628F9033""https://scontent.fhan2-1.fna.fbcdn.net/v/t1.6435-9/72415716_744118709367885_7095120900218945536_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=8bfeb9&_nc_ohc=8r5ygk-vXXIAX_aulDI&_nc_ht=scontent.fhan2-1.fna&oh=00_AT9l6iYyS608gflPCcnPaL_w-N0w1syWXQ66byAMDBrvHQ&oe=628F9033`}
-            className="rounded-circle"
-            height="25"
-            alt="Black and White Portrait of a Man"
-            loading="lazy"
-          />
-        </div>
-
-        <LogOut />
       </div>
     </nav>
   );

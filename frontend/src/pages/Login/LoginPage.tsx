@@ -2,7 +2,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { atom, useAtom } from "jotai";
+
 import { UseLogin } from "../../hooks/auth/useLogin";
+
+export const userAtom = atom({
+  refreshToken: null,
+  accessToken: null,
+  newUser: { firstName: null, lastName: null },
+});
 
 const schema = yup.object().shape({
   email: yup.string().required("Vui lòng nhập email").email(),
@@ -14,7 +22,9 @@ const schema = yup.object().shape({
 });
 
 export default function LoginForm() {
+  const [user, setUser] = useAtom(userAtom);
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -24,15 +34,21 @@ export default function LoginForm() {
   const onLoginSubmit = async (data: any) => {
     const response = await UseLogin(data);
 
-    if (!response.error) {
-      localStorage.setItem("access_token", response.accessToken);
-      localStorage.setItem("user", JSON.stringify(response.newUser));
-      window.location.href = "/";
-      // navigate("/");
+    localStorage.setItem("access_token", response.accessToken);
+
+    if (!!response.accessToken) {
+      setUser({
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+        newUser: response.newUser,
+      });
+      navigate("/home");
     } else {
       alert(response.message);
     }
   };
+
+  console.log(user);
 
   return (
     <form onSubmit={handleSubmit(onLoginSubmit)}>

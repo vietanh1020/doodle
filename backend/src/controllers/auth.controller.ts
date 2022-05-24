@@ -19,11 +19,11 @@ export class AuthController {
     );
 
     if (result) {
-      res.cookie("refreshToken", result.refreshToken, {
+      res.cookie("access_token", result.accessToken, {
         httpOnly: true,
-        secure: false,
-        path: "/",
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
+        expires: new Date(Date.now() + 30 * 24 * 3600 * 1000), // 30 days
       });
 
       return res.status(200).json(new ResponseDto({ data: result }));

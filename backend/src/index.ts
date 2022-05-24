@@ -11,6 +11,7 @@ dotenv.config();
 import connectDB from "./config/dbConfig";
 import route from "./routes";
 import { socket } from "./services/chat.service";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const port = 3001;
@@ -18,9 +19,12 @@ const port = 3001;
 app.use(
   cors({
     credentials: true,
-    origin: "*",
+    origin: true,
+    methods: "*",
   })
 );
+
+app.use(cookieParser());
 
 app.use(
   express.urlencoded({
