@@ -1,6 +1,7 @@
 import { BuildOptions, DataTypes, Model, Sequelize } from "sequelize";
 
 export interface UserAttributes {
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -9,7 +10,6 @@ export interface UserAttributes {
   updatedAt?: Date;
 }
 export interface UserModel extends Model<UserAttributes>, UserAttributes {
-  id: number;
 }
 export class User extends Model<UserModel, UserAttributes> {}
 

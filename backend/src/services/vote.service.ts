@@ -1,5 +1,6 @@
 import { VoteDto } from "../dto/VoteDto";
 import { db } from "../models";
+import { VoteModel } from "../models/votes";
 
 export class VoteService {
   static async getPoll(id: string) {
@@ -14,7 +15,7 @@ export class VoteService {
     });
   }
 
-  static async vote(vote: VoteDto) {
+  static async vote(vote: VoteModel): Promise<VoteModel | null> {
     return await db.Vote.create(vote);
   }
 }

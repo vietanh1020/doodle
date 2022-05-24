@@ -34,7 +34,7 @@ export default function LoginForm() {
   const onLoginSubmit = async (data: any) => {
     const response = await UseLogin(data);
 
-    localStorage.setItem("access_token", response.accessToken);
+    localStorage.setItem("user", JSON.stringify(response.user));
 
     if (!!response.accessToken) {
       setUser({

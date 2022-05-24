@@ -1,24 +1,15 @@
 import { db } from "../models";
 import bcrypt from "bcryptjs";
+import { UserModel } from "../models/users";
 
 // [POST] /register
 export class RegisterService {
-  static async createUser(user: {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-  }) {
-    const salt = bcrypt.genSaltSync(10);
-    const hashed = bcrypt.hashSync(user.password, salt);
+  static async createUser(user: UserModel): Promise<UserModel | null> {
+    {
+      const salt = bcrypt.genSaltSync(10);
+      const hashed = bcrypt.hashSync(user.password, salt);
 
-    const newUser = {
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      password: hashed,
-    };
-
-    return await db.User.create(newUser);
+      return await db.User.create({ ...user, password: hashed });
+    }
   }
 }

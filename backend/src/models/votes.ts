@@ -1,6 +1,7 @@
 import { BuildOptions, DataTypes, Model, Sequelize } from "sequelize";
 
 export interface VoteAttributes {
+  id: number;
   fullName: string;
   answer: string;
   pollId: number;
@@ -9,7 +10,6 @@ export interface VoteAttributes {
   updatedAt?: Date;
 }
 export interface VoteModel extends Model<VoteAttributes>, VoteAttributes {
-  id: number;
 }
 export class Vote extends Model<VoteModel, VoteAttributes> {}
 

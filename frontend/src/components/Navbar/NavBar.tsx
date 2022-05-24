@@ -65,7 +65,7 @@ export function NavBar() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Võ Việt Anh
+                {`${user.firstName} ${user.lastName}`}
               </a>
               <ul
                 className="dropdown-menu dropdown-menu-end"

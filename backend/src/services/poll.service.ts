@@ -8,17 +8,23 @@ export class PollService {
     });
   }
 
-  static async createPoll(poll): Promise<PollModel | null> {
+  static async createPoll(poll: PollModel): Promise<PollModel | null> {
     return await db.Poll.create(poll);
   }
 
-  static async updatePoll(id, data): Promise<PollModel | null> {
+  static async updatePoll(
+    id: number,
+    data: PollModel
+  ): Promise<PollModel | null> {
     const poll = await db.Poll.findByPk(id);
     poll?.update(data);
     return poll;
   }
 
-  static async getOnePoll(id, userId): Promise<PollModel | null> {
+  static async getOnePoll(
+    id: number,
+    userId: number
+  ): Promise<PollModel | null> {
     const poll = await db.Poll.findOne({
       where: { id, userId },
     });

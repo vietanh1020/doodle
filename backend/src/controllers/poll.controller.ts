@@ -1,7 +1,6 @@
 import { Response, NextFunction, Request } from "express";
 import multer from "multer";
 import path from "path";
-import { PollDto } from "../dto/PollDto";
 import { ResponseDto } from "../dto/ResponseDto";
 import { PollService } from "../services/poll.service";
 import { HttpException } from "../utils/exceptions/HttpException";
@@ -14,7 +13,7 @@ export class PollController {
   }
 
   static async getOnePoll(req: Request, res: Response) {
-    const { id } = req.params;
+    const id = Number(req.params.id);
     let poll = await PollService.getOnePoll(id, req.user);
 
     if (!poll) {
@@ -65,28 +64,14 @@ export class PollController {
     });
   }
 
-  static async createPoll(req: any, res: any) {
-    const poll = await PollService.createPoll(new PollDto(req));
+  static async createPoll(req: Request, res: Response) {
+    const poll = await PollService.createPoll(req.body);
 
     res.status(201).json(new ResponseDto({ data: poll }));
   }
 
   static async updatePoll(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-
-    let poll = await PollService.getOnePoll(id,  req.user);
-
-    if (!poll) {
-      throw new HttpException(404, "Not Found");
-    }
-
-    poll = await PollService.updatePoll(id, new PollDto(req));
-
-    res.status(200).json(new ResponseDto({ data: poll }));
-  }
-
-  static async deletePoll(req: Request, res: Response) {
-    const { id } = req.params;
+    const id = Number(req.params.id);
 
     let poll = await PollService.getOnePoll(id, req.user);
 
@@ -94,7 +79,21 @@ export class PollController {
       throw new HttpException(404, "Not Found");
     }
 
-    await PollService.deletePoll(id , req.user);
+    poll = await PollService.updatePoll(id, req.body);
+
+    res.status(200).json(new ResponseDto({ data: poll }));
+  }
+
+  static async deletePoll(req: Request, res: Response) {
+    const id = Number(req.params.id);
+
+    let poll = await PollService.getOnePoll(id, req.user);
+
+    if (!poll) {
+      throw new HttpException(404, "Not Found");
+    }
+
+    await PollService.deletePoll(id, req.user);
 
     res.status(204).json(new ResponseDto({ data: id }));
   }

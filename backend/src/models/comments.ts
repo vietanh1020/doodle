@@ -1,6 +1,7 @@
 import { BuildOptions, DataTypes, Model, Sequelize } from "sequelize";
 
 export interface CommentAttributes {
+  id: number;
   fullName: string;
   content: string;
   pollId: number;
@@ -10,7 +11,6 @@ export interface CommentAttributes {
 export interface CommentModel
   extends Model<CommentAttributes>,
     CommentAttributes {
-  id: number;
 }
 export class Comment extends Model<CommentModel, CommentAttributes> {}
 
