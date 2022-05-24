@@ -27,13 +27,13 @@ export function VoteFactory(sequelize: Sequelize): VoteStatic {
     fullName: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: null
+      defaultValue: null,
     },
 
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: null
+      defaultValue: null,
     },
 
     answer: {

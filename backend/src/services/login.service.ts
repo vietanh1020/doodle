@@ -44,9 +44,9 @@ export class LoginService {
     if (user && validPassword) {
       const accessToken = await LoginService.generateAccessToken(user.id);
       const refreshToken = await LoginService.generateRefreshToken(user.id);
-     
-      const newUser = { firstName: user.firstName, lastName: user.lastName };
-      return { refreshToken, accessToken, newUser };
+
+      const userInfor = { firstName: user.firstName, lastName: user.lastName };
+      return { refreshToken, accessToken, user: userInfor };
     }
 
     return {};

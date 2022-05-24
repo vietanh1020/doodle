@@ -33,6 +33,7 @@ export class AuthController {
   // [POST]  // logout
   static async logout(req: Request, res: Response, next: NextFunction) {
     res.clearCookie("refreshToken");
+    res.clearCookie("access_token");
     res.status(200).json(new ResponseDto({ data: "Logout success" }));
   }
 }
