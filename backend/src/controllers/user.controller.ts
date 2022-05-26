@@ -8,8 +8,10 @@ export async function getInfor(
   res: Response,
   next: NextFunction
 ) {
-  const user = await db.User.findOne({ where: { id: req.user } });
-  if (user) {
+  const user = await db.User.findOne({
+    attributes: ["firstName", "lastName"],
+     where: { id: req.user } });
+  if (!user) {
     throw new HttpException(401, "Chưa đăng nhập");
   }
   return res.status(200).json(new ResponseDto({ data: user }));

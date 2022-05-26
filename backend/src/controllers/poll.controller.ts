@@ -65,7 +65,7 @@ export class PollController {
   }
 
   static async createPoll(req: Request, res: Response) {
-    const poll = await PollService.createPoll(req.body);
+    const poll = await PollService.createPoll(req.body, req.user );
 
     res.status(201).json(new ResponseDto({ data: poll }));
   }

@@ -8,8 +8,8 @@ export class PollService {
     });
   }
 
-  static async createPoll(poll: PollModel): Promise<PollModel | null> {
-    return await db.Poll.create(poll);
+  static async createPoll(poll: PollModel, userId: number): Promise<PollModel | null> {
+    return await db.Poll.create({...poll, userId});
   }
 
   static async updatePoll(

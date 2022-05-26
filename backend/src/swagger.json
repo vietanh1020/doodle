@@ -80,7 +80,7 @@
         "summary": "Lấy tất cả cuộc bình chọn của User ",
         "security": [
           {
-            "bearerAuth": []
+            "cookieAuth": []
           }
         ],
         "responses": {
@@ -110,7 +110,7 @@
         "produces": ["application/json"],
         "security": [
           {
-            "bearerAuth": []
+            "cookieAuth": []
           }
         ],
         "responses": {
@@ -125,6 +125,26 @@
           },
           "500": {
             "description": "Lỗi Server"
+          }
+        }
+      }
+    },
+
+    "/user": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Lấy thông tin User ",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success`"
+          },
+          "401": {
+            "description": "Chưa đăng nhập"
           }
         }
       }
@@ -152,7 +172,7 @@
         "produces": ["application/json"],
         "security": [
           {
-            "bearerAuth": []
+            "cookieAuth": []
           }
         ],
         "responses": {
@@ -189,7 +209,7 @@
         "produces": ["application/json"],
         "security": [
           {
-            "bearerAuth": []
+            "cookieAuth": []
           }
         ],
         "responses": {
@@ -263,7 +283,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "cookieAuth": []
           }
         ],
 
@@ -292,7 +312,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "cookieAuth": []
           }
         ],
         "responses": {
@@ -479,7 +499,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "cookieAuth": []
           }
         ],
         "responses": {
@@ -509,7 +529,7 @@
         "parameters": [{}],
         "security": [
           {
-            "Authorization": []
+            "cookieAuth": []
           }
         ],
         "responses": {
@@ -620,10 +640,10 @@
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "access_token"
       }
     }
   }

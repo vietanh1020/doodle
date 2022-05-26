@@ -149,7 +149,7 @@ function PollUpdate() {
 
       await updatePoll(pollData, id);
 
-      navigate("/login");
+      navigate("/home");
     }
   };
 

@@ -21,6 +21,8 @@ export class AuthMiddleware {
 
   static async verifyToken(req: Request, res: Response, next: NextFunction) {
     const token = req.cookies.access_token;
+    console.log(token);
+    
 
     if (token) {
       jwt.verify(token, JWT_ACCESS_KEY, (err, payload: any) => {

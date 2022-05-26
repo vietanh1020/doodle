@@ -1,4 +1,3 @@
-import { VoteDto } from "../dto/VoteDto";
 import { db } from "../models";
 import { VoteModel } from "../models/votes";
 

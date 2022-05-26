@@ -48,8 +48,6 @@ export default function LoginForm() {
     }
   };
 
-  console.log(user);
-
   return (
     <form onSubmit={handleSubmit(onLoginSubmit)}>
       <section className="vh-100">

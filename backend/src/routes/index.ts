@@ -7,9 +7,11 @@ import AuthRouter from "./auth.route";
 import ResultRouter from "./result.route";
 import MailRouter from "./mail.route";
 import PollRouter from "./poll.route";
+import UserRouter from "./user.route";
 
 function route(app: Express) {
   app.use("/mail", MailRouter);
+  app.use("/user", UserRouter);
   app.use("/result", ResultRouter);
   app.use("/vote", VoteRouter);
   app.use("/poll", PollRouter);

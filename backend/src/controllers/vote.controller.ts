@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { HttpException } from "../utils/exceptions/HttpException";
 import { VoteService } from "../services/vote.service";
 import { ResponseDto } from "../dto/ResponseDto";
-import { VoteDto } from "../dto/VoteDto";
 
 export class VoteController {
   static async getPollById(req: Request, res: Response) {

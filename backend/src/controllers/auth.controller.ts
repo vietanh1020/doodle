@@ -21,8 +21,8 @@ export class AuthController {
     if (result) {
       res.cookie("access_token", result.accessToken, {
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        // secure: true,
+        // sameSite: "none",
         expires: new Date(Date.now() + 30 * 24 * 3600 * 1000), // 30 days
       });
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NavBar } from "../../components/Navbar/NavBar";
 import { useGetSlug } from "../../hooks/help/useGetSlug";
 import { formatDate, formatDateDB } from "../../utils/formatDate";
@@ -12,13 +12,15 @@ const { FE_URL = "http://localhost:3000" } = process.env;
 export function PollDetail() {
   const [poll, setPoll] = useState({} as any);
   const [answers, setAnswers] = useState([] as any[]);
-  const navigate = useNavigate();
+  const [isCoppy, setCoppy] = useState(false);
 
+  const navigate = useNavigate();
   const id = useGetSlug();
 
   const handleShareLink = (e: any) => {
     e.stopPropagation();
-    // navigate(`/poll/detail/${id}`);
+    setCoppy(true);
+    navigator.clipboard.writeText(e.target.value);
   };
 
   const handSendMail = async (e: any) => {
@@ -80,22 +82,36 @@ export function PollDetail() {
                   <p>{poll.description}</p>
 
                   <div className="input-group mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={`${FE_URL}/vote/${id}`}
-                    />
+                    <div className="form-group">
+                      <a
+                        href={`${FE_URL}/vote/${id}`}
+                      >{`${FE_URL}/vote/${id}`}</a>
+                    </div>
+
                     <div className="input-group-append">
                       <div className="col" style={{ marginLeft: "20px" }}>
                         <button
                           className="btn btn-primary"
                           onClick={handleShareLink}
+                          value={`${FE_URL}/vote/${id}`}
                         >
                           Share invite
                         </button>
                       </div>
                     </div>
                   </div>
+                  {isCoppy && (
+                    <p
+                      className="text-center"
+                      style={{
+                        backgroundColor: "#00FF66",
+                        borderRadius: "10px",
+                        maxWidth: "250px",
+                      }}
+                    >
+                      Đã coppy vào clipboard !
+                    </p>
+                  )}
 
                   <div className="row">
                     <div className="col">
@@ -117,6 +133,7 @@ export function PollDetail() {
                     <input
                       className="form-check-input"
                       type="checkbox"
+                      readOnly
                       checked={poll.multipleVote}
                     />
                     <label className="form-check-label">

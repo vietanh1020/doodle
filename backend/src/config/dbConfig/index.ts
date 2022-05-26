@@ -7,7 +7,7 @@ const {
   DB_HOST = "mysql",
 } = process.env;
 
-const sequelize = new Sequelize(DB_DATA, DB_USER, DB_PASS, {
+export const sequelize = new Sequelize(DB_DATA, DB_USER, DB_PASS, {
   host: DB_HOST,
   dialect: "mysql",
 });
@@ -15,9 +15,9 @@ const sequelize = new Sequelize(DB_DATA, DB_USER, DB_PASS, {
 let connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log("Connect DB success");
+    console.log("Connect Database success");
   } catch (error) {
-    console.error("Lỗi kết nối DB", error);
+    console.error("Error connect Database", error);
   }
 };
 
