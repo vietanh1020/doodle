@@ -16,7 +16,8 @@ export class VoteController {
   }
 
   static async vote(req: Request, res: Response) {
-    const id = Number(req.params.id);
+    const id = Number(req.params.pollId);
+
     const vote = await VoteService.vote(req.body, id);
 
     if (!vote) {
@@ -26,4 +27,3 @@ export class VoteController {
     return res.status(201).json(new ResponseDto({ data: vote }));
   }
 }
-

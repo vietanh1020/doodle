@@ -23,7 +23,7 @@ export class PollController {
     res.status(200).json(new ResponseDto({ data: poll }));
   }
 
-  static async saveImage(req: any, res: any) {
+  static async saveImage(req: any, res: Response) {
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
         cb(null, "./src/public/images");
