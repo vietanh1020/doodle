@@ -15,6 +15,6 @@ export class VoteService {
   }
 
   static async vote(vote: VoteModel): Promise<VoteModel | null> {
-    return await db.Vote.create(vote);
+    return await db.Vote.create({...vote});
   }
 }
