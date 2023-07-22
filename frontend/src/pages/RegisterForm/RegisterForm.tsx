@@ -6,9 +6,12 @@ import { UseRegister } from "../../hooks/auth/useRegister";
 
 const schema = yup.object().shape({
   email: yup.string().required("Vui lòng nhập trường này").email(),
-  password: yup.string().required("Vui lòng nhập trường này").min(8, "Mật khẩu phải có ít nhất 8 kí tự"),
+  password: yup
+    .string()
+    .required("Vui lòng nhập trường này")
+    .min(8, "Mật khẩu phải có ít nhất 8 kí tự"),
   firstName: yup.string().required("Vui lòng nhập trường này"),
-  lastName: yup.string().required("Vui lòng nhập trường này")
+  lastName: yup.string().required("Vui lòng nhập trường này"),
 });
 
 function RegisterForm() {
@@ -56,9 +59,9 @@ function RegisterForm() {
                   className="form-control form-control-lg"
                   {...register("email")}
                 />
-                {errors.email && (
-                  <p className="message-error">{errors.email?.message}</p>
-                )}
+                {/* {errors.email && ( */}
+                {/*   <p className="message-error">{errors.email?.message}</p> */}
+                {/* )} */}
               </div>
 
               <div className="row">
@@ -72,9 +75,9 @@ function RegisterForm() {
                     {...register("firstName")}
                     className="form-control form-control-lg"
                   />
-                  {errors.firstName && (
-                    <p className="message-error">{errors.firstName?.message}</p>
-                  )}
+                  {/* {errors.firstName && ( */}
+                  {/*   <p className="message-error">{errors.firstName?.message}</p> */}
+                  {/* )} */}
                 </div>
 
                 <div className="col form-outline mb-4">
@@ -87,9 +90,9 @@ function RegisterForm() {
                     {...register("lastName")}
                     className="form-control form-control-lg"
                   />
-                  {errors.lastName && (
-                    <p className="message-error">{errors.lastName?.message}</p>
-                  )}
+                  {/* {errors.lastName && ( */}
+                  {/*   <p className="message-error">{errors.lastName?.message}</p> */}
+                  {/* )} */}
                 </div>
               </div>
 
@@ -103,9 +106,9 @@ function RegisterForm() {
                   {...register("password")}
                   className="form-control form-control-lg"
                 />
-                {errors.password && (
-                  <p className="message-error">{errors.password?.message}</p>
-                )}
+                {/* {errors.password && ( */}
+                {/*   <p className="message-error">{errors.password?.message}</p> */}
+                {/* )} */}
               </div>
 
               <button
