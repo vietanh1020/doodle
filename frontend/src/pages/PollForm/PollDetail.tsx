@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { NavBar } from "../../components/Navbar/NavBar";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { useGetSlug } from "../../hooks/help/useGetSlug";
-import { formatDate, formatDateDB } from "../../utils/formatDate";
+import { formatDate } from "../../utils/formatDate";
 import { httpClient } from "../../utils/httpClient";
 import classes from "./pollDetail.module.css";
+import TabList from "../../components/Common/Tablist";
 
 const { API_URL = "http://localhost:3001" } = process.env;
 const { FE_URL = "http://localhost:3000" } = process.env;
@@ -64,7 +65,35 @@ export function PollDetail() {
 
   return (
     <div className="page">
-      <NavBar />
+      {/* <NavBar />s */}
+
+      <Box>
+        <Image></Image>
+        <PollInfo className="pb-2">
+          <h1>Thông tin sự kiện</h1>
+          <div>
+            <div className="info-item d-flex">
+              <div className="icon">icon</div>
+              <div>Hạn đăng ký 06/06/2023, 12:00:00</div>
+            </div>
+            <div className="info-item d-flex">
+              <div className="icon">icon</div>
+              <div>Hạn đăng ký 06/06/2023, 12:00:00</div>
+            </div>
+            <div className="info-item d-flex">
+              <div className="icon">icon</div>
+              <div>Hạn đăng ký 06/06/2023, 12:00:00</div>
+            </div>
+            <div className="info-item d-flex">
+              <div className="icon">icon</div>
+              <div>Hạn đăng ký 06/06/2023, 12:00:00</div>
+            </div>
+          </div>
+        </PollInfo>
+
+        <TabList></TabList>
+      </Box>
+
       {poll && (
         <div className="container mt-3">
           <div className="col-md-12">
@@ -183,3 +212,47 @@ export function PollDetail() {
     </div>
   );
 }
+
+const Box = styled.div`
+  position: relative;
+  margin-left: 400px;
+`;
+
+const Image = styled.div`
+  background-color: red;
+  border-radius: 8px;
+  height: 400px;
+`;
+
+const PollInfo = styled.div`
+  background-color: green;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  bottom: 40px;
+  left: 60px;
+  width: 400px;
+  
+
+  h1 {
+    background-color: #60d5c0;
+    color: #fff;
+    font-weight: 700;
+    padding: 8px 16px;
+    font-size: 20px;
+  }
+
+  .info-item{
+    margin: 4px 12px ;
+    font-size : 14px;
+  }
+
+  .icon{
+    width:  20px ;
+    margin-right: 20px;
+  }
+
+
+ 
+  }
+`;

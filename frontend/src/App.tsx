@@ -9,6 +9,7 @@ import { VotePage } from "./pages/Vote/VotePage";
 import { PollDetail } from "./pages/PollForm/PollDetail";
 import { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 import { PrivateRoute } from "./hooks/auth/PrivateRoute";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (

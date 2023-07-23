@@ -1,5 +1,4 @@
 import { CreateVote } from "../../components/Vote/CreateVote";
-import { ResultVote } from "../../components/Vote/ResultVote";
 import { useGetSlug } from "../../hooks/help/useGetSlug";
 
 export function VotePage() {

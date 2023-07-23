@@ -36,4 +36,8 @@ export class AuthController {
     res.clearCookie("access_token");
     res.status(200).json(new ResponseDto({ data: "Logout success" }));
   }
+
+  static async check(req: Request, res: Response, next: NextFunction) {
+    res.status(200).json("Hello word");
+  }
 }

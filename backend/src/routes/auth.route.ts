@@ -6,6 +6,7 @@ import { validateRequestSchema } from "../middlewares/validate";
 import { registerSchema } from "../utils/schema/register.shema";
 
 const router = express.Router();
+router.get("/", AuthController.check);
 
 router.post("/login", AuthController.login);
 
@@ -21,3 +22,4 @@ router.post(
 // router.post('/refresh-token',AuthController.requestRefreshToken)
 
 export default router;
+

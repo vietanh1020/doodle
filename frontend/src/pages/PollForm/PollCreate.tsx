@@ -252,7 +252,7 @@ function PollCreate() {
                 <p className="message-error">{validationMsg.question}</p>
               </div>
               <label className="form-label">Đáp án </label>
-              <div className="mb-3 form-check">
+              <div className="mb-3 form-check d-flex">
                 <input
                   type="checkbox"
                   className="form-check-input"
@@ -319,3 +319,4 @@ function PollCreate() {
 }
 
 export default PollCreate;
+
