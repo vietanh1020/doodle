@@ -17,8 +17,10 @@ export class VoteController {
 
   static async vote(req: Request, res: Response) {
     const id = Number(req.params.pollId);
+    console.log(req.body);
 
-    const vote = await VoteService.vote(req.body, id);
+    const email = req.body.email;
+    const vote = await VoteService.vote(req.body, id, email);
 
     if (!vote) {
       throw new HttpException(500, "Server can't save Vote");
