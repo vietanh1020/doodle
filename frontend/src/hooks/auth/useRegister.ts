@@ -1,5 +1,5 @@
 import { httpClient } from "../../utils/httpClient";
-const { API_URL = "http://localhost:3001" } = process.env;
+const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
 
 export const UseRegister = async (userData: {
   email: string;
@@ -14,3 +14,4 @@ export const UseRegister = async (userData: {
     return { error: true, message: error.response.data.message };
   }
 };
+

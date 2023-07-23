@@ -4,6 +4,7 @@ import classes from "./Card.module.css";
 import { FaClock, FaLocationDot } from "react-icons/fa6";
 import { httpClient } from "../../utils/httpClient";
 import { Button } from "@material-ui/core";
+import toast from "react-hot-toast";
 
 export function Card(props: {
   image: string;
@@ -21,6 +22,11 @@ export function Card(props: {
     e.stopPropagation();
     e.preventDefault();
     navigate(`/poll/${id}`);
+  };
+
+  const handleShareLink = (id: string) => {
+    navigator.clipboard.writeText(process.env.REACT_APP_FE_URL + `/vote/${id}`);
+    toast.success("copied");
   };
 
   const handleDelete = async (e: any, id: string) => {
@@ -64,8 +70,8 @@ export function Card(props: {
           <span className="ms-2 text-nowrap">{props.address}</span>
         </p>
 
-        <div className="row ">
-          <div className="col">
+        <div className="d-flex justify-content-between ">
+          <div className="">
             <Button
               variant="outlined"
               onClick={(e) => {
@@ -76,7 +82,7 @@ export function Card(props: {
             </Button>
           </div>
 
-          <div className="col">
+          <div className="">
             <Button
               variant="outlined"
               color="secondary"
@@ -85,6 +91,17 @@ export function Card(props: {
               }}
             >
               Xóa
+            </Button>
+          </div>
+
+          <div className="">
+            <Button
+              variant="contained"
+              onClick={(e) => {
+                handleShareLink(props.id.toString());
+              }}
+            >
+              Share
             </Button>
           </div>
         </div>

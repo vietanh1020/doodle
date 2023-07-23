@@ -11,8 +11,8 @@ import { httpClient } from "../../utils/httpClient";
 import classes from "./pollDetail.module.css";
 import TabList from "../../components/Common/Tablist";
 
-const { API_URL = "http://localhost:3001" } = process.env;
-const { FE_URL = "http://localhost:3000" } = process.env;
+const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
+const { REACT_APP_FE_URL = "http://localhost:3000" } = process.env;
 
 export function PollDetail() {
   const [poll, setPoll] = useState({} as any);
@@ -67,7 +67,7 @@ export function PollDetail() {
   }, []);
 
   const imageUrl = poll.image
-    ? `${API_URL}/images/${poll.image}`
+    ? `${REACT_APP_API_URL}/images/${poll.image}`
     : "/pollbg.jpeg";
 
   return (
@@ -120,8 +120,8 @@ export function PollDetail() {
                   <div className="input-group mb-3">
                     <div className="form-group">
                       <a
-                        href={`${FE_URL}/vote/${id}`}
-                      >{`${FE_URL}/vote/${id}`}</a>
+                        href={`${REACT_APP_FE_URL}/vote/${id}`}
+                      >{`${REACT_APP_FE_URL}/vote/${id}`}</a>
                     </div>
 
                     <div className="input-group-append">
@@ -129,7 +129,7 @@ export function PollDetail() {
                         <button
                           className="btn btn-primary"
                           onClick={handleShareLink}
-                          value={`${FE_URL}/vote/${id}`}
+                          value={`${REACT_APP_FE_URL}/vote/${id}`}
                         >
                           Share invite
                         </button>
