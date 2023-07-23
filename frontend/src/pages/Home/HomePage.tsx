@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { Card } from "../../components/Home/Card";
 import { NavBar } from "../../components/Navbar/NavBar";
+import { Button, Link, Grid } from "@material-ui/core";
 import { userInfo } from "../../utils/atom";
 import { httpClient } from "../../utils/httpClient";
+import { useNavigate } from "react-router-dom";
 
 export function HomePage() {
   const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
+  const navigate = useNavigate();
 
   const [polls, setPolls] = useState([] as any);
 
@@ -24,9 +27,18 @@ export function HomePage() {
   return (
     <div className="app">
       <NavBar />
-      <h2 className="container mx-auto">
-        Polls List of {user.firstName} {user.lastName}
-      </h2>
+      <Grid className="container mx-auto">
+        <h2>
+          Polls List of {user.firstName} {user.lastName}
+        </h2>
+        <Button
+          onClick={() => navigate("/poll")}
+          variant="contained"
+          style={{ marginTop: "20px" }}
+        >
+          Add New Poll
+        </Button>
+      </Grid>
 
       {polls && (
         <div className="container mt-3">

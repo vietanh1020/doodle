@@ -1,6 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Button } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { NavBar } from "../../components/Navbar/NavBar";
 import { useGetSlug } from "../../hooks/help/useGetSlug";
 import { formatDate } from "../../utils/formatDate";
 import { httpClient } from "../../utils/httpClient";
@@ -13,15 +18,14 @@ const { FE_URL = "http://localhost:3000" } = process.env;
 export function PollDetail() {
   const [poll, setPoll] = useState({} as any);
   const [answers, setAnswers] = useState([] as any[]);
-  const [isCoppy, setCoppy] = useState(false);
 
   const navigate = useNavigate();
   const id = useGetSlug();
 
   const handleShareLink = (e: any) => {
     e.stopPropagation();
-    setCoppy(true);
     navigator.clipboard.writeText(e.target.value);
+    toast.success("copyed");
   };
 
   const handSendMail = async (e: any) => {
@@ -63,6 +67,10 @@ export function PollDetail() {
     fetchData();
   }, []);
 
+  const imageUrl = poll.image
+    ? `${API_URL}/images/${poll.image}`
+    : "/pollbg.jpeg";
+
   return (
     <div className="page">
       {/* <NavBar />s */}
@@ -101,7 +109,7 @@ export function PollDetail() {
               <div className={`row ${classes.panel_body}`}>
                 <div className="col-md-6">
                   <div className={classes.pro_img_details}>
-                    <img src={`${API_URL}/images/${poll.image}`} alt="" />
+                    <img src={imageUrl} alt="" />
                   </div>
                 </div>
 
@@ -129,18 +137,6 @@ export function PollDetail() {
                       </div>
                     </div>
                   </div>
-                  {isCoppy && (
-                    <p
-                      className="text-center"
-                      style={{
-                        backgroundColor: "#00FF66",
-                        borderRadius: "10px",
-                        maxWidth: "250px",
-                      }}
-                    >
-                      Đã coppy vào clipboard !
-                    </p>
-                  )}
 
                   <div className="row">
                     <div className="col">
@@ -192,15 +188,19 @@ export function PollDetail() {
                     </div>
 
                     <div className="col">
-                      <button className="btn btn-link" onClick={handleEdit}>
+                      <Button variant="outlined" onClick={handleEdit}>
                         Chỉnh sửa
-                      </button>
+                      </Button>
                     </div>
 
                     <div className="col">
-                      <button className="btn btn-link" onClick={handleDelete}>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={handleDelete}
+                      >
                         Xóa
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
