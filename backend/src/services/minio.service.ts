@@ -1,4 +1,4 @@
-import Minio from "minio";
+import * as Minio from "minio";
 import moment from "moment";
 
 const {
@@ -9,56 +9,54 @@ const {
   MINIO_SECRET_KEY,
 } = process.env;
 
-export class MinioService {
-  private readonly bucketName: string = "doodle";
-  private readonly minioClient: Minio.Client;
+const bucketName: string = "doodle";
+const minioClient = new Minio.Client({
+  endPoint: MINIO_ENDPOINT,
+  port: Number(MINIO_PORT),
+  useSSL: true,
+  accessKey: MINIO_ACCESS_KEY,
+  secretKey: MINIO_SECRET_KEY,
+});
 
-  constructor() {
-    this.minioClient = new Minio.Client({
-      endPoint: MINIO_ENDPOINT,
-      port: Number(MINIO_PORT),
-      useSSL: true,
-      accessKey: MINIO_ACCESS_KEY,
-      secretKey: MINIO_SECRET_KEY,
-    });
-    this.initBucket();
+(async function initBucket() {
+  const exists = await minioClient.bucketExists(bucketName);
+  if (!exists) {
+    await minioClient.makeBucket(bucketName, "us-east-1");
+    console.debug("create bucket successfully");
   }
+})();
 
-  private async initBucket() {
-    const exists = await this.minioClient.bucketExists(this.bucketName);
-    if (!exists) {
-      await this.minioClient.makeBucket(this.bucketName, "us-east-1");
-      console.debug("create bucket successfully");
-    }
-  }
+async function upload({
+  fileName,
+  buffer,
+}: {
+  fileName: string;
+  buffer: Buffer;
+}) {
+  const dateTime = moment().format("YYYY-MM-DD");
+  const filePath = `${dateTime}/${fileName}`;
 
-  async upload({ fileName, buffer }: { fileName: string; buffer: Buffer }) {
-    const dateTime = moment().format("YYYY-MM-DD");
-    const filePath = `${dateTime}/${fileName}`;
-
-    this.minioClient.putObject(
-      this.bucketName,
-      filePath,
-      buffer,
-      async (err) => {
-        if (err) console.error(err);
-        console.log("upload file successfully");
-      }
-    );
-
-    return this.minioClient.presignedGetObject(this.bucketName, filePath);
-  }
-
-  async getPresignedUrl(filename: string) {
-    const dateTime = moment().format("YYYY-MM-DD");
-    const key = `${dateTime}/${filename}`;
-    const policy = new Minio.PostPolicy();
-    policy.setBucket(this.bucketName);
-    policy.setKey(key);
-
-    const presignedUrl = await this.minioClient.presignedPostPolicy(policy);
-    presignedUrl.postURL = MINIO_PUBLIC ?? "";
-
-    return presignedUrl;
-  }
+  minioClient.putObject(bucketName, filePath, buffer, async (err) => {
+    if (err) console.error(err);
+    console.log("upload file successfully");
+  });
+  return minioClient.presignedGetObject(bucketName, filePath);
 }
+
+async function getPresignedUrl(filename: string) {
+  const dateTime = moment().format("YYYY-MM-DD");
+  const key = `${dateTime}/${filename}`;
+  const policy = new Minio.PostPolicy();
+  policy.setBucket("doodle");
+  policy.setKey(key);
+
+  const presignedUrl = await minioClient.presignedPostPolicy(policy);
+  presignedUrl.postURL = MINIO_PUBLIC ?? "";
+
+  return presignedUrl;
+}
+
+export const minioService = {
+  upload,
+  getPresignedUrl,
+};

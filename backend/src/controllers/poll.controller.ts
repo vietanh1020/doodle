@@ -2,16 +2,16 @@ import { Response, NextFunction, Request } from "express";
 import multer from "multer";
 import path from "path";
 import { ResponseDto } from "../dto/ResponseDto";
-import { MinioService } from "../services/minio.service";
+import { minioService } from "../services/minio.service";
 import { PollService } from "../services/poll.service";
 import { HttpException } from "../utils/exceptions/HttpException";
 
 export class PollController {
-  constructor(private readonly minio: MinioService) {}
+  constructor() {}
 
-  async uploadFile(req: any, res: Response) {
+  static async uploadFile(req: any, res: Response) {
     const { fileName } = req.body;
-    const data = this.minio.getPresignedUrl(fileName);
+    const data = minioService.getPresignedUrl(fileName);
     res.status(200).json(new ResponseDto({ data }));
   }
 
