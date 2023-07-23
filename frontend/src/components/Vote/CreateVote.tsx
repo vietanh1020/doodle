@@ -62,7 +62,7 @@ export function CreateVote(props: any) {
       if (poll.multipleVote) {
         if (isChecked) {
           return checked.filter((item: string) => {
-            return item != value;
+            return item !== value;
           });
         } else return [...prev, value];
       } else {

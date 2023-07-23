@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { httpClient } from "../../utils/httpClient";
 
@@ -16,3 +16,4 @@ export function PrivateRoute(props: any) {
 
   return props.children;
 }
+

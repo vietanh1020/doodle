@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";

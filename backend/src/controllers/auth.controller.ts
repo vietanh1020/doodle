@@ -31,7 +31,7 @@ export class AuthController {
     res.status(200).json(new ResponseDto({ data: "Logout success" }));
   }
 
-  static async check(req: Request, res: Response, next: NextFunction) {
+  static async check(req: Request, res: Response) {
     res.status(200).json("Hello word");
   }
 }
