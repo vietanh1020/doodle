@@ -1,35 +1,15 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import validator from "validator";
 
 import { useNavigate } from "react-router-dom";
-import CropImage from "../../components/Common/CropImage";
 import { NavBar } from "../../components/Navbar/NavBar";
 import { UseCreatePoll } from "../../hooks/poll/useCreatePoll";
 import { PollMsg } from "../../types/PollMsg";
 import { Poll } from "../../types/poll";
-import { httpClient } from "../../utils/httpClient";
+import { FileDropZone } from "../../components/fileDropZone";
 
 function PollCreate() {
   const navigate = useNavigate();
-
-  const [image, setImage] = useState(null);
-
-  const [show, setShow] = useState(false);
-  const [file, setFile] = useState(null);
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  const handlePreviewAvatar = (e: any) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      setFile(file);
-      setShow(true);
-    }
-  };
-
-  const handleClose = () => {
-    setShow(false);
-  };
 
   const [poll, setPoll] = useState({
     startAt: "",
@@ -132,35 +112,18 @@ function PollCreate() {
     return result;
   };
 
-  const handleUploadImage = (e: any) => {
-    setImage(e.target.files[0]);
-  };
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const isValid = validateAll();
 
     if (isValid) {
-      const formData = new FormData();
-      formData.append("image", image || "");
-
-      const postImage = await httpClient({
-        method: "post",
-        url: "http://localhost:3001/poll/save-image",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      let pollData = { ...poll };
-      pollData.image = postImage.data;
+      let pollData = poll;
       let objAns = {};
       answers.forEach((answer: string, index: number) => {
         Object.assign(objAns, { [`op${index + 1}`]: answer });
       });
       pollData.answers = JSON.stringify(objAns);
-
       const response = await UseCreatePoll(pollData);
-
       if (response) {
         navigate("/");
       }
@@ -210,23 +173,16 @@ function PollCreate() {
                     <p className="message-error">{validationMsg.endAt}</p>
                   </div>
                 </div>
-
-                <div className="col">
-                  <div className="mb-3">
-                    <label className="form-label">Ảnh minh họa</label>
-                    <input
-                      ref={fileRef}
-                      className="form-control"
-                      onChange={handlePreviewAvatar}
-                      accept=".jpg, .jpeg, .png"
-                      type="file"
-                    />
-                  </div>
-                </div>
               </div>
 
-              {file && (
-                <CropImage file={file} show={show} onClose={handleClose} />
+              {poll.image ? (
+                <img src={poll.image} alt="" />
+              ) : (
+                <FileDropZone
+                  onSave={(url: string) => {
+                    setPoll((prev) => ({ ...prev, image: url }));
+                  }}
+                />
               )}
 
               <div className="mb-3">

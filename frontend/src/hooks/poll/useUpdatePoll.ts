@@ -36,7 +36,7 @@ export const presignFile = async (file: File) => {
   });
   const preSign = res.data as PreSignFile;
   await uploadFile(file, preSign.postURL, preSign.formData);
-  return preSign.postURL;
+  return `${preSign.postURL}/${preSign.formData.key}`;
 };
 
 export type PreSignFile = {

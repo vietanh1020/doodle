@@ -11,8 +11,8 @@ export class PollController {
 
   static async uploadFile(req: any, res: Response) {
     const { fileName } = req.body;
-    const data = minioService.getPresignedUrl(fileName);
-    res.status(200).json(new ResponseDto({ data }));
+    const data = await minioService.getPresignedUrl(fileName);
+    res.status(200).json(data);
   }
 
   static async index(req: Request, res: Response) {

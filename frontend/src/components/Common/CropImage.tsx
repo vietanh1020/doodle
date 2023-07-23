@@ -1,7 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import AvatarEditor from "react-avatar-editor";
 import { Button, Modal } from "react-bootstrap";
-import styled from "styled-components";
 
 type Props = {
   file: File;
@@ -20,7 +19,6 @@ export default function CropImage({ file, show, onClose }: Props) {
     canvas.toBlob(async (blob: Blob) => {
       const formData: FormData = new FormData();
       await formData.append("upload", blob, `vietanh.png`);
-      console.log(formData);
       // const { url: avtUrl } = await changeAvatar(formData);
     }, "image/png");
     onClose();

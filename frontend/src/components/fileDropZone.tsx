@@ -34,7 +34,7 @@ export const FileDropZone = ({ onSave }: Props) => {
     onDrop: handleDropFile,
     maxSize: 20 * 1024 * 1024, // Maximum file size: 20MB
     accept: {
-      "text/*": [".docx", ".doc", ".pdf", ".txt"],
+      "image/png": [".png", ".jpg", "jpeg"],
     },
     onDragEnter: handleDragEnter,
     onDragLeave: handleDragLeave,
@@ -46,26 +46,29 @@ export const FileDropZone = ({ onSave }: Props) => {
       );
     },
   });
+
   return (
-    <div className="mt-9">
-      <h5 className="text-lg text-grayColor font-semibold">Upload</h5>
+    <div>
+      <h6>đăng ảnh demo cho cuộc bình chọn để không khí phấn khởi cái nhỉ</h6>
       <div
+        style={{
+          border: "1px dashed blue",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "24px 0",
+          marginBottom: "12px",
+        }}
         {...getRootProps()}
-        className={`flexCenter cursor-pointer flex-col py-10 mt-3 rounded-lg border border-dashed ${
-          isDragActive
-            ? "bg-blue-500/10 border-blue-500"
-            : "border-[#ebebeb] bg-strokeColor/20"
-        }`}
       >
         <input {...getInputProps()} />
-        <button>
-          <IconUpload color="orange" className="w-12 h-12" />
-        </button>
 
-        <span className="mt-5 text-grayColor text-sm md:text-base font-medium text-center max-w-[250px] md:max-w-[415px]">
-          <span className="text-textColor underline">Click to upload</span> or
-          drag and drop Up to 10 files like word, or PDF, and upto 20 MB each.
-        </span>
+        <div>
+          <IconUpload className="w-12 h-12" />
+        </div>
+
+        <div>Click or drag and drop to upload</div>
       </div>
     </div>
   );
@@ -83,7 +86,7 @@ export const IconUpload = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
       >
         <path
           d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15"
-          stroke="#000000"
+          stroke="orange"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
