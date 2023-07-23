@@ -8,8 +8,7 @@ import { registerSchema } from "../utils/schema/register.shema";
 const router = express.Router();
 router.get("/", AuthController.check);
 
-router.post("/login", AuthController.login);
-
+router.post("/login", AuthMiddleware.verifyGGToken, AuthController.login);
 router.post("/logout", AuthMiddleware.verifyToken, AuthController.logout);
 
 router.post(
@@ -22,4 +21,3 @@ router.post(
 // router.post('/refresh-token',AuthController.requestRefreshToken)
 
 export default router;
-
