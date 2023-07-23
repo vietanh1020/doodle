@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from "express";
-require("express-async-errors");
+import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 
 import { HttpException } from "../utils/exceptions/HttpException";
@@ -19,10 +19,22 @@ export class AuthMiddleware {
     next();
   }
 
+  static async verifyGGToken(req: Request, res: Response, next: NextFunction) {
+    const { clientId, credential }: { clientId: string; credential: string } =
+      req.body;
+    const client = new OAuth2Client(clientId);
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: clientId,
+    });
+    const payload = ticket.getPayload();
+    req.body.user = payload;
+    return next();
+  }
+
   static async verifyToken(req: Request, res: Response, next: NextFunction) {
     const token = req.cookies.access_token;
     console.log(token);
-    
 
     if (token) {
       jwt.verify(token, JWT_ACCESS_KEY, (err, payload: any) => {

@@ -196,22 +196,21 @@ function PollUpdate() {
                       <p className="message-error">{validationMsg.endAt}</p>
                     </div>
                   </div>
+                  <div className="col">
+                    <label htmlFor="image" className="form-label">
+                      Ảnh minh họa
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="image"
+                      onChange={handleChange}
+                      // value={poll.image}
+                    />
+                  </div>
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="image" className="form-label">
-                    Ảnh minh họa
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="image"
-                    onChange={handleChange}
-                    // value={poll.image}
-                  />
-                </div>
-
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <label htmlFor="description" className="form-label">
                     Mô tả cuộc khảo sát
                   </label>
@@ -222,7 +221,7 @@ function PollUpdate() {
                     value={poll.description}
                     onChange={handleChange}
                   ></textarea>
-                </div>
+                </div> */}
 
                 <div className="mb-3">
                   <label htmlFor="address" className="form-label">

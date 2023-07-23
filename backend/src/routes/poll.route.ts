@@ -33,6 +33,12 @@ router.post(
   PollController.saveImage
 );
 
+router.post(
+  "/uploadFile",
+  AuthMiddleware.verifyToken,
+  PollController.uploadFile
+);
+
 // UPDATE POLL
 router.put(
   "/:id",

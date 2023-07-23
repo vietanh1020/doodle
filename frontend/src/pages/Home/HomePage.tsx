@@ -1,53 +1,55 @@
+import { Button, Grid } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import { Card } from "../../components/Home/Card";
 import { NavBar } from "../../components/Navbar/NavBar";
+import { userInfo } from "../../utils/atom";
 import { httpClient } from "../../utils/httpClient";
-import { userAtom } from "../Login/LoginPage";
-import { Provider, atom, useAtom } from "jotai";
 
 export function HomePage() {
-  const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
+  const navigate = useNavigate();
 
   const [polls, setPolls] = useState([] as any);
 
   const fetchData = async () => {
     const response = await httpClient.get("http://localhost:3001/poll");
-
-    setPolls(response.data);
+    setPolls(response?.data);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const [user] = useAtom(userAtom);
+  const user = useRecoilValue(userInfo);
 
   return (
     <div className="app">
       <NavBar />
-      {polls && (
+
+      {polls?.data?.length > 0 ? (
         <div className="container mt-3">
           <div className="row">
             {polls?.data?.map((poll: any, index: number) => {
               return (
-                <div
-                  className="col-12	col-sm-6	col-md-4	col-lg-4	col-xl-3"
-                  key={index}
-                >
-                  <Card
-                    key={index}
-                    question={poll.question}
-                    image={`${REACT_APP_API_URL}/images/${poll.image}`}
-                    id={poll.id}
-                    startAt={poll.startAt}
-                    endAt={poll.endAt}
-                    description={poll.description}
-                  />
+                <div className="col col-4" key={index}>
+                  <Card key={index} {...poll} />
                 </div>
               );
             })}
           </div>
         </div>
+      ) : (
+        <h1 className="text-center mt-4">
+          <div>Bạn chưa có poll nào!</div>
+          <Button
+            onClick={() => navigate("/poll")}
+            variant="contained"
+            style={{ marginTop: "20px" }}
+          >
+            Add New Poll
+          </Button>
+        </h1>
       )}
     </div>
   );

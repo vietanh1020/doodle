@@ -14,7 +14,17 @@ export class VoteService {
     });
   }
 
-  static async vote(vote: VoteModel, pollId: number): Promise<VoteModel | null> {
-    return await db.Vote.create({...vote, pollId});
+  static async vote(vote: VoteModel, pollId: number, email: string) {
+    const oldvote = await db.Vote.findOne({
+      where: {
+        email,
+        pollId,
+      },
+    });
+    if (!oldvote) {
+      return await db.Vote.create({ ...vote, pollId });
+    } else {
+      return await oldvote.update(vote);
+    }
   }
 }

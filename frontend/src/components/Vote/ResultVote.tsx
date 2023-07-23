@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { httpClient } from "../../utils/httpClient";
+import { useRecoilState } from "recoil";
+import { autoFetch } from "../../utils/atom";
 
 export function ResultVote(props: any) {
   const navigate = useNavigate();
   const color = ["00c1cd", "5581DC", "E25697", "e6dd39", "#e68739", "#d539e6"];
   const [resultVote, setResultVote] = useState([] as any[]);
   const [totalVote, setTotalVote] = useState(0);
-  useEffect(() => {
+  const handleGetData = async () => {
     httpClient
       .get(`/result/${props.id}`)
       .then((response) => {
@@ -18,13 +20,25 @@ export function ResultVote(props: any) {
           total = total + resultObj[key];
           resultArr.push({ [key]: resultObj[key] });
         }
-        setResultVote(resultArr);
-        setTotalVote(total);
+        if (resultVote !== resultArr) setResultVote(resultArr);
+        if (totalVote !== total) setTotalVote(total);
       })
       .catch((err) => {
         navigate("/404-not-found");
       });
-  }, []);
+  };
+
+  const [isFetch] = useRecoilState(autoFetch);
+
+  useEffect(() => {
+    handleGetData();
+
+    const id = setInterval(() => {
+      handleGetData();
+    }, 10000);
+
+    return () => clearInterval(id);
+  }, [isFetch]);
 
   return (
     <div className="">
@@ -55,7 +69,7 @@ export function ResultVote(props: any) {
                   </div>
                   <div className="col-3" style={{ padding: "0 5px" }}>
                     {(
-                      (Number(Object.values(result)) / totalVote) *
+                      (Number(Object.values(result)) / (totalVote || 1)) *
                       100
                     ).toFixed(2)}{" "}
                     %

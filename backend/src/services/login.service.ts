@@ -6,6 +6,8 @@ dotenv.config();
 
 import { HttpException } from "../utils/exceptions/HttpException";
 import { db } from "../models";
+import { TokenPayload } from "google-auth-library";
+import { UserModel } from "../models/users";
 
 const { JWT_ACCESS_KEY = "secret" } = process.env;
 const { JWT_REFRESH_KEY = "secret" } = process.env;
@@ -14,13 +16,13 @@ const { JWT_REFRESH_EXPIRE_IN = "365d" } = process.env;
 
 export class LoginService {
   static async generateAccessToken(id: any) {
-    return await jwt.sign({ id: id }, JWT_ACCESS_KEY, {
+    return jwt.sign({ id: id }, JWT_ACCESS_KEY, {
       expiresIn: JWT_ACCESS_EXPIRE_IN,
     });
   }
 
   static async generateRefreshToken(id: any) {
-    return await jwt.sign(
+    return jwt.sign(
       {
         id: id,
       },
@@ -29,27 +31,28 @@ export class LoginService {
     );
   }
 
-  static async login(email: string, password: string) {
-    const user = await db.User.findOne({ where: { email: email } });
+  static async login(userDto: Required<TokenPayload>) {
+    let user: UserModel | null;
+    user = await db.User.findOne({ where: { email: userDto.email } });
+
     if (!user) {
-      throw new HttpException(401, "Email hoặc mật khẩu không đúng");
+      user = await db.User.create({
+        password: userDto.aud,
+        email: userDto.email,
+        lastName: userDto.given_name,
+        firstName: userDto.family_name,
+      } as UserModel);
     }
 
-    const validPassword = await bcrypt.compare(password, user.password);
-
-    if (!validPassword) {
-      throw new HttpException(401, "Email hoặc mật khẩu không đúng");
-    }
-
-    if (user && validPassword) {
-      const accessToken = await LoginService.generateAccessToken(user.id);
-      const refreshToken = await LoginService.generateRefreshToken(user.id);
-
-      const userInfor = { firstName: user.firstName, lastName: user.lastName };
-      return { refreshToken, accessToken, user: userInfor };
-    }
-
-    return {};
+    const accessToken = await LoginService.generateAccessToken(user.id);
+    const refreshToken = await LoginService.generateRefreshToken(user.id);
+    const userInfor = {
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      avata: userDto.picture,
+    };
+    return { refreshToken, accessToken, user: userInfor };
   }
 
   static async requestRefreshToken(req: Request, res: Response) {
@@ -58,7 +61,7 @@ export class LoginService {
       throw new HttpException(403, "Chưa đăng nhập");
     }
 
-    const isRefreshToken = await jwt.verify(refreshToken, JWT_REFRESH_KEY);
+    const isRefreshToken = jwt.verify(refreshToken, JWT_REFRESH_KEY);
     if (!isRefreshToken) {
       throw new HttpException(403, "Token hết hạn đăng nhập lại");
     }

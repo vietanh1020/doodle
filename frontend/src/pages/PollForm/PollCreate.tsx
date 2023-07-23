@@ -1,18 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import validator from "validator";
 
-import { Poll } from "../../types/poll";
-import { PollMsg } from "../../types/PollMsg";
-import { UseCreatePoll } from "../../hooks/poll/useCreatePoll";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "../../components/Navbar/NavBar";
-import axios from "axios";
-import { httpClient } from "../../utils/httpClient";
+import { UseCreatePoll } from "../../hooks/poll/useCreatePoll";
+import { PollMsg } from "../../types/PollMsg";
+import { Poll } from "../../types/poll";
+import { FileDropZone } from "../../components/fileDropZone";
 
 function PollCreate() {
   const navigate = useNavigate();
-
-  const [image, setImage] = useState(null);
 
   const [poll, setPoll] = useState({
     startAt: "",
@@ -74,31 +71,11 @@ function PollCreate() {
     if (validator.isEmpty(poll.startAt)) {
       msg.startAt = "Vui lòng chọn trường này!";
       result = false;
-    } else {
-      const dateSelect = new Date(poll.startAt);
-      const dateNow = new Date();
-      const timeSelect = dateSelect.setMinutes(dateSelect.getMinutes());
-      const timeValid = dateNow.setMinutes(dateNow.getMinutes() + 5);
-      if (timeValid > timeSelect) {
-        result = false;
-        msg.startAt =
-          "Thời gian bắt đầu bình chọn phải sau hiện tại tối thiểu 5 phút";
-      }
     }
 
     if (validator.isEmpty(poll.endAt)) {
       msg.endAt = "Vui lòng chọn trường này!";
       result = false;
-    } else {
-      const dateSelect = new Date(poll.endAt);
-      const dateStart = new Date(poll.startAt);
-      const timeSelect = dateSelect.setMinutes(dateSelect.getMinutes());
-      const timeStart = dateStart.setMinutes(dateStart.getMinutes() + 10);
-      if (timeStart > timeSelect) {
-        result = false;
-        msg.endAt =
-          "Thời gian kết thúc phải sau thời gian bắt đầu tối thiểu 5p";
-      }
     }
 
     if (validator.isEmpty(poll.question)) {
@@ -117,35 +94,18 @@ function PollCreate() {
     return result;
   };
 
-  const handleUploadImage = (e: any) => {
-    setImage(e.target.files[0]);
-  };
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const isValid = validateAll();
 
     if (isValid) {
-      const formData = new FormData();
-      formData.append("image", image || "");
-
-      const postImage = await httpClient({
-        method: "post",
-        url: "http://localhost:3001/poll/save-image",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      let pollData = { ...poll };
-      pollData.image = postImage.data;
+      let pollData = poll;
       let objAns = {};
       answers.forEach((answer: string, index: number) => {
         Object.assign(objAns, { [`op${index + 1}`]: answer });
       });
       pollData.answers = JSON.stringify(objAns);
-
       const response = await UseCreatePoll(pollData);
-
       if (response) {
         navigate("/");
       }
@@ -197,31 +157,15 @@ function PollCreate() {
                 </div>
               </div>
 
-              <div className="mb-3">
-                <label htmlFor="image" className="form-label">
-                  Ảnh minh họa
-                </label>
-                <input
-                  type="file"
-                  className="form-control"
-                  id="image"
-                  name="image"
-                  onChange={handleUploadImage}
+              {poll.image ? (
+                <img src={poll.image} alt="" />
+              ) : (
+                <FileDropZone
+                  onSave={(url: string) => {
+                    setPoll((prev) => ({ ...prev, image: url }));
+                  }}
                 />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="description" className="form-label">
-                  Mô tả cuộc khảo sát
-                </label>
-                <textarea
-                  className="form-control"
-                  id="description"
-                  rows={2}
-                  value={poll.description}
-                  onChange={handleChange}
-                ></textarea>
-              </div>
+              )}
 
               <div className="mb-3">
                 <label htmlFor="address" className="form-label">
@@ -252,7 +196,7 @@ function PollCreate() {
                 <p className="message-error">{validationMsg.question}</p>
               </div>
               <label className="form-label">Đáp án </label>
-              <div className="mb-3 form-check">
+              <div className="mb-3 form-check d-flex">
                 <input
                   type="checkbox"
                   className="form-check-input"

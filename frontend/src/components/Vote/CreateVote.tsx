@@ -1,30 +1,25 @@
-import validator from "validator";
-
 import { useEffect, useState } from "react";
+import { FaLocationDot, FaUserLarge } from "react-icons/fa6";
 import { createVote } from "../../hooks/vote/createVote";
-import { formatDate } from "../../utils/formatDate";
 import { httpClient } from "../../utils/httpClient";
 import { ResultVote } from "./ResultVote";
-import { Comment } from "./Comment";
 
-import "./Vote.css";
+import { Button, Row } from "react-bootstrap";
+
 import { useNavigate } from "react-router-dom";
-
-const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
+import { useRecoilState, useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { autoFetch, userInfo } from "../../utils/atom";
+import { NavBar } from "../Navbar/NavBar";
+import "./Vote.css";
 
 export function CreateVote(props: any) {
   const navigate = useNavigate();
-  const [voted, setVoted] = useState(false);
-  const [user, setUser] = useState({ fullName: "", email: "" });
+  const [tab, setTab] = useState<string>("vote");
   const [poll, setPoll] = useState({} as any);
-  const [createBy, setCreateBy] = useState({ firstName: "", lastName: "" });
   const [answers, setAnswers] = useState([""]);
   const [checked, setChecked] = useState([] as any[]);
-  const [validationMsg, setValidationMsg] = useState({
-    answers: "",
-    fullName: "",
-    email: "",
-  });
+  const user = useRecoilValue(userInfo);
 
   useEffect(() => {
     httpClient
@@ -32,7 +27,6 @@ export function CreateVote(props: any) {
       .then((response) => {
         const vote = response.data.data;
 
-        setCreateBy({ firstName: vote.firstName, lastName: vote.LastName });
         setPoll(vote.Polls[0]);
 
         let ansArr = [];
@@ -47,33 +41,7 @@ export function CreateVote(props: any) {
       });
   }, []);
 
-  const validateAll = () => {
-    const msg = {
-      answers: "",
-      fullName: "",
-      email: "",
-    };
-    let result = true;
-
-    if (checked.length == 0) {
-      result = false;
-      msg.answers = "Vui lòng chọn đáp án!";
-    }
-
-    if (validator.isEmpty(user.fullName)) {
-      result = false;
-      msg.fullName = "Vui lòng nhập trường này!";
-    }
-
-    if (validator.isEmpty(user.email)) {
-      result = false;
-      msg.email = "Vui lòng nhập trường này!";
-    }
-
-    setValidationMsg(msg);
-    return result;
-  };
-
+  const [isFetch, setIsFetch] = useRecoilState(autoFetch);
   const handleChange = (e: any) => {
     const ans = e.target.value;
     const id = e.target.id;
@@ -85,7 +53,7 @@ export function CreateVote(props: any) {
       if (poll.multipleVote) {
         if (isChecked) {
           return checked.filter((item: string) => {
-            return item != value;
+            return item !== value;
           });
         } else return [...prev, value];
       } else {
@@ -94,17 +62,8 @@ export function CreateVote(props: any) {
     });
   };
 
-  const handleChangeUser = (e: any) => {
-    const { id, value } = e.target;
-    setUser((prev: any) => {
-      return { ...prev, [id]: value };
-    });
-  };
-
   const handleSubmit = async (e: any) => {
-    const isValid = validateAll();
-
-    if (isValid) {
+    if (true) {
       let objAns = {};
 
       for (let val of checked) {
@@ -113,7 +72,7 @@ export function CreateVote(props: any) {
 
       const result = await createVote(
         {
-          fullName: user.fullName,
+          fullName: `${user.firstName} ${user.lastName} `,
           email: user.email,
           answer: JSON.stringify(objAns),
         },
@@ -121,128 +80,151 @@ export function CreateVote(props: any) {
       );
 
       if (result) {
-        localStorage.setItem("isVoted", "true");
-        setVoted(true);
+        setIsFetch(!isFetch);
       }
     }
   };
 
+  const imageDefault =
+    "https://www.thametowncouncil.gov.uk/wp-content/uploads/2023/04/VOTE.jpg";
+
   return (
     <div className="">
-      <div className="header mt-3" style={{ textAlign: "center" }}>
-        <h3>{poll.question}</h3>
-        <p>{poll.description}</p>
-        <strong>
-          Được tạo bởi: {`${createBy.firstName} ${createBy.lastName}`}
-        </strong>
-        <p style={{ margin: "0" }}>
-          <strong>Kết thúc: </strong>
-          {formatDate(poll.endAt)}
-        </p>
-        <strong>Địa chỉ</strong> {poll.address}
-      </div>
+      <NavBar />
+      <Box>
+        <Banner
+          style={{
+            backgroundImage: `url("${imageDefault}")`,
+          }}
+        />
+      </Box>
 
-      <div
-        className="main mt-3"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          maxWidth: "832px",
-          margin: "0 auto",
-        }}
-      >
-        <div
-          className="poll-img"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-          <img
-            src={`${REACT_APP_API_URL}/images/${poll.image}`}
-            alt=""
-            style={{
-              maxWidth: "100%",
-              maxHeight: "280px",
-              borderRadius: "10px",
-            }}
-          />
-        </div>
-        <div
-          className="answer"
-          style={{ alignItems: "center", marginLeft: "20px" }}
-        >
-          {!voted && (
-            <div className="answer">
-              <h6 style={{ textAlign: "center" }}>Bình chọn</h6>
-              {poll.multipleVote && <p>Được phép chọn nhiều đáp án</p>}
+      <Poll className="d-flex mt-4">
+        <PollInfo className="pb-2">
+          <h1>Thông tin sự kiện</h1>
+          <div>
+            <div className="info-item d-flex">
+              <FaLocationDot />
+              <div>Sân bóng Mỹ Đình 2</div>
+            </div>
+            <div className="info-item d-flex">
+              <FaUserLarge></FaUserLarge>
+              <div>Võ Việt Anh</div>
+            </div>
+
+            <ResultVote id={props.id}></ResultVote>
+          </div>
+        </PollInfo>
+
+        <Vote>
+          <Question>{poll.question}</Question>
+
+          {tab === "vote" && (
+            <Row>
+              {poll.multipleVote && (
+                <TextSecond>Được phép chọn nhiều đáp án</TextSecond>
+              )}
               {answers.map((ans: string, index: number) => {
                 return (
-                  <div className=" form-group mt-3" key={index}>
-                    <input
-                      className="form-check-input "
-                      type="checkbox"
-                      id={`op${index + 1}`}
-                      checked={checked.includes(`{"op${index + 1}":"${ans}"}`)}
-                      value={ans}
-                      onChange={handleChange}
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor={`op${index + 1}`}
-                      style={{ marginLeft: "10px" }}
+                  <div className="col-6">
+                    <div
+                      className="form-group mb-4 me-2 rounded-pill "
+                      key={index}
                     >
-                      {ans}
-                    </label>
+                      <input
+                        className="form-check-input "
+                        type="checkbox"
+                        id={`op${index + 1}`}
+                        checked={checked.includes(
+                          `{"op${index + 1}":"${ans}"}`
+                        )}
+                        value={ans}
+                        onChange={handleChange}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`op${index + 1}`}
+                        style={{ marginLeft: "20px" }}
+                      >
+                        {ans}
+                      </label>
+                    </div>
                   </div>
                 );
               })}
-              {validationMsg && (
-                <p className="message-error">{validationMsg.answers}</p>
-              )}
 
-              <div className="form-input row">
-                <div className="mt-3 col">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="fullName"
-                    onChange={handleChangeUser}
-                    value={user.fullName}
-                    placeholder="Enter full name"
-                  />
-                  {validationMsg && (
-                    <p className="message-error">{validationMsg.fullName}</p>
-                  )}
-                </div>
-
-                <div className="mt-3 col">
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    onChange={handleChangeUser}
-                    value={user.email}
-                    placeholder="Enter email"
-                  />
-                  {validationMsg && (
-                    <p className="message-error">{validationMsg.email}</p>
-                  )}
-                </div>
-              </div>
-
-              <button
-                type="button"
-                style={{ textAlign: "center" }}
-                className="btn btn-primary mt-3"
-                onClick={handleSubmit}
-              >
-                Vote
-              </button>
-            </div>
+              <Button onClick={handleSubmit} variant="primary">
+                Save
+              </Button>
+            </Row>
           )}
-
-          {voted && <ResultVote id={props.id} />}
-        </div>
-      </div>
-      <div className="comment">{<Comment fullName={user.fullName} />}</div>
+        </Vote>
+      </Poll>
     </div>
   );
 }
+
+const Box = styled.div`
+  position: relative;
+  margin-top: 40px;
+`;
+
+const Banner = styled.div`
+  border-radius: 8px;
+  height: 400px;
+  background-position: center center;
+`;
+
+const PollInfo = styled.div`
+  box-shadow: rgb(25 33 45 / 25%) 10px 11px 52px;
+  border-radius: 8px;
+  overflow: hidden;
+  left: 60px;
+  width: 400px;
+  background-color: #f8f6f6;
+
+  h1 {
+    background-color: #60d5c0;
+    color: #fff;
+    font-weight: 700;
+    padding: 8px 16px;
+    font-size: 20px;
+  }
+
+  .info-item {
+    margin: 12px 16px;
+    font-size: 14px;
+
+    div {
+      margin-left: 20px;
+    }
+  }
+
+  .icon {
+    width: 20px;
+    margin-right: 20px;
+  }
+`;
+
+const Question = styled.h2`
+  color: rgb(9, 44, 76);
+  font-size: 24px;
+  text-align: center;
+  font-weight: 500;
+`;
+
+const Vote = styled.div`
+  margin-left: 100px;
+  float: right;
+`;
+
+const Poll = styled.div`
+  display: flex;
+  margin-top: 80px;
+`;
+
+const TextSecond = styled.p`
+  margin: 8px 4px;
+  font-size: 14px;
+  color: #333;
+`;
