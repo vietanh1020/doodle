@@ -71,7 +71,14 @@ function App() {
               }
             />
 
-            <Route path="/vote/:id" element={<VotePage />} />
+            <Route
+              path="/vote/:id"
+              element={
+                <PrivateRoute>
+                  <VotePage />
+                </PrivateRoute>
+              }
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
