@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { Card } from "../../components/Home/Card";
 import { NavBar } from "../../components/Navbar/NavBar";
+import { userInfo } from "../../utils/atom";
 import { httpClient } from "../../utils/httpClient";
-import { userAtom } from "../Login/LoginPage";
-import { Provider, atom, useAtom } from "jotai";
 
 export function HomePage() {
   const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
@@ -12,19 +12,22 @@ export function HomePage() {
 
   const fetchData = async () => {
     const response = await httpClient.get("http://localhost:3001/poll");
-
-    setPolls(response.data);
+    setPolls(response?.data);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const [user] = useAtom(userAtom);
+  const user = useRecoilValue(userInfo);
 
   return (
     <div className="app">
       <NavBar />
+      <h2 className="container mx-auto">
+        Polls List of {user.firstName} {user.lastName}
+      </h2>
+
       {polls && (
         <div className="container mt-3">
           <div className="row">

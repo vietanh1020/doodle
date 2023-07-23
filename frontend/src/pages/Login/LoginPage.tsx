@@ -1,39 +1,23 @@
-import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { atom, useAtom } from "jotai";
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import { useNavigate } from "react-router-dom";
-
-import { UseLogin } from "../../hooks/auth/useLogin";
-
-export const userAtom = atom({
-  refreshToken: null,
-  accessToken: null,
-  newUser: { firstName: null, lastName: null },
-});
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { login } from "../../hooks/auth/useLogin";
+import { toast } from "react-hot-toast";
+import { useRecoilState } from "recoil";
+import { userInfo } from "../../utils/atom";
+import Cookies from "js-cookie";
 
 export default function LoginForm() {
-  const [, setUser] = useAtom(userAtom);
+  const [, setUser] = useRecoilState(userInfo);
   const navigate = useNavigate();
 
-  const responseMessage = (response: CredentialResponse) => {
-    console.log(response);
-  };
-  const errorMessage = () => {
-    console.log("error");
-  };
-
-  const onLoginSubmit = async (data: any) => {
-    const response = await UseLogin(data);
-    localStorage.setItem("user", JSON.stringify(response.user));
-    if (!!response.accessToken) {
-      setUser({
-        accessToken: response.accessToken,
-        refreshToken: response.refreshToken,
-        newUser: response.newUser,
-      });
-      navigate("/home");
-    } else {
-      alert(response.message);
-    }
+  const responseMessage = async (response: CredentialResponse) => {
+    const res = await login(response);
+    if (!res?.user) return toast.error("login failed");
+    setUser(res?.user);
+    Cookies.set("access_token", res.accessToken);
+    localStorage.setItem("user", JSON.stringify(res.user));
+    navigate("/home");
   };
 
   return (
@@ -53,7 +37,9 @@ export default function LoginForm() {
               size="large"
               shape="circle"
               onSuccess={responseMessage}
-              onError={errorMessage}
+              onError={() => {
+                console.log("error");
+              }}
             />
           </div>
         </div>

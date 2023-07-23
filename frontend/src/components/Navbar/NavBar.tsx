@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useNavigate } from "react-router-dom";
+import { Avatar, Box } from "@material-ui/core";
+import { useRecoilValue } from "recoil";
+import { userInfo } from "../../utils/atom";
 import { httpClient } from "../../utils/httpClient";
 
 export function NavBar() {
-  const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
-
   const navigate = useNavigate();
   const handleAddPoll = () => {
     navigate("/poll");
@@ -15,16 +17,14 @@ export function NavBar() {
 
   const handleLogOut = async (e: any) => {
     e.preventDefault();
-    const response = await httpClient.post(`/logout`, {});
-    if (response) {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("isVoted");
-      navigate("/login");
-    }
+    await httpClient.post(`/logout`, {});
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("isVoted");
+    navigate("/login");
   };
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = useRecoilValue(userInfo);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
@@ -52,21 +52,21 @@ export function NavBar() {
                 href="#"
                 onClick={handleAddPoll}
               >
-                Create +
+                Create new poll
               </a>
             </li>
 
             <li className="nav-item dropdown">
-              <a
+              <p
                 className="nav-link dropdown-toggle"
-                href="#"
                 id="navbarDropdown"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                {`${user.firstName} ${user.lastName}`}
-              </a>
+                {/* <Avatar alt="Remy Sharp" src={user.avata} /> */}
+                <span> {`${user.firstName} ${user.lastName}`}</span>
+              </p>
               <ul
                 className="dropdown-menu dropdown-menu-end"
                 aria-labelledby="navbarDropdown"

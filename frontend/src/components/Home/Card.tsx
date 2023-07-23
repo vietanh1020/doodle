@@ -11,6 +11,9 @@ export function Card(props: {
   description: string;
 }) {
   const navigate = useNavigate();
+  const imageUrl = props.image
+    ? props.image
+    : "https://www.applauz.me/hubfs/blog_help-center_when-you-should-use-company-polls-on-applauz-fimage-1.jpg";
 
   const handleRedirectDetails = (e: any) => {
     navigate(`/poll/detail/${props.id}`);
@@ -26,7 +29,7 @@ export function Card(props: {
         className="image col col-4  rounded-xl"
         style={{
           maxHeight: "180px",
-          backgroundImage: `url('https://i.pcmag.com/imagery/articles/009cW7ZeBNU4LFtBCTnxGII-3..v1660320145.jpg')`,
+          backgroundImage: `url('${imageUrl}')`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           height: "200px",
