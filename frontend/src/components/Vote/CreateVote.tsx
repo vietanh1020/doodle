@@ -13,22 +13,19 @@ import { Button, Col, Row } from "react-bootstrap";
 import "./Vote.css";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { userInfo } from "../../utils/atom";
 
 const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
 
 export function CreateVote(props: any) {
   const navigate = useNavigate();
   const [tab, setTab] = useState<string>("vote");
-  const [user, setUser] = useState({ fullName: "", email: "" });
   const [poll, setPoll] = useState({} as any);
   const [createBy, setCreateBy] = useState({ firstName: "", lastName: "" });
   const [answers, setAnswers] = useState([""]);
   const [checked, setChecked] = useState([] as any[]);
-  const [validationMsg, setValidationMsg] = useState({
-    answers: "",
-    fullName: "",
-    email: "",
-  });
+  const user = useRecoilValue(userInfo);
 
   useEffect(() => {
     httpClient
@@ -81,8 +78,8 @@ export function CreateVote(props: any) {
 
       const result = await createVote(
         {
-          fullName: localStorage.getItem("fullName") || "Anonymous",
-          email: localStorage.getItem("email") || "",
+          fullName: `${user.firstName} ${user.lastName} `,
+          email: user.email,
           answer: JSON.stringify(objAns),
         },
         props.id
@@ -93,12 +90,15 @@ export function CreateVote(props: any) {
     }
   };
 
+  const imageDefault =
+    "https://www.thametowncouncil.gov.uk/wp-content/uploads/2023/04/VOTE.jpg";
+
   return (
     <div className="">
       <Box>
         <Banner
           style={{
-            backgroundImage: `url("https://scontent.fhan9-1.fna.fbcdn.net/v/t39.30808-6/362662188_661744419333758_5583109259605019522_n.jpg?stp=dst-jpg_p180x540&_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_ohc=wr6zxCOU4gMAX_2P3im&_nc_ht=scontent.fhan9-1.fna&oh=00_AfCXtMsVg6s2XitjMEpSb5X2gOiEPfTj5OsJgEiNsqhwuQ&oe=64C285CE")`,
+            backgroundImage: `url("${imageDefault}")`,
           }}
         />
       </Box>
@@ -115,20 +115,8 @@ export function CreateVote(props: any) {
               <FaUserLarge></FaUserLarge>
               <div>Võ Việt Anh</div>
             </div>
-            <div className="info-item d-flex">
-              <FaClockRotateLeft />
 
-              {/* <div>{moment()}</div> */}
-            </div>
-            FaClockRotateLeft
-            <div className="info-item d-flex">
-              <div className="icon">icon</div>
-              <div>Hạn đăng ký 06/06/2023, 12:00:00</div>
-            </div>
-            <div className="info-item d-flex">
-              <div className="icon">icon</div>
-              <div>Hạn đăng ký 06/06/2023, 12:00:00</div>
-            </div>
+            <ResultVote id={props.id}></ResultVote>
           </div>
         </PollInfo>
 
@@ -168,9 +156,6 @@ export function CreateVote(props: any) {
                   </div>
                 );
               })}
-              {validationMsg && (
-                <p className="message-error">{validationMsg.answers}</p>
-              )}
 
               <Button onClick={handleSubmit} variant="primary">
                 Save
