@@ -2,10 +2,19 @@ import { Response, NextFunction, Request } from "express";
 import multer from "multer";
 import path from "path";
 import { ResponseDto } from "../dto/ResponseDto";
+import { MinioService } from "../services/minio.service";
 import { PollService } from "../services/poll.service";
 import { HttpException } from "../utils/exceptions/HttpException";
 
 export class PollController {
+  constructor(private readonly minio: MinioService) {}
+
+  async uploadFile(req: any, res: Response) {
+    const { fileName } = req.body;
+    const data = this.minio.getPresignedUrl(fileName);
+    res.status(200).json(new ResponseDto({ data }));
+  }
+
   static async index(req: Request, res: Response) {
     let polls = await PollService.getPollByUserId(req.user);
 
@@ -65,7 +74,7 @@ export class PollController {
   }
 
   static async createPoll(req: Request, res: Response) {
-    const poll = await PollService.createPoll(req.body, req.user );
+    const poll = await PollService.createPoll(req.body, req.user);
 
     res.status(201).json(new ResponseDto({ data: poll }));
   }

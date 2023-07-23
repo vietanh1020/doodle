@@ -1,8 +1,5 @@
 import { HttpException } from "../utils/exceptions/HttpException";
 import { db } from "../models";
-import { Request } from "express";
-import nodemailer from "nodemailer";
-import { ResultService } from "./resultPoll.service";
 
 export class MailService {
   static async getEmailByPollId(_pollId: number) {

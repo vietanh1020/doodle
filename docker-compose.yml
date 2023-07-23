@@ -19,13 +19,13 @@ services:
       - redis
     networks:
       - default
-  
+
   # fe:
   #   container_name: doodle_fe
   #   ports:
   #     - 3000:3000
   #   build:
-  #     context: ./frontend 
+  #     context: ./frontend
   #     dockerfile: Dockerfile
   #   environment:
   #     CHOKIDAR_USEPOLLING: "true"
@@ -42,13 +42,13 @@ services:
     image: mailhog/mailhog
     container_name: doodle_mailhog
     logging:
-      driver: 'none'  # disable saving logs
+      driver: "none" # disable saving logs
     ports:
       - 1025:1025 # smtp server
       - 8025:8025 # web ui
     networks:
       - default
-  
+
   mysql:
     image: mysql:8.0
     container_name: doodle_mysql
@@ -86,14 +86,14 @@ services:
   redis:
     image: redis:5-alpine
     container_name: doodle_redis
-    volumes: 
+    volumes:
       - ./docker/redis:/data
     ports:
       - 6379:6379
     restart: unless-stopped
     environment:
       - REDIS_URL= redis:6379
-    networks: 
+    networks:
       - default
 
   redis-commander:
@@ -119,6 +119,22 @@ services:
       - ./docker/config/app.conf:/etc/nginx/conf.d/app.conf
     networks:
       - default
+
+  minio:
+    image: minio/minio:RELEASE.2022-10-08T20-11-00Z
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    ports:
+      - 9001:9001
+      - 9000:9000
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: miniopass
+    volumes:
+      - ./docker/minio:/data
+    networks:
+      - default
+
 networks:
   default:
     driver: bridge
