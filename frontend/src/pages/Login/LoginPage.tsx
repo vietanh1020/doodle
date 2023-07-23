@@ -1,15 +1,16 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import { useNavigate } from "react-router-dom";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { login } from "../../hooks/auth/useLogin";
-import { toast } from "react-hot-toast";
-import { useRecoilState } from "recoil";
-import { userInfo } from "../../utils/atom";
 import Cookies from "js-cookie";
+import { toast } from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { login } from "../../hooks/auth/useLogin";
+import { userInfo } from "../../utils/atom";
 
 export default function LoginForm() {
   const [, setUser] = useRecoilState(userInfo);
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   const responseMessage = async (response: CredentialResponse) => {
     const res = await login(response);
@@ -17,6 +18,10 @@ export default function LoginForm() {
     setUser(res?.user);
     Cookies.set("access_token", res.accessToken);
     localStorage.setItem("user", JSON.stringify(res.user));
+
+    console.log(search.slice(4));
+
+    if (+search.slice(4) > 0) return navigate(`/vote/${search.slice(4)}`);
     navigate("/home");
   };
 

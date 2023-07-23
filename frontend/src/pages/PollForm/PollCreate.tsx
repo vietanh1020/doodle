@@ -71,29 +71,11 @@ function PollCreate() {
     if (validator.isEmpty(poll.startAt)) {
       msg.startAt = "Vui lòng chọn trường này!";
       result = false;
-    } else {
-      const dateSelect = new Date(poll.startAt);
-      const dateNow = new Date();
-
-      if (dateSelect.getTime() - dateNow.getTime() < -60000) {
-        result = false;
-        msg.startAt =
-          "Thời gian bắt đầu bình chọn phải sau hiện tại tối thiểu 1 phút";
-      }
     }
 
     if (validator.isEmpty(poll.endAt)) {
       msg.endAt = "Vui lòng chọn trường này!";
       result = false;
-    } else {
-      const dateSelect = new Date(poll.endAt);
-      const dateStart = new Date(poll.startAt);
-
-      if (dateSelect.getTime() - dateStart.getTime() < -300000) {
-        result = false;
-        msg.endAt =
-          "Thời gian kết thúc phải sau thời gian bắt đầu tối thiểu 5p";
-      }
     }
 
     if (validator.isEmpty(poll.question)) {
