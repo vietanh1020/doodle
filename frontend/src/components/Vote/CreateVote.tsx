@@ -1,28 +1,22 @@
-import validator from "validator";
-
 import { useEffect, useState } from "react";
+import { FaLocationDot, FaUserLarge } from "react-icons/fa6";
 import { createVote } from "../../hooks/vote/createVote";
-import { formatDate } from "../../utils/formatDate";
 import { httpClient } from "../../utils/httpClient";
 import { ResultVote } from "./ResultVote";
-import { Comment } from "./Comment";
-import { FaClockRotateLeft, FaLocationDot, FaUserLarge } from "react-icons/fa6";
 
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Row } from "react-bootstrap";
 
-import "./Vote.css";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { useRecoilValue } from "recoil";
+import styled from "styled-components";
 import { userInfo } from "../../utils/atom";
-
-const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
+import { NavBar } from "../Navbar/NavBar";
+import "./Vote.css";
 
 export function CreateVote(props: any) {
   const navigate = useNavigate();
   const [tab, setTab] = useState<string>("vote");
   const [poll, setPoll] = useState({} as any);
-  const [createBy, setCreateBy] = useState({ firstName: "", lastName: "" });
   const [answers, setAnswers] = useState([""]);
   const [checked, setChecked] = useState([] as any[]);
   const user = useRecoilValue(userInfo);
@@ -33,7 +27,6 @@ export function CreateVote(props: any) {
       .then((response) => {
         const vote = response.data.data;
 
-        setCreateBy({ firstName: vote.firstName, lastName: vote.LastName });
         setPoll(vote.Polls[0]);
 
         let ansArr = [];
@@ -95,6 +88,7 @@ export function CreateVote(props: any) {
 
   return (
     <div className="">
+      <NavBar />
       <Box>
         <Banner
           style={{

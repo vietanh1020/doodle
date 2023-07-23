@@ -3,8 +3,8 @@ import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 
 // CONNECT TO SERVER
-const { API_URL = "http://localhost:3001" } = process.env;
-const socket = io(API_URL);
+const { REACT_APP_API_URL = "http://localhost:3001" } = process.env;
+const socket = io(REACT_APP_API_URL);
 
 export function Comment(props: any) {
   const id = useGetSlug();
@@ -95,3 +95,4 @@ export function Comment(props: any) {
     </div>
   );
 }
+

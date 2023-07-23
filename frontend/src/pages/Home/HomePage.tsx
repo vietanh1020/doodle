@@ -26,20 +26,8 @@ export function HomePage() {
   return (
     <div className="app">
       <NavBar />
-      <Grid className="container mx-auto">
-        <h2>
-          Polls List of {user.firstName} {user.lastName}
-        </h2>
-        <Button
-          onClick={() => navigate("/poll")}
-          variant="contained"
-          style={{ marginTop: "20px" }}
-        >
-          Add New Poll
-        </Button>
-      </Grid>
 
-      {polls && (
+      {polls?.data?.length > 0 ? (
         <div className="container mt-3">
           <div className="row">
             {polls?.data?.map((poll: any, index: number) => {
@@ -51,6 +39,17 @@ export function HomePage() {
             })}
           </div>
         </div>
+      ) : (
+        <h1 className="text-center mt-4">
+          <div>Bạn chưa có poll nào!</div>
+          <Button
+            onClick={() => navigate("/poll")}
+            variant="contained"
+            style={{ marginTop: "20px" }}
+          >
+            Add New Poll
+          </Button>
+        </h1>
       )}
     </div>
   );

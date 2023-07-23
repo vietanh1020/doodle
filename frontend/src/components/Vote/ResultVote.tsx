@@ -8,22 +8,24 @@ export function ResultVote(props: any) {
   const [resultVote, setResultVote] = useState([] as any[]);
   const [totalVote, setTotalVote] = useState(0);
   useEffect(() => {
-    httpClient
-      .get(`/result/${props.id}`)
-      .then((response) => {
-        const resultObj = response.data.data;
-        let resultArr = [];
-        let total = 0;
-        for (let key in resultObj) {
-          total = total + resultObj[key];
-          resultArr.push({ [key]: resultObj[key] });
-        }
-        setResultVote(resultArr);
-        setTotalVote(total);
-      })
-      .catch((err) => {
-        navigate("/404-not-found");
-      });
+    setInterval(() => {
+      httpClient
+        .get(`/result/${props.id}`)
+        .then((response) => {
+          const resultObj = response.data.data;
+          let resultArr = [];
+          let total = 0;
+          for (let key in resultObj) {
+            total = total + resultObj[key];
+            resultArr.push({ [key]: resultObj[key] });
+          }
+          if (resultVote != resultArr) setResultVote(resultArr);
+          if (totalVote != total) setTotalVote(total);
+        })
+        .catch((err) => {
+          navigate("/404-not-found");
+        });
+    }, 10000);
   }, []);
 
   return (
@@ -55,7 +57,7 @@ export function ResultVote(props: any) {
                   </div>
                   <div className="col-3" style={{ padding: "0 5px" }}>
                     {(
-                      (Number(Object.values(result)) / totalVote) *
+                      (Number(Object.values(result)) / (totalVote || 1)) *
                       100
                     ).toFixed(2)}{" "}
                     %
