@@ -1,6 +1,7 @@
 backend/node_modules
 docker/mysql
 docker/redis
+docker/minio
 *.log
 .env
 backend/dist

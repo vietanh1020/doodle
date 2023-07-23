@@ -13,7 +13,7 @@ const bucketName: string = "doodle";
 const minioClient = new Minio.Client({
   endPoint: MINIO_ENDPOINT,
   port: Number(MINIO_PORT),
-  useSSL: true,
+  useSSL: false,
   accessKey: MINIO_ACCESS_KEY,
   secretKey: MINIO_SECRET_KEY,
 });
