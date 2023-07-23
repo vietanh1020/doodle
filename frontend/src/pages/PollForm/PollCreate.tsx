@@ -1,18 +1,35 @@
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import validator from "validator";
 
-import { Poll } from "../../types/poll";
-import { PollMsg } from "../../types/PollMsg";
-import { UseCreatePoll } from "../../hooks/poll/useCreatePoll";
 import { useNavigate } from "react-router-dom";
+import CropImage from "../../components/Common/CropImage";
 import { NavBar } from "../../components/Navbar/NavBar";
-import axios from "axios";
+import { UseCreatePoll } from "../../hooks/poll/useCreatePoll";
+import { PollMsg } from "../../types/PollMsg";
+import { Poll } from "../../types/poll";
 import { httpClient } from "../../utils/httpClient";
 
 function PollCreate() {
   const navigate = useNavigate();
 
   const [image, setImage] = useState(null);
+
+  const [show, setShow] = useState(false);
+  const [file, setFile] = useState(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const handlePreviewAvatar = (e: any) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      setFile(file);
+      setShow(true);
+    }
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
 
   const [poll, setPoll] = useState({
     startAt: "",
@@ -77,12 +94,11 @@ function PollCreate() {
     } else {
       const dateSelect = new Date(poll.startAt);
       const dateNow = new Date();
-      const timeSelect = dateSelect.setMinutes(dateSelect.getMinutes());
-      const timeValid = dateNow.setMinutes(dateNow.getMinutes() + 5);
-      if (timeValid > timeSelect) {
+
+      if (dateSelect.getTime() - dateNow.getTime() < -60000) {
         result = false;
         msg.startAt =
-          "Thời gian bắt đầu bình chọn phải sau hiện tại tối thiểu 5 phút";
+          "Thời gian bắt đầu bình chọn phải sau hiện tại tối thiểu 1 phút";
       }
     }
 
@@ -92,9 +108,8 @@ function PollCreate() {
     } else {
       const dateSelect = new Date(poll.endAt);
       const dateStart = new Date(poll.startAt);
-      const timeSelect = dateSelect.setMinutes(dateSelect.getMinutes());
-      const timeStart = dateStart.setMinutes(dateStart.getMinutes() + 10);
-      if (timeStart > timeSelect) {
+
+      if (dateSelect.getTime() - dateStart.getTime() < -300000) {
         result = false;
         msg.endAt =
           "Thời gian kết thúc phải sau thời gian bắt đầu tối thiểu 5p";
@@ -195,33 +210,24 @@ function PollCreate() {
                     <p className="message-error">{validationMsg.endAt}</p>
                   </div>
                 </div>
+
+                <div className="col">
+                  <div className="mb-3">
+                    <label className="form-label">Ảnh minh họa</label>
+                    <input
+                      ref={fileRef}
+                      className="form-control"
+                      onChange={handlePreviewAvatar}
+                      accept=".jpg, .jpeg, .png"
+                      type="file"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="mb-3">
-                <label htmlFor="image" className="form-label">
-                  Ảnh minh họa
-                </label>
-                <input
-                  type="file"
-                  className="form-control"
-                  id="image"
-                  name="image"
-                  onChange={handleUploadImage}
-                />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="description" className="form-label">
-                  Mô tả cuộc khảo sát
-                </label>
-                <textarea
-                  className="form-control"
-                  id="description"
-                  rows={2}
-                  value={poll.description}
-                  onChange={handleChange}
-                ></textarea>
-              </div>
+              {file && (
+                <CropImage file={file} show={show} onClose={handleClose} />
+              )}
 
               <div className="mb-3">
                 <label htmlFor="address" className="form-label">
@@ -319,4 +325,3 @@ function PollCreate() {
 }
 
 export default PollCreate;
-

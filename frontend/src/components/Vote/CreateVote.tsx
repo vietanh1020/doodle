@@ -98,7 +98,7 @@ export function CreateVote(props: any) {
       <Box>
         <Banner
           style={{
-            backgroundImage: `url("https://scontent.fhan9-1.fna.fbcdn.net/v/t39.30808-6/338360046_1351744108950578_5176961134228255019_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=_Ko01XRrYLoAX-P1sx3&_nc_ht=scontent.fhan9-1.fna&oh=00_AfDvXBgTrSHaCU-RnH7SQ2k5ODk8OsA8qU6oNHnLzanZhw&oe=64C1305E")`,
+            backgroundImage: `url("https://scontent.fhan9-1.fna.fbcdn.net/v/t39.30808-6/362662188_661744419333758_5583109259605019522_n.jpg?stp=dst-jpg_p180x540&_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_ohc=wr6zxCOU4gMAX_2P3im&_nc_ht=scontent.fhan9-1.fna&oh=00_AfCXtMsVg6s2XitjMEpSb5X2gOiEPfTj5OsJgEiNsqhwuQ&oe=64C285CE")`,
           }}
         />
       </Box>
