@@ -44,6 +44,9 @@ export function Card(props: {
     <div className="card mb-4" style={{ maxWidth: "100%" }}>
       <div
         className="image col col-4  rounded-xl"
+        onClick={() => {
+          navigate(`/vote/${props.id}`);
+        }}
         style={{
           maxHeight: "180px",
           backgroundImage: `url('${props.image ? props.image : imageDefault}')`,

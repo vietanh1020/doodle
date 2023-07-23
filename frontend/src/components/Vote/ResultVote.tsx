@@ -1,32 +1,44 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { httpClient } from "../../utils/httpClient";
+import { useRecoilState } from "recoil";
+import { autoFetch } from "../../utils/atom";
 
 export function ResultVote(props: any) {
   const navigate = useNavigate();
   const color = ["00c1cd", "5581DC", "E25697", "e6dd39", "#e68739", "#d539e6"];
   const [resultVote, setResultVote] = useState([] as any[]);
   const [totalVote, setTotalVote] = useState(0);
+  const handleGetData = async () => {
+    httpClient
+      .get(`/result/${props.id}`)
+      .then((response) => {
+        const resultObj = response.data.data;
+        let resultArr = [];
+        let total = 0;
+        for (let key in resultObj) {
+          total = total + resultObj[key];
+          resultArr.push({ [key]: resultObj[key] });
+        }
+        if (resultVote !== resultArr) setResultVote(resultArr);
+        if (totalVote !== total) setTotalVote(total);
+      })
+      .catch((err) => {
+        navigate("/404-not-found");
+      });
+  };
+
+  const [isFetch] = useRecoilState(autoFetch);
+
   useEffect(() => {
-    setInterval(() => {
-      httpClient
-        .get(`/result/${props.id}`)
-        .then((response) => {
-          const resultObj = response.data.data;
-          let resultArr = [];
-          let total = 0;
-          for (let key in resultObj) {
-            total = total + resultObj[key];
-            resultArr.push({ [key]: resultObj[key] });
-          }
-          if (resultVote != resultArr) setResultVote(resultArr);
-          if (totalVote != total) setTotalVote(total);
-        })
-        .catch((err) => {
-          navigate("/404-not-found");
-        });
+    handleGetData();
+
+    const id = setInterval(() => {
+      handleGetData();
     }, 10000);
-  }, []);
+
+    return () => clearInterval(id);
+  }, [isFetch]);
 
   return (
     <div className="">

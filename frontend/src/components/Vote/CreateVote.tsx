@@ -7,9 +7,9 @@ import { ResultVote } from "./ResultVote";
 import { Button, Row } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { userInfo } from "../../utils/atom";
+import { autoFetch, userInfo } from "../../utils/atom";
 import { NavBar } from "../Navbar/NavBar";
 import "./Vote.css";
 
@@ -41,6 +41,7 @@ export function CreateVote(props: any) {
       });
   }, []);
 
+  const [isFetch, setIsFetch] = useRecoilState(autoFetch);
   const handleChange = (e: any) => {
     const ans = e.target.value;
     const id = e.target.id;
@@ -79,6 +80,7 @@ export function CreateVote(props: any) {
       );
 
       if (result) {
+        setIsFetch(!isFetch);
       }
     }
   };

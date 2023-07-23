@@ -20,3 +20,8 @@ export const userInfo = atom({
     avata: localUser.avata,
   },
 });
+
+export const autoFetch = atom({
+  key: "autoFetch",
+  default: false,
+});
