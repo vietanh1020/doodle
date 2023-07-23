@@ -30,10 +30,7 @@ export function HomePage() {
           <div className="row">
             {polls?.data?.map((poll: any, index: number) => {
               return (
-                <div
-                  className="col-12	col-sm-6	col-md-4	col-lg-4	col-xl-3"
-                  key={index}
-                >
+                <div className="" key={index}>
                   <Card
                     key={index}
                     question={poll.question}
