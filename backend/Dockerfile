@@ -4,6 +4,6 @@ WORKDIR /app/backend
 
 COPY . .
 
-RUN yarn install
+RUN npm install
 
 CMD [ "yarn", "start:dev"]
