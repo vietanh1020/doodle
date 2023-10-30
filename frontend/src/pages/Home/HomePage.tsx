@@ -13,7 +13,7 @@ export function HomePage() {
   const [polls, setPolls] = useState([] as any);
 
   const fetchData = async () => {
-    const response = await httpClient.get("http://localhost:3001/poll");
+    const response = await httpClient.get("http://api-team1.zinza.com.vn/poll");
     setPolls(response?.data);
   };
 
